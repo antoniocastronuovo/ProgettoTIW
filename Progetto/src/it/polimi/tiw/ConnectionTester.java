@@ -17,7 +17,7 @@ public class ConnectionTester extends HttpServlet {
 			throws ServletException, IOException {
 		final String DB_URL = "jdbc:mysql://localhost:3306/dbtest";
 		final String USER = "root";
-		final String PASS = "Polimi2021";
+		final String PASS = "25Novembre2015";
 		String result = "Connection worked";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
