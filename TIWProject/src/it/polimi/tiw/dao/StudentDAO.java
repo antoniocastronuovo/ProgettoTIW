@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import it.polimi.tiw.beans.DegreeCourse;
 import it.polimi.tiw.beans.Student;
 
 public class StudentDAO {
@@ -16,7 +17,9 @@ public class StudentDAO {
 	}
 	
 	public Student checkCredentials(String personCode, String pwd) throws SQLException {
-		String query = "SELECT P.PersonCode, P.Email, S.Matricola, P.FirstName, P.LastName, S.DegreeCourseId FROM student AS S JOIN person AS P ON S.PersonCode = P.PersonCode   WHERE P.PersonCode = ? AND P.Password =?;";
+		String query = "SELECT P.PersonCode, P.Email, S.Matricola, P.FirstName, P.LastName, S.DegreeCourseId, D.DegreeCourseId, D.Name, D.Description\r\n"
+				+ "FROM (student AS S JOIN person AS P ON S.PersonCode = P.PersonCode) JOIN degreecourse AS D "
+				+ "WHERE P.PersonCode = ? AND P.Password =?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setString(1, personCode);
 			pstatement.setString(2, pwd);
@@ -31,7 +34,11 @@ public class StudentDAO {
 					student.setMatricola(result.getInt("Matricola"));
 					student.setFirstName(result.getString("FirstName"));
 					student.setLastName(result.getString("LastName"));
-					student.setCourseId(result.getInt("DegreeCourseId"));
+					DegreeCourse degreeCourse = new DegreeCourse();
+					degreeCourse.setDegreeCourseId(result.getInt("DegreeCourseId"));
+					degreeCourse.setName(result.getString("Name"));
+					degreeCourse.setDescription(result.getString("Description"));
+					student.setDegreeCourse(degreeCourse);
 					return student;
 				}
 			}

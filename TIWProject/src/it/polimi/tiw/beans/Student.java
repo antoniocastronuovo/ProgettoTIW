@@ -2,7 +2,7 @@ package it.polimi.tiw.beans;
 
 public class Student extends Person{
 	private int matricola;
-	private int courseId;
+	private DegreeCourse degreeCourse;
 	
 	public Student() {
 		super();
@@ -15,12 +15,15 @@ public class Student extends Person{
 	public void setMatricola(int matricola) {
 		this.matricola = matricola;
 	}
-	public int getCourseId() {
-		return courseId;
+
+	public DegreeCourse getDegreeCourse() {
+		return degreeCourse;
 	}
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
+
+	public void setDegreeCourse(DegreeCourse degreeCourse) {
+		this.degreeCourse = degreeCourse;
 	}
+	
 	
 	
 }

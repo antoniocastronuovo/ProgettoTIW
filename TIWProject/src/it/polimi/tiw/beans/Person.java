@@ -7,7 +7,6 @@ public abstract class Person {
 	protected String firstName;
 	protected String lastName;
 	
-
 	public int getPersonCode() {
 		return personCode;
 	}
