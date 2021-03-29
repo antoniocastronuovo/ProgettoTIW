@@ -69,9 +69,9 @@ public class StudentDAO {
 						tempCourse.getTeacher().setFirstName(result.getString("FirstName"));
 						tempCourse.getTeacher().setLastName(result.getString("LastName"));
 						tempCourse.getTeacher().setPersonCode(result.getInt("TeacherPersonCode"));
-						
 						tempCourse.setDescription(result.getString("Description"));
 						tempCourse.setName(result.getString("Name"));
+						courses.add(tempCourse);
 					}
 					return courses;
 				}
