@@ -4,9 +4,8 @@ public class Teacher extends Person {
 	
 	private String department;
 	
-	public Teacher(String department) {
+	public Teacher() {
 		super();
-		this.department=department;
 	}
 
 	public String getDepartment() {

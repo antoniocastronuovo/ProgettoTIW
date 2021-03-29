@@ -4,9 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.DegreeCourse;
 import it.polimi.tiw.beans.Student;
+import it.polimi.tiw.beans.Teacher;
 
 public class StudentDAO {
 	private Connection connection;
@@ -40,6 +44,36 @@ public class StudentDAO {
 					degreeCourse.setDescription(result.getString("Description"));
 					student.setDegreeCourse(degreeCourse);
 					return student;
+				}
+			}
+		}
+	}
+	public List<Course> getFollowedCourses(String personCode) throws SQLException {
+		String query = "Select * from course as C join courseenrollment as CE join teacher as T "
+				+ "where C.CourseId=CE.CourseID and C.TeacherPersonCode=T.PersonCode and StudentPersonCode = ?; ";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setString(1, personCode);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) // no results, credential check failed
+					return null;
+				else {
+					List<Course> courses = new ArrayList<>();
+					while(result.next()) {				 
+						Course tempCourse= new Course();
+						
+						tempCourse.setCourseID(result.getInt("CourseId"));;
+						tempCourse.setTeacher(new Teacher());
+						tempCourse.getTeacher().setDepartment(result.getString("Department"));
+						tempCourse.getTeacher().setEmail(result.getString("Email"));
+						tempCourse.getTeacher().setPassword(result.getString("Password"));
+						tempCourse.getTeacher().setFirstName(result.getString("FirstName"));
+						tempCourse.getTeacher().setLastName(result.getString("LastName"));
+						tempCourse.getTeacher().setPersonCode(result.getInt("TeacherPersonCode"));
+						
+						tempCourse.setDescription(result.getString("Description"));
+						tempCourse.setName(result.getString("Name"));
+					}
+					return courses;
 				}
 			}
 		}

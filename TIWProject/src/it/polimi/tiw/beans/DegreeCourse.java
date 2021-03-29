@@ -5,10 +5,20 @@ public class DegreeCourse {
 	private String name;
 	private String description;
 	
+	
+	
 	public DegreeCourse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public DegreeCourse(int degreeCourseId, String name, String description) {
+		super();
+		this.degreeCourseId = degreeCourseId;
+		this.name = name;
+		this.description = description;
+	}
+	
 	public int getDegreeCourseId() {
 		return degreeCourseId;
 	}

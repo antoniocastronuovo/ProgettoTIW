@@ -6,6 +6,11 @@ public class Course {
 	private String description;
 	private Teacher teacher;
 	
+	public Course() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Course(int courseID, String name, String description, Teacher teacher) {
 		super();
 		this.courseID = courseID;

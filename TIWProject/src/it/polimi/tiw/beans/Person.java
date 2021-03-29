@@ -1,12 +1,17 @@
 package it.polimi.tiw.beans;
 
 public abstract class Person {
+	
 	protected int personCode;
 	protected String email;
 	protected String password;
 	protected String firstName;
 	protected String lastName;
 	
+	public Person() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public int getPersonCode() {
 		return personCode;
 	}
