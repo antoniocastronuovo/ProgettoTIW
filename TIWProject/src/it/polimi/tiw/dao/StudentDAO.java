@@ -48,11 +48,11 @@ public class StudentDAO {
 			}
 		}
 	}
-	public List<Course> getFollowedCourses(String personCode) throws SQLException {
-		String query = "Select * from course as C join courseenrollment as CE join teacher as T "
-				+ "where C.CourseId=CE.CourseID and C.TeacherPersonCode=T.PersonCode and StudentPersonCode = ?; ";
+	public List<Course> getFollowedCourses(int personCode) throws SQLException {
+		String query = "Select * from person as P, course as C, courseenrollment as CE, teacher as T "
+				+ "where P.PersonCode=T.PersonCode and C.CourseId=CE.CourseId and C.TeacherPersonCode=T.PersonCode and StudentPersonCode = ?; ";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setString(1, personCode);
+			pstatement.setInt(1, personCode);
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (!result.isBeforeFirst()) // no results, credential check failed
 					return null;
