@@ -50,6 +50,8 @@ public class StudentTest {
 	}
 	
 	public static void testGetFollowedCourses() throws ClassNotFoundException, SQLException {
+		System.out.println("Test for StudentDAO getFollowedCourses()");
+		
 		String driver = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/polionline";
 		String user = "poliadmin";
@@ -59,7 +61,7 @@ public class StudentTest {
 		Connection connection = DriverManager.getConnection(url, user, dbpassword);
 		StudentDAO studentDAO = new StudentDAO(connection);
 		
-		List<Course> courses =studentDAO.getFollowedCourses(1);
+		List<Course> courses = studentDAO.getFollowedCourses(1);
 		
 		for(Course course:courses)
 			System.out.println(course);

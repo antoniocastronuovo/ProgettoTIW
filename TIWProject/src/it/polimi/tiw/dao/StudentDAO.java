@@ -55,7 +55,7 @@ public class StudentDAO {
 			pstatement.setInt(1, personCode);
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (!result.isBeforeFirst()) // no results, credential check failed
-					return null;
+					return new ArrayList<>();
 				else {
 					List<Course> courses = new ArrayList<>();
 					while(result.next()) {				 
