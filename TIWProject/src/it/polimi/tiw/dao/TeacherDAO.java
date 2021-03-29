@@ -15,12 +15,12 @@ public class TeacherDAO {
 		this.connection = connection;
 	}
 	
-	public Teacher checkCredentials(String personCode, String pwd) throws SQLException{
-		String query = "SELECT P.PersonCode, P.Email, P.FirstName, P.LastName, T.Department\r\n"
-				+ "FROM teacher AS T JOIN person AS P ON T.PersonCode = P.PersonCode"
-				+ "WHERE P.PersonCode = ? AND Password = ?;";
+	public Teacher checkCredentials(int personCode, String pwd) throws SQLException{
+		String query = "SELECT P.PersonCode, P.Email, P.FirstName, P.LastName, T.Department "
+				+ "FROM teacher AS T JOIN person AS P ON T.PersonCode = P.PersonCode "
+				+ "WHERE P.PersonCode = ? AND P.Password = ?;";
 		try(PreparedStatement pStatement = connection.prepareStatement(query);) {
-			pStatement.setString(1, personCode);
+			pStatement.setInt(1, personCode);
 			pStatement.setString(2, pwd);
 			try(ResultSet result = pStatement.executeQuery();) {
 				if(!result.isBeforeFirst())

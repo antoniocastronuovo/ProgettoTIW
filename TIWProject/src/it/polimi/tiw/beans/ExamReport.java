@@ -6,10 +6,8 @@ public class ExamReport {
 	private int examReportId;
 	private Date dateTime;
 	
-	public ExamReport(int examReportId, Date dateTime) {
+	public ExamReport() {
 		super();
-		this.examReportId = examReportId;
-		this.dateTime=dateTime;
 	}
 
 	public int getExamReportId() {

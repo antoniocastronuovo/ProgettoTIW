@@ -23,11 +23,11 @@ public class StudentTest {
 			Class.forName(driver);
 			Connection connection = DriverManager.getConnection(url, user, dbpassword);
 			
-			String email = "simon.kjaer@polionline.com";
+			int personCode = 1;
 			String password = "Milan";
 			
 			StudentDAO students = new StudentDAO(connection);
-			Student student = students.checkCredentials(email, password);
+			Student student = students.checkCredentials(personCode, password);
 			
 			if(student == null) {
 				System.out.println("No user found.");

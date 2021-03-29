@@ -52,12 +52,20 @@ public class CheckLogin extends HttpServlet {
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Takes login parameters
-		String personCode = request.getParameter("personCode");
-		String password = request.getParameter("password");
+		String personCodeString = request.getParameter("personCode");
+    	String password = request.getParameter("password");
 		String path = getServletContext().getContextPath();
-
+		int personCode;
+		try {
+			personCode = Integer.parseInt(request.getParameter("personCode"));
+		}catch (NumberFormatException e) {
+			ErrorsHandler.displayErrorMessage("Error", "Wrong parameter");
+			path = path + "index.html";
+			response.sendRedirect(path);
+			return;
+		}
 		
-		if(personCode == null || password == null || personCode.isEmpty() || password.isEmpty()) {
+		if(personCodeString == null || personCodeString.isEmpty() || password == null || password.isEmpty()) {			
 			ErrorsHandler.displayErrorMessage("Error", "Missing parameters");
 			path = path + "index.html";
 			response.sendRedirect(path);
