@@ -1,6 +1,7 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import it.polimi.tiw.beans.Student;
+import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.StudentDAO;
+import it.polimi.tiw.dao.TeacherDAO;
 import it.polimi.tiw.handlers.ErrorsHandler;
 
 /**
@@ -51,18 +54,27 @@ public class CheckLogin extends HttpServlet {
 		//Takes login parameters
 		String personCode = request.getParameter("personCode");
 		String password = request.getParameter("password");
+		String path = getServletContext().getContextPath();
+
 		
 		if(personCode == null || password == null || personCode.isEmpty() || password.isEmpty()) {
 			ErrorsHandler.displayErrorMessage("Error", "Missing parameters");
+			path = path + "index.html";
+			response.sendRedirect(path);
 		}else {
 			try {
-				String path = getServletContext().getContextPath();
 				StudentDAO students = new StudentDAO(connection);
 				Student studentToLogIn = students.checkCredentials(personCode, password);
 				if(studentToLogIn == null) {
-					/* It could be a teacher */
-					//TODO
-					System.out.println("Could be a teacher");
+					TeacherDAO teachers = new TeacherDAO(connection);
+					Teacher teacherToLogIn = teachers.checkCredentials(personCode, password);
+					if(teacherToLogIn == null) { //Wrong credentials
+						ErrorsHandler.displayErrorMessage("Error", "Missing parameters");
+						path = path + "/index.html";
+					}else { //Teacher is logged
+						request.getSession().setAttribute("teacher", teacherToLogIn);
+						path = path + "/GetTeacherCourses";
+					}
 				}else { //Ok
 					//Associate the user to the session, if it already exists, it is replaced
 					request.getSession().setAttribute("student", studentToLogIn);
