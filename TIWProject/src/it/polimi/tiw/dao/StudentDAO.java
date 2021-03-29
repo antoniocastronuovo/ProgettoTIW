@@ -26,7 +26,7 @@ public class StudentDAO {
 				else {
 					result.next();
 					Student student = new Student();
-					student.setPersonCode(result.getString("PersonCode"));
+					student.setPersonCode(result.getInt("PersonCode"));
 					student.setEmail(result.getString("Email"));
 					student.setMatricola(result.getInt("Matricola"));
 					student.setFirstName(result.getString("FirstName"));
