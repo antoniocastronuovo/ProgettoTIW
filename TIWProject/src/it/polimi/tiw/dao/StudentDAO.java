@@ -15,10 +15,10 @@ public class StudentDAO {
 		this.connection = connection;
 	}
 	
-	public Student checkCredentials(String email, String pwd) throws SQLException {
-		String query = "SELECT PersonCode, Email, Matricola, FirstName, LastName, DegreeCourseId FROM student WHERE Email = ? AND Password =?";
+	public Student checkCredentials(String personCode, String pwd) throws SQLException {
+		String query = "SELECT P.PersonCode, P.Email, S.Matricola, P.FirstName, P.LastName, S.DegreeCourseId FROM student AS S JOIN person AS P ON S.PersonCode = P.PersonCode   WHERE P.PersonCode = ? AND P.Password =?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setString(1, email);
+			pstatement.setString(1, personCode);
 			pstatement.setString(2, pwd);
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (!result.isBeforeFirst()) // no results, credential check failed
