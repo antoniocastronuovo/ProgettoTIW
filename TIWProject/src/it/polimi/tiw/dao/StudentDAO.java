@@ -20,6 +20,27 @@ public class StudentDAO {
 		this.connection = connection;
 	}
 	
+	public Student getStudentByPersonCode(int personCode) throws SQLException {
+		String query = "select * from person as P, student as S where P.PersonCode=S.PersonCode;";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) // no results, credential check failed
+					return null;
+				else {
+					result.next();
+					Student student = new Student();
+					student.setPersonCode(result.getInt("PersonCode"));
+					student.setEmail(result.getString("Email"));
+					student.setMatricola(result.getInt("Matricola"));
+					student.setFirstName(result.getString("FirstName"));
+					student.setLastName(result.getString("LastName"));
+					return student;
+				}
+			}
+		}
+		
+	}
+	
 	public Student checkCredentials(int personCode, String pwd) throws SQLException {
 		String query = "SELECT P.PersonCode, P.Email, S.Matricola, P.FirstName, P.LastName, S.DegreeCourseId, D.DegreeCourseId, D.Name, D.Description\r\n"
 				+ "FROM (student AS S JOIN person AS P ON S.PersonCode = P.PersonCode) JOIN degreecourse AS D "
