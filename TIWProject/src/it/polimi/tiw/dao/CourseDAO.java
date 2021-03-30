@@ -35,7 +35,7 @@ public class CourseDAO {
 				else {
 					while(result.next()) {
 						ExamSession examSession = new ExamSession();
-						examSession.setDateTime(result.getDate("SD"));
+						examSession.setDateTime(result.getTimestamp("SD"));
 						examSession.setRoom(result.getString("Room"));
 						Course course = new Course();
 						course.setCourseID(result.getInt("CourseId"));

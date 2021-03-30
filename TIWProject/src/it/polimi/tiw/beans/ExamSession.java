@@ -1,10 +1,10 @@
 package it.polimi.tiw.beans;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class ExamSession {
 	private Course course;
-	private Date dateTime;
+	private Timestamp dateTime;
 	private String room;
 	
 	public ExamSession() {
@@ -20,11 +20,11 @@ public class ExamSession {
 		this.course = course;
 	}
 
-	public Date getDateTime() {
+	public Timestamp getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(Timestamp dateTime) {
 		this.dateTime = dateTime;
 	}
 
