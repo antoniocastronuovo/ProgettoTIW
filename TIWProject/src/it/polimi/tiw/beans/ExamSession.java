@@ -6,7 +6,6 @@ public class ExamSession {
 	private Course course;
 	private Date dateTime;
 	private String room;
-	private ExamReport report;
 	
 	public ExamSession() {
 		super();
@@ -35,14 +34,6 @@ public class ExamSession {
 
 	public void setRoom(String room) {
 		this.room = room;
-	}
-
-	public ExamReport getReport() {
-		return report;
-	}
-
-	public void setReport(ExamReport report) {
-		this.report = report;
 	}
 	
 	
