@@ -12,7 +12,7 @@ import it.polimi.tiw.dao.StudentDAO;
 public class StudentTest {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-			testGetFollowedCourses();
+			testGetFollowedCoursesDesc();
 	}
 	
 	public static void testLogin() {
@@ -49,8 +49,8 @@ public class StudentTest {
 		
 	}
 	
-	public static void testGetFollowedCourses() throws ClassNotFoundException, SQLException {
-		System.out.println("Test for StudentDAO getFollowedCourses()");
+	public static void testGetFollowedCoursesDesc() throws ClassNotFoundException, SQLException {
+		System.out.println("Test for StudentDAO getFollowedCoursesDesc()");
 		
 		String driver = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/polionline";
@@ -61,11 +61,15 @@ public class StudentTest {
 		Connection connection = DriverManager.getConnection(url, user, dbpassword);
 		StudentDAO studentDAO = new StudentDAO(connection);
 		
-		List<Course> courses = studentDAO.getFollowedCourses(1);
+		//Get the course for student 10
+		List<Course> courses = studentDAO.getFollowedCoursesDesc(10);
 		
 		for(Course course:courses)
-			System.out.println(course);
+			System.out.println(course.getCourseID() +" - " + course.getName());
 		
+		if (connection != null) {
+			connection.close();
+		}
 	}
 
 }

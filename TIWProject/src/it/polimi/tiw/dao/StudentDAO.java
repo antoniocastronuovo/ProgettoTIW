@@ -48,9 +48,17 @@ public class StudentDAO {
 			}
 		}
 	}
-	public List<Course> getFollowedCourses(int personCode) throws SQLException {
+	
+	/**
+	 * Get list of courses followed by a student given his person code
+	 * @param personCode person code of student
+	 * @return the list of course followed by the student
+	 * @throws SQLException in case of sql error
+	 */
+	public List<Course> getFollowedCoursesDesc(int personCode) throws SQLException {
 		String query = "Select * from person as P, course as C, courseenrollment as CE, teacher as T "
-				+ "where P.PersonCode=T.PersonCode and C.CourseId=CE.CourseId and C.TeacherPersonCode=T.PersonCode and StudentPersonCode = ?; ";
+				+ "where P.PersonCode=T.PersonCode and C.CourseId=CE.CourseId and C.TeacherPersonCode=T.PersonCode and StudentPersonCode = ? "
+				+ "ORDER BY C.Name DESC; ";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, personCode);
 			try (ResultSet result = pstatement.executeQuery();) {
@@ -65,7 +73,6 @@ public class StudentDAO {
 						tempCourse.setTeacher(new Teacher());
 						tempCourse.getTeacher().setDepartment(result.getString("Department"));
 						tempCourse.getTeacher().setEmail(result.getString("Email"));
-						tempCourse.getTeacher().setPassword(result.getString("Password"));
 						tempCourse.getTeacher().setFirstName(result.getString("FirstName"));
 						tempCourse.getTeacher().setLastName(result.getString("LastName"));
 						tempCourse.getTeacher().setPersonCode(result.getInt("TeacherPersonCode"));
