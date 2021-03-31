@@ -35,6 +35,8 @@ public class StudentDAO {
 					student.setMatricola(result.getInt("Matricola"));
 					student.setFirstName(result.getString("FirstName"));
 					student.setLastName(result.getString("LastName"));
+					DegreeCourseDao degreeCourseDao= new DegreeCourseDao(connection); 
+					student.setDegreeCourse(degreeCourseDao.getDegreeCourseById(result.getInt("DegreeCourseId")));
 				}
 			}
 			return student;

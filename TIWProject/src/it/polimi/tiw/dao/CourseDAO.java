@@ -46,29 +46,46 @@ public class CourseDAO {
 	/* Return a list of ExamSession but note that the course beans inside
 	 * the exam session beans in the list is not fulfilled
 	 */
-	public List<ExamSession> getExamSessionByCourseId(int courseId) throws SQLException {
-		String query = "SELECT S.DateTime AS SD, S.Room, C.CourseId, C.Name, C.Description FROM examsession AS S JOIN Course AS C ON C.CourseId = S.CourseId WHERE C.CourseId = ?;";
+	public List<ExamSession> getExamSessionsByCourseId(int courseId) throws SQLException {
+		String query = "SELECT DateTime, Room, CourseId FROM examsession WHERE CourseId = ?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, courseId);
 			List<ExamSession> examSessions = new ArrayList<>();
 			try (ResultSet result = pstatement.executeQuery();) {
-				if (!result.isBeforeFirst()) // no results, credential check failed
+				if (!result.isBeforeFirst())
 					return null;
 				else {
 					while(result.next()) {
 						ExamSession examSession = new ExamSession();
-						examSession.setDateTime(result.getTimestamp("SD"));
+						examSession.setDateTime(result.getTimestamp("DateTime"));
 						examSession.setRoom(result.getString("Room"));
-						Course course = new Course();
-						course.setCourseID(result.getInt("CourseId"));
-						course.setName(result.getString("Name"));
-						course.setDescription("Description");
+						Course course = new CourseDAO(connection).getCourseById(courseId);
 						examSession.setCourse(course);
 						examSessions.add(examSession);
 					}
 				}
 			}
 			return examSessions;
+		}
+	}
+	
+	public Course getCourseById(int courseId) throws SQLException {
+		String query = "SELECT * FROM course WHERE CourseId = ?;";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, courseId);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) 
+					return null;
+				else {
+					result.next();
+					Course course = new Course();
+					course.setCourseID(result.getInt("CourseId"));
+					course.setName(result.getString("Name"));
+					course.setDescription(result.getString("Description"));
+					course.setTeacher(new TeacherDAO(connection).getTeacherByPersonCode(result.getInt("TeacherPersonCode")));
+					return course;
+				}
+			}
 		}
 	}
 }

@@ -10,11 +10,9 @@ import java.util.List;
 
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.DegreeCourse;
-import it.polimi.tiw.beans.ExamReport;
 import it.polimi.tiw.beans.ExamResult;
 import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Student;
-import it.polimi.tiw.beans.Teacher;
 
 public class ExamSessionDAO {
 	private Connection connection;
@@ -46,7 +44,7 @@ public class ExamSessionDAO {
 					}
 				}
 				return examSession;
-			}	
+			}
 	}
 	
 	public List<ExamResult> getRegisteredStudentsResults(int courseId, Timestamp datetime) throws SQLException {
@@ -58,7 +56,7 @@ public class ExamSessionDAO {
 			pstatement.setInt(1, courseId);
 			pstatement.setTimestamp(2, datetime);
 			try (ResultSet result = pstatement.executeQuery();) {
-				if (!result.isBeforeFirst()) // no results, credential check failed
+				if (!result.isBeforeFirst()) 
 					return new ArrayList<>();
 				else {
 					List<ExamResult> examResults = new ArrayList<>();
@@ -79,10 +77,7 @@ public class ExamSessionDAO {
 						examResult.setGrade(result.getInt("Grade"));
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));
-						Course course = new Course();
-						course.setCourseID(result.getInt("CourseId"));
-						course.setName(result.getString("CN"));
-						course.setDescription(result.getString("CD"));
+						Course course = new CourseDAO(connection).getCourseById(courseId);
 						ExamSession examSession = new ExamSession();
 						examSession.setCourse(course);
 						examSession.setDateTime(result.getTimestamp("ExamSessionDateTime"));
@@ -246,5 +241,5 @@ public class ExamSessionDAO {
 			}
 		}
 	}
-	
+		
 }

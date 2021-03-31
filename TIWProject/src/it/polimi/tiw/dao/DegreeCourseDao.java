@@ -7,10 +7,10 @@ import java.sql.Connection;
 import it.polimi.tiw.beans.DegreeCourse;
 import it.polimi.tiw.beans.Student;
 
-public class DeagreeCourseDao {
+public class DegreeCourseDao {
 	private Connection connection;
 
-	public DeagreeCourseDao(Connection connection) {
+	public DegreeCourseDao(Connection connection) {
 		super();
 		this.connection = connection;
 	}

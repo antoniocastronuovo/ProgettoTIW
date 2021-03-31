@@ -32,6 +32,7 @@
  <filter-mapping> 
     <filter-name>LoginChecker</filter-name> 
     <url-pattern>/GetStudentCourses</url-pattern>
+    <url-pattern>/GetTeacherCourses</url-pattern>  
     <url-pattern>/Logout</url-pattern> 
  </filter-mapping> 
  <filter-mapping> 
