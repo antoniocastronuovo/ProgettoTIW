@@ -7,9 +7,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import it.polimi.tiw.beans.ExamResult;
-import it.polimi.tiw.beans.Student;
 import it.polimi.tiw.dao.ExamSessionDAO;
-import it.polimi.tiw.dao.StudentDAO;
 
 public class ExamSessionTest {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {

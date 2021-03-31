@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import it.polimi.tiw.beans.Course;
-import it.polimi.tiw.dao.StudentDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 
 public class TeacherTest {

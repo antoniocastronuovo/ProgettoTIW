@@ -85,4 +85,32 @@ public class StudentDAO {
 			}
 		}
 	}
+	
+	public Student getStudentByPersonCode(int studentPersonCode) throws SQLException {
+		String query = "SELECT S.PersonCode, Matricola, Email, FirstName, LastName, S.DegreeCourseId, D.Name, D.Description "
+				+ "FROM (student AS S JOIN person AS P ON S.PersonCode = P.PersonCode) JOIN DegreeCourse AS D ON S.DegreeCourseId = D.DegreeCourseId "
+				+ "WHERE S.PersonCode = ?; ";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, studentPersonCode);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) 
+					return null;
+				else {
+					result.next();
+					Student student = new Student();
+					student.setPersonCode(result.getInt("PersonCode"));
+					student.setEmail(result.getString("Email"));
+					student.setFirstName(result.getString("FirstName"));
+					student.setLastName(result.getString("LastName"));
+					student.setMatricola(result.getInt("Matricola"));
+					DegreeCourse degreeCourse = new DegreeCourse();
+					degreeCourse.setDegreeCourseId(result.getInt("DegreeCourseId"));
+					degreeCourse.setName(result.getString("Name"));
+					degreeCourse.setDescription(result.getString("Description"));
+					student.setDegreeCourse(degreeCourse);
+					return student;
+				}
+			}
+		}
+	}
 }
