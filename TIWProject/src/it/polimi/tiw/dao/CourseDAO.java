@@ -18,6 +18,28 @@ public class CourseDAO {
 		super();
 		this.connection = connection;
 	}
+	
+	public Course getCourseByCourseId(int courseId) throws SQLException {
+		String query = "SELECT * from course where CourseId =?;";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, courseId);
+			Course course = new Course();
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) // no results, credential check failed
+					return course;
+				else {
+					result.next();
+					course.setCourseID(result.getInt("CourseId"));
+					course.setName(result.getString("Name"));
+					course.setDescription("Description");
+					TeacherDAO teacher=new TeacherDAO(connection);
+					course.setTeacher(teacher.getTeacherByPersonCode(result.getInt("TeacherPersonCode")));
+					}
+				}
+			return course;	
+		}	
+	}
+	
 
 
 

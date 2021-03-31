@@ -21,24 +21,24 @@ public class StudentDAO {
 	}
 	
 	public Student getStudentByPersonCode(int personCode) throws SQLException {
-		String query = "select * from person as P, student as S where P.PersonCode=S.PersonCode;";
+		String query = "select * from person as P, student as S where P.PersonCode=S.PersonCode and S.PersonCode=?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, personCode);
+			Student student = new Student();
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (!result.isBeforeFirst()) // no results, credential check failed
-					return null;
+					return student;
 				else {
-					result.next();
-					Student student = new Student();
+					result.next();				
 					student.setPersonCode(result.getInt("PersonCode"));
 					student.setEmail(result.getString("Email"));
 					student.setMatricola(result.getInt("Matricola"));
 					student.setFirstName(result.getString("FirstName"));
 					student.setLastName(result.getString("LastName"));
-					return student;
 				}
 			}
-		}
-		
+			return student;
+		}	
 	}
 	
 	public Student checkCredentials(int personCode, String pwd) throws SQLException {

@@ -24,6 +24,31 @@ public class ExamSessionDAO {
 		this.connection = connection;
 	}
 	
+	public ExamSession getExamSessionByCourseIdDateTime(int courseId, Timestamp examSessionDateTime) throws SQLException {
+		
+			String query = "select * from examsession as E, where E.CourseId=? and E.DateTime=?;";
+			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+				pstatement.setInt(1, courseId);
+				pstatement.setTimestamp(2, examSessionDateTime);
+				ExamSession examSession = new ExamSession();
+				try (ResultSet result = pstatement.executeQuery();) {
+					if (!result.isBeforeFirst()) // no results, credential check failed
+						return examSession;
+					else {
+						result.next();
+						examSession.setDateTime(result.getTimestamp("DateTime"));
+						
+						CourseDAO courseDAO = new CourseDAO(connection);
+						examSession.setCourse(courseDAO.getCourseByCourseId(result.getInt("CourseId")));
+						
+						examSession.setRoom(result.getString("Room"));
+		
+					}
+				}
+				return examSession;
+			}	
+	}
+	
 	public List<ExamResult> getRegisteredStudentsResults(int courseId, Timestamp datetime) throws SQLException {
 		String query = "SELECT E.StudentPersonCode, P.Email, S.Matricola, P.FirstName, P.LastName, S.DegreeCourseID, D.Name AS DN, D.Description AS DC, E.ExamSessionDateTime, E.Grade, E.Laude, E.GradeStatus, C.CourseId, C.Name AS CN, C.Description AS CD, ES.Room "
 				+ "FROM examresult AS E, course AS C, Student AS S, Person AS P, degreecourse as D, examsession AS ES "
