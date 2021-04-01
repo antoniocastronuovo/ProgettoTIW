@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 import it.polimi.tiw.beans.DegreeCourse;
-import it.polimi.tiw.beans.Student;
 
 public class DegreeCourseDao {
 	private Connection connection;

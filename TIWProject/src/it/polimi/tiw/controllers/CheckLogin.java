@@ -1,7 +1,6 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -42,6 +41,7 @@ public class CheckLogin extends HttpServlet {
 			e.printStackTrace();
 			throw new UnavailableException("Can't load database driver");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new UnavailableException("Couldn't get db connection");
 		}
 	}

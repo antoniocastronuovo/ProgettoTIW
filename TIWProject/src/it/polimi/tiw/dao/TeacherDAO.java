@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.beans.Course;
-import it.polimi.tiw.beans.Student;
 import it.polimi.tiw.beans.Teacher;
 
 public class TeacherDAO {
@@ -96,26 +95,4 @@ public class TeacherDAO {
 		}
 	}
 	
-	public Teacher getTeacherByPersonCode(int teacherPersonCode) throws SQLException {
-		String query = "SELECT T.PersonCode, Email, FirstName, LastName, Department "
-				+ "FROM teacher AS T JOIN person AS P ON T.PersonCode = P.PersonCode "
-				+ "WHERE T.PersonCode = ?;";
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, teacherPersonCode);
-			try (ResultSet result = pstatement.executeQuery();) {
-				if (!result.isBeforeFirst()) // no results, credential check failed
-					return null;
-				else {
-					result.next();
-					Teacher teacher = new Teacher();
-					teacher.setPersonCode(result.getInt("PersonCode"));
-					teacher.setEmail(result.getString("Email"));
-					teacher.setFirstName(result.getString("FirstName"));
-					teacher.setLastName(result.getString("LastName"));
-					teacher.setDepartment(result.getString("Department"));
-					return teacher;
-				}
-			}
-		}
-	}
 }
