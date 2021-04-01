@@ -11,8 +11,8 @@ import it.polimi.tiw.dao.ExamReportDAO;
 public class ExamReportTest {
 
 	public static void main(String[] args) {
-		//testGetExamReport();
-		testPublishExamReport();
+		testGetExamReport();
+		//testPublishExamReport();
 	}
 
 	public static void testGetExamReport() {
@@ -45,7 +45,7 @@ public class ExamReportTest {
 	}
 	
 	public static void testPublishExamReport() {
-		System.out.println("Test for ExamReportDAO getExamReport()");
+		System.out.println("Test for ExamReportDAO publishExamReport()");
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://localhost:3306/polionline";

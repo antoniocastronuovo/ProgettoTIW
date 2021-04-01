@@ -24,7 +24,7 @@ public class ExamSessionDAO {
 	
 	public ExamSession getExamSessionByCourseIdDateTime(int courseId, Timestamp examSessionDateTime) throws SQLException {
 		
-			String query = "select * from examsession as E, where E.CourseId=? and E.DateTime=?;";
+			String query = "select * from examsession as E where E.CourseId=? and E.DateTime=?;";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, courseId);
 				pstatement.setTimestamp(2, examSessionDateTime);
@@ -157,6 +157,19 @@ public class ExamSessionDAO {
 				return (n == 1);
 			}
 		}
+	}
+	
+	public boolean publishExamSessionGrades(int courseId, Timestamp datetime) throws SQLException {
+		String query = "UPDATE examresult "
+				+ "SET GradeStatus = 'PUBBLICATO' "
+				+ "WHERE GradeStatus = 'INSERITO' AND CourseId = ? AND ExamSessionDateTime = ? ;";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, courseId);
+			pstatement.setTimestamp(2, datetime);
+			int n = pstatement.executeUpdate();
+			return (n > 0);
+		}
+		
 	}
 	
 	public boolean updateExamResult(int personCode, int courseId, Timestamp datetime, int grade, boolean laude) throws SQLException {

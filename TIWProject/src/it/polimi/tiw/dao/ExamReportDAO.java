@@ -44,7 +44,7 @@ public class ExamReportDAO {
 		          System.err.print("Transaction is being rolled back");
 		          connection.rollback();
 		        } catch (SQLException excep) {
-		          excep.printStackTrace();;
+		          excep.printStackTrace();
 		        }
 		    }
 			return null;
