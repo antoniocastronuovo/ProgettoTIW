@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -20,13 +20,20 @@
         <div class="card card text-white bg-info">
             <div class="card-body">
                 <h5 class="card-title">Corsi insegnati dal Professore <b>Stephen Hawking</b> </h5>
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="list-group" th:remove="all-but-first">
+                    <a href="./GetCourseExamSessionsTeacher?courseId=1&teacherId=1" class="list-group-item list-group-item-action flex-column align-items-start" th:each="course : ${courses}">
                         <div class="d-flex justify-content-between">
-                            <h5 class="mb-1">234 - Fisica tecnica</h5>
+                            <h5 class="mb-1" th:text="${course.courseId} + ' - ' + ${course.name}" >234 - Fisica tecnica</h5>
                             <span class="badge badge-info">7 appelli</span>
                         </div>
-                        <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
+                        <p class="mb-1" th:text="${course.description}">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
+                    	<ul th:if="${course.courseId == courseId}" class="list-group list-group-flush" th:remove="all-but-first" th:each="exam: ${exams}">
+							<li class="list-group-item" th:text="${exam.datetime}">Cras justo odio</li>
+							<li class="list-group-item">Dapibus ac facilisis in</li>
+							<li class="list-group-item">Morbi leo risus</li>
+							<li class="list-group-item">Porta ac consectetur ac</li>
+							<li class="list-group-item">Vestibulum at eros</li>
+						</ul>
                     </a>
                     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex justify-content-between">
@@ -34,7 +41,7 @@
                             <span class="badge badge-info">7 appelli</span>
                         </div>
                         <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
-                    </a>
+					</a>
                     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex justify-content-between">
                             <h5 class="mb-1">234 - Fisica tecnica</h5>

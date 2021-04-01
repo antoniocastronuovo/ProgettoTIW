@@ -20,14 +20,16 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
+import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Teacher;
+import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 
 /**
- * Servlet implementation class GetTeacherCourses
+ * Servlet implementation class GetCourseExamSessionsTeacher
  */
-@WebServlet("/GetTeacherCourses")
-public class GetTeacherCourses extends HttpServlet {
+@WebServlet("/GetCourseExamSessionsTeacher")
+public class GetCourseExamSessionsTeacher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
     private TemplateEngine templateEngine;
@@ -61,16 +63,24 @@ public class GetTeacherCourses extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
+		int teacherId = Integer.parseInt(request.getParameter("teacherId"));
 		
 		TeacherDAO teacherDAO = new TeacherDAO(connection);
+		CourseDAO courseDAO = new CourseDAO(connection);
+		
 		List<Course> courses;
+		List<ExamSession> exams;
+		
 		try {
-			courses = teacherDAO.getTaughtCoursesDesc(teacher.getPersonCode());
+			courses = teacherDAO.getTaughtCoursesDesc(teacherId);
+			exams = courseDAO.getExamSessionsByCourseId(courseId);
 			String path = "teacherhome.html";
 			ServletContext context = getServletContext();
 			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 			ctx.setVariable("courses", courses);
+			ctx.setVariable("courseId", courseId);
+			ctx.setVariable("exams", exams);
 			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();
