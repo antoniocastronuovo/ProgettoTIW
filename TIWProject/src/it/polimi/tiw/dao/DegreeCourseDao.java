@@ -21,7 +21,7 @@ public class DegreeCourseDao {
 			DegreeCourse degreeCourse = new DegreeCourse();
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (!result.isBeforeFirst()) // no results, credential check failed
-					return degreeCourse;
+					return null;
 				else {
 					result.next();				
 					degreeCourse.setDegreeCourseId(degreeCourseId);

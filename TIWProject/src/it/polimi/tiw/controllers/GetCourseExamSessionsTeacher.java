@@ -21,7 +21,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamSession;
-import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 
