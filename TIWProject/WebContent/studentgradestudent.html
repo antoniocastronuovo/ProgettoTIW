@@ -16,7 +16,7 @@
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
 
-    <title>Student's grade</title>
+    <title>Student's grades</title>
 
 </head>
 
@@ -32,8 +32,8 @@
                                 <i class="fas fa-user-tie fa-7x mt-5"></i>
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
-                                <a href="studentgraderejected.html" th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
-                                	<button class="btn btn-primary mb-3">RIFIUTA</button>
+                                <a href="studentgradestudent.html"  th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
+                                	<button th:if="${!rejected}" class="btn btn-primary mb-3">RIFIUTA</button>
                                 </a>
                                 
                             </div>
@@ -58,7 +58,7 @@
                                     <p class="font-weight-bold">Stato</p>
                                     <h6 class="text-muted" th:text="${result.gradeStatus}">INSERITO</h6>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6" th:if="${!rejected}" >
                                     <p class="font-weight-bold">Voto</p>
                                     <h6 class="text-muted" th:text="${result.grade}">30</h6>
                                 </div>
