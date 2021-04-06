@@ -33,17 +33,26 @@
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>22</td>
-                            <td>Kakà</td>
-                            <td>Ricardo</td>
-                            <td>Ricardo</td>
-                            <td>ricky.kaka@mail.com</td>
-                            <td>30L</td>
-                            <td class="table-success text-center">VERBALIZZATO</td>
+                    <tbody th:remove="all-but-first">
+                        <tr th:each="grade : ${grades}">
+                            <td th:text="${grade.student.matricola}">22</td>
+                            <td th:text="${grade.student.lastName}">Kakà</td>
+                            <td th:text="${grade.student.firstName}">Ricardo</td>
+                            <td th:text="${grade.student.email}">ricky.kaka@mail.com</td>
+                            <td th:text="${grade.student.degreeCourse.name}">Centrocampista</td>
+                            <td th:text="${grade.grade} + (${grade.isLaude()} ? 'L' : '')">30L</td>
+                            <div th:switch="${grade.gradeStatus}">
+                            	<td class="table-success text-center" th:case="'VERBALIZZATO'" th:text="${grade.gradeStatus}">VERBALIZZATO</td>
+                            	<td class="table-warning text-center" th:case="'PUBBLICATO'" th:text="${grade.gradeStatus}">PUBBLICATO</td>
+                            	<td class="table-danger text-center" th:case="'RIFIUTATO'" th:text=${grade.gradeStatus}>RIFIUTATO</td>
+                            	<td class="table-info text-center" th:case="'INSERITO'" th:text="${grade.gradeStatus}">INSERITO</td>
+                            	<td class="table-danger text-center" th:case="'ASSENTE'" th:text="${grade.gradeStatus}">ASSENTE</td>
+                            	<td class="table-secondary text-center" th:case="'NON INSERITO'" th:text="${grade.gradeStatus}">NON INSERITO</td>
+                            </div>
                             <td>
-                                <a href="#"><button type="button" class="btn btn-primary" style="width: 100%;">Edit</button></a>
+                                <a href="student.html" th:href="@{GetGradeDetail(personCode=${grade.student.personCode}, courseId=${exam.course.courseId}, date=${exam.dateTime})}">
+                                	<button type="button" class="btn btn-primary" style="width: 100%;">Edit</button>
+                               	</a>
                             </td>
                         </tr>
                         <tr>
@@ -132,8 +141,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="#"><button type="button" class="btn btn-success">PUBBLICA</button></a>
-                <a href="#"><button type="button" class="btn btn-success">VERBALIZZA</button></a>
+                <!-- Understand when it is necessary to display one or the other one (or no one) -->
+                <a href="#" th:href="@{PublishExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button type="button" class="btn btn-success">PUBBLICA</button></a>
+                <a href="#" th:href="@{ReportExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button type="button" class="btn btn-success">VERBALIZZA</button></a>
             </div>
         </div>
     </div>

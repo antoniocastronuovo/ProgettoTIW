@@ -71,6 +71,7 @@ public class GetTeacherCourses extends HttpServlet {
 			ServletContext context = getServletContext();
 			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 			ctx.setVariable("courses", courses);
+			ctx.setVariable("teacher", teacher);
 			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();

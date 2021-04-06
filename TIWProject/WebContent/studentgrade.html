@@ -30,8 +30,8 @@
                         <div class="col-sm-4 bg-info rounded-left">
                             <div class="card-block text-center text-white">
                                 <i class="fas fa-user-tie fa-7x mt-5"></i>
-                                <h2 class="font-weight-bold mt-4">Alberto Angela</h2>
-                                <p>10999999</p>
+                                <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
+                                <p th:text="${result.student.personCode}">10999999</p>
                                 <button type="submit" class="btn btn-primary mb-3">CONFERMA</button>
                             </div>
                         </div>
@@ -41,11 +41,11 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Email:</p>
-                                    <h6 class="text-muted">name.surname@mail.com</h6>
+                                    <h6 class="text-muted" th:text="${result.student.email}">name.surname@mail.com</h6>
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Matricola</p>
-                                    <h6 class="text-muted">949494</h6>
+                                    <h6 class="text-muted" th:text="${result.student.matricola}">949494</h6>
                                 </div>
                             </div>
                             <h4 class="mt-3">Valutazione</h4>
@@ -53,12 +53,12 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Stato</p>
-                                    <h6 class="text-muted">INSERITO</h6>
+                                    <h6 class="text-muted" th:text="${result.gradeStatus}">INSERITO</h6>
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Voto</p>
                                     <select class="custom-select" id="grade">
-                                        <option selected>Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
+                                        <option selected th:value="${result.grade}" th:text="${result.grade}">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
                                         <option value="31">30 e lode</option>
                                         <option value="30">30</option>
                                         <option value="29">29</option>

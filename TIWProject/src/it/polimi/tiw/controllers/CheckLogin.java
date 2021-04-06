@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
@@ -13,8 +14,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
 import it.polimi.tiw.beans.Student;
 import it.polimi.tiw.beans.Teacher;
+import it.polimi.tiw.beans.formbeans.LoginForm;
 import it.polimi.tiw.dao.StudentDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 import it.polimi.tiw.handlers.ErrorsHandler;
@@ -26,11 +33,17 @@ import it.polimi.tiw.handlers.ErrorsHandler;
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
+    private TemplateEngine templateEngine;
     
     @Override
     public void init() throws ServletException {
-		try {
-			ServletContext context = getServletContext();
+    	ServletContext context = getServletContext();
+    	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		this.templateEngine = new TemplateEngine();
+		this.templateEngine.setTemplateResolver(templateResolver);
+		templateResolver.setSuffix(".html");
+    	try {
 			String driver = context.getInitParameter("dbDriver");
 			String url = context.getInitParameter("dbUrl");
 			String user = context.getInitParameter("dbUser");
@@ -54,14 +67,21 @@ public class CheckLogin extends HttpServlet {
 		//Takes login parameters
 		String personCodeString = request.getParameter("personCode");
     	String password = request.getParameter("password");
+    	
+    	//Create and initialize the form bean with user's input
+    	LoginForm loginForm = new LoginForm();
+    	loginForm.setPersonCode(personCodeString);
+    	loginForm.setPassword(password);
+    	
 		String path = getServletContext().getContextPath();
-		int personCode;
-		try {
-			personCode = Integer.parseInt(request.getParameter("personCode"));
-		}catch (NumberFormatException e) {
-			ErrorsHandler.displayErrorMessage("Error", "Wrong parameter");
+		int personCode = Integer.parseInt(request.getParameter("personCode"));
+		
+		
+		if(!loginForm.areCredetialsOk()) {
 			path = path + "index.html";
-			response.sendRedirect(path);
+			request.setAttribute("loginForm", loginForm);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+			dispatcher.forward(request, response);
 			return;
 		}
 		
@@ -77,8 +97,13 @@ public class CheckLogin extends HttpServlet {
 					TeacherDAO teachers = new TeacherDAO(connection);
 					Teacher teacherToLogIn = teachers.checkCredentials(personCode, password);
 					if(teacherToLogIn == null) { //Wrong credentials
-						ErrorsHandler.displayErrorMessage("Error", "Missing parameters");
+						loginForm.setLoginOk(false);
 						path = path + "/index.html";
+						ServletContext context = getServletContext();
+						final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+						ctx.setVariable("loginForm", loginForm);
+						templateEngine.process(path, ctx, response.getWriter());
+						return;
 					}else { //Teacher is logged
 						request.getSession().setAttribute("teacher", teacherToLogIn);
 						path = path + "/GetTeacherCourses";

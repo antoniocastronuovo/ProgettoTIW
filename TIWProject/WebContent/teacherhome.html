@@ -19,57 +19,36 @@
     <div class="container mb-3 mt-3">
         <div class="card card text-white bg-info">
             <div class="card-body">
-                <h5 class="card-title">Corsi insegnati dal Professore <b>Stephen Hawking</b> </h5>
+                <h5 class="card-title" th:text="'Corsi insegnati dal Professore ' + ${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
+                	Corsi insegnati dal Professore <b>Stephen Hawking</b>
+                </h5>
                 <div class="list-group" th:remove="all-but-first">
-                    <a href="./GetCourseExamSessionsTeacher?courseId=1&teacherId=1" class="list-group-item list-group-item-action flex-column align-items-start" th:each="course : ${courses}">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-1" th:text="${course.courseId} + ' - ' + ${course.name}" >234 - Fisica tecnica</h5>
+                    <div class="list-group-item list-group-item-action flex-column align-items-start" th:each="course:${courses}">
+                    	<div class="d-flex justify-content-between">
+                            <a href="teacherhome.html"  th:href="@{/GetCourseExamSessionsTeacher(courseId=${course.courseId})}">
+                            	<h5 class="mb-1" th:text="${course.courseId} + ' - ' + ${course.name}" >234 - Fisica tecnica</h5>
+                            </a>
                             <span class="badge badge-info">7 appelli</span>
                         </div>
                         <p class="mb-1" th:text="${course.description}">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
                     	<ul th:if="${course.courseId == courseId}" class="list-group list-group-flush" th:remove="all-but-first" th:each="exam: ${exams}">
-							<li class="list-group-item" th:text="${exam.datetime}">Cras justo odio</li>
-							<li class="list-group-item">Dapibus ac facilisis in</li>
-							<li class="list-group-item">Morbi leo risus</li>
-							<li class="list-group-item">Porta ac consectetur ac</li>
-							<li class="list-group-item">Vestibulum at eros</li>
+							<a href="registered.html" th:href="@{/GetRegisteredStudentsResults(courseId=${course.courseId}, date=${exam.dateTime})}"><li class="list-group-item" th:text="'Appello del' + ${exam.datetime}">Appello del 12/01/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/02/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/06/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/07/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/09/2021 12:00</li></a>
 						</ul>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex justify-content-between">
-                            <h5 class="mb-1">234 - Fisica tecnica</h5>
+                            <a href="teacherhome.html">
+                            	<h5 class="mb-1">234 - Fisica tecnica</h5>
+                            </a>
                             <span class="badge badge-info">7 appelli</span>
                         </div>
                         <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
-					</a>
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-1">234 - Fisica tecnica</h5>
-                            <span class="badge badge-info">7 appelli</span>
-                        </div>
-                        <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-1">234 - Fisica tecnica</h5>
-                            <span class="badge badge-info">7 appelli</span>
-                        </div>
-                        <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-1">234 - Fisica tecnica</h5>
-                            <span class="badge badge-info">7 appelli</span>
-                        </div>
-                        <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-1">234 - Fisica tecnica</h5>
-                            <span class="badge badge-info">7 appelli</span>
-                        </div>
-                        <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
-                    </a>
+                    </div>
+                    
                 </div>
             </div>
         </div>

@@ -21,6 +21,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamSession;
+import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 
@@ -63,7 +64,7 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int courseId = Integer.parseInt(request.getParameter("courseId"));
-		int teacherId = Integer.parseInt(request.getParameter("teacherId"));
+		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
 		
 		TeacherDAO teacherDAO = new TeacherDAO(connection);
 		CourseDAO courseDAO = new CourseDAO(connection);
@@ -72,7 +73,7 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 		List<ExamSession> exams;
 		
 		try {
-			courses = teacherDAO.getTaughtCoursesDesc(teacherId);
+			courses = teacherDAO.getTaughtCoursesDesc(teacher.getPersonCode());
 			exams = courseDAO.getExamSessionsByCourseId(courseId);
 			String path = "teacherhome.html";
 			ServletContext context = getServletContext();
