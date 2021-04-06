@@ -11,7 +11,7 @@ import it.polimi.tiw.dao.ExamSessionDAO;
 
 public class ExamSessionTest {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		testGetRegisteredStudentsResults();
+		//testGetRegisteredStudentsResults();
 		//testGetStudentExamResult();
 		//testRejectExamResult();
 		//testUpdateExamResult();

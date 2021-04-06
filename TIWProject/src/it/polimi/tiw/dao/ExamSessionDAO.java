@@ -180,7 +180,7 @@ public class ExamSessionDAO {
 	
 	public List<ExamResult> getReportedGrades(int courseId, Timestamp datetime) throws SQLException {
 		String query = "SELECT * "
-				+ "FROM examresult "
+				+ "FROM examresult AS E "
 				+ "WHERE E.GradeStatus = 'VERBALIZZATO' "
 				+ "AND E.CourseId = ? AND E.ExamSessionDateTime=?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {

@@ -27,10 +27,10 @@ import it.polimi.tiw.dao.ExamReportDAO;
 import it.polimi.tiw.dao.ExamSessionDAO;
 
 /**
- * Servlet implementation class GetRegisteredStudentResults
+ * Servlet implementation class GetExamReport
  */
-@WebServlet("/GetRegisteredStudentsResults")
-public class GetRegisteredStudentsResults extends HttpServlet {
+@WebServlet("/GetExamReport")
+public class GetExamReport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
     private TemplateEngine templateEngine;
@@ -74,10 +74,10 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 		
 		try {
 			exam = examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime);
-			grades = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
+			grades = examSessionDAO.getReportedGrades(courseId, datetime);
 			examReport = examReportDAO.getExamReport(courseId, datetime);
 			
-			String path = "registered.html";
+			String path = "examreport.html";
 			ServletContext context = getServletContext();
 			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 			ctx.setVariable("exam", exam);
@@ -111,4 +111,5 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 			sqle.printStackTrace();
 		}
 	}
+
 }

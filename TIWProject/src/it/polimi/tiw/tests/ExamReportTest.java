@@ -11,8 +11,8 @@ import it.polimi.tiw.dao.ExamReportDAO;
 public class ExamReportTest {
 
 	public static void main(String[] args) {
-		testGetExamReport();
-		//testPublishExamReport();
+		//testGetExamReport();
+		testPublishExamReport();
 	}
 
 	public static void testGetExamReport() {
