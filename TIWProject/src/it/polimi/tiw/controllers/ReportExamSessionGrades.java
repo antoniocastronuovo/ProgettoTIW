@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,8 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
+import it.polimi.tiw.beans.ExamReport;
+import it.polimi.tiw.beans.ExamResult;
+import it.polimi.tiw.beans.ExamSession;
+import it.polimi.tiw.dao.ExamReportDAO;
+import it.polimi.tiw.dao.ExamSessionDAO;
 
 /**
  * Servlet implementation class ReportExamSessionGrades
@@ -58,8 +66,31 @@ public class ReportExamSessionGrades extends HttpServlet {
 		int courseId = Integer.parseInt(request.getParameter("courseId"));
 		Timestamp datetime = Timestamp.valueOf(request.getParameter("date"));
 		
-		System.out.println("Course: " + courseId);
-		System.out.println("Date: " + datetime);
+		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
+		ExamReportDAO examReportDAO = new ExamReportDAO(connection);
+		
+		ExamSession exam;
+		List<ExamResult> grades;
+		ExamReport examReport;
+		
+		try {
+			examReport = examReportDAO.publishExamReport(courseId, datetime);
+			grades = examSessionDAO.getReportedGrades(courseId, datetime);
+			exam = examReport.getExamSession();
+			
+			String path = "examreport.html";
+			ServletContext context = getServletContext();
+			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+			ctx.setVariable("exam", exam);
+			ctx.setVariable("grades", grades);
+			ctx.setVariable("report", examReport);
+		
+			templateEngine.process(path, ctx, response.getWriter());
+		}catch (SQLException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+		}
+		
 	}
 
 	/**

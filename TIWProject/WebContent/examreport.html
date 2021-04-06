@@ -38,7 +38,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title" th:text="'Verbale dell\'appello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${exam.dateTime}">Verbale Analisi 1 - 27/01/2020 14:00</h5>
-                <p class="card-text" th:text="${report.dateTime}">Data verbalizzazione: 30/01/2020 9:00</p>
+                <p class="card-text" th:text="'Data verbalizzazione: ' + ${report.dateTime}">Data verbalizzazione: 30/01/2020 9:00</p>
                 <table class="table table-striped table-hover table-bordered table-responsive-lg">
                     <thead>
                         <tr>

@@ -82,9 +82,9 @@ public class GetGradeDetail extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Course: " + courseId);
+		/*System.out.println("Course: " + courseId);
 		System.out.println("Date: " + datetime);
-		System.out.println("Student: "+ studentPersonCode);
+		System.out.println("Student: "+ studentPersonCode);*/
 	}
 
 	/**
