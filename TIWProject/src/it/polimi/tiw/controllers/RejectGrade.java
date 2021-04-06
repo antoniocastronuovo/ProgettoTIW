@@ -78,7 +78,6 @@ public class RejectGrade extends HttpServlet {
 			ctx.setVariable("rejected", rejected);
 			templateEngine.process(path, ctx, response.getWriter());
 			
-			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");

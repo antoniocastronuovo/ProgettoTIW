@@ -79,6 +79,7 @@ public class GetStudentGrade extends HttpServlet {
 				ServletContext context = getServletContext();
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("result", result);
+				ctx.setVariable("rejected",result.getGradeStatus().equals("REJECTED"));
 				templateEngine.process(path, ctx, response.getWriter());
 			}
 		} catch (SQLException e) {
