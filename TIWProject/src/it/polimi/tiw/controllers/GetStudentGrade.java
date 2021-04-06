@@ -66,8 +66,11 @@ public class GetStudentGrade extends HttpServlet {
 		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 		
 		ExamResult result;
+		boolean rejected = true;
 		try {
 			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
+			
+			
 			if(result==null) {
 				String path = "notenrolledexamsession.html";
 				ServletContext context = getServletContext();
@@ -77,9 +80,10 @@ public class GetStudentGrade extends HttpServlet {
 			}else {
 				String path = "studentgradestudent.html";
 				ServletContext context = getServletContext();
+				rejected=result.getGradeStatus().equals("RIFIUTATO");
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("result", result);
-				ctx.setVariable("rejected",result.getGradeStatus().equals("REJECTED"));
+				ctx.setVariable("rejected",rejected);
 				templateEngine.process(path, ctx, response.getWriter());
 			}
 		} catch (SQLException e) {

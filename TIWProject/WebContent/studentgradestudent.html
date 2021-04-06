@@ -32,8 +32,8 @@
                                 <i class="fas fa-user-tie fa-7x mt-5"></i>
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
-                                <a href="studentgradestudent.html"  th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
-                                	<button th:if="${!rejected}" class="btn btn-primary mb-3">RIFIUTA</button>
+                                <a href="studentgradestudent.html" th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
+                                	<button th:if="${rejected==false}" class="btn btn-primary mb-3">RIFIUTA</button>
                                 </a>
                                 
                             </div>
