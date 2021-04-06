@@ -23,7 +23,7 @@
 <body class="bg-light">
     
         <div class="container">
-            <form action="student.html" method="GET">
+            <form action="EditStudentGrade" method="GET">
             <div class="row d-flex justify-content-center">
                 <div class="col-md-10 mt-5 pt-5">
                     <div class="row z-depth-3">
@@ -57,8 +57,8 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Voto</p>
-                                    <select class="custom-select" id="grade">
-                                        <option selected th:value="${result.grade}" th:text="${result.grade}">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
+                                    <select class="custom-select" name ="grade" id="grade">
+                                        <option selected th:value="(${result.grade == 30 and result.isLaude()} ? 31 : ${result.grade} )" th:text="(${result.grade == 30 and result.isLaude()} ? '30 e lode' : ${result.grade} )">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
                                         <option value="31">30 e lode</option>
                                         <option value="30">30</option>
                                         <option value="29">29</option>
@@ -76,9 +76,23 @@
                                         <option value="-2">RIMANDATO</option>
                                         <option value="-1">RIPROVATO</option>
                                         <option value="-3">ASSENTE</option>
-                                        </select>   
+                                    </select>   
                                 </div>
+                                <input type="hidden" th:value="${result.student.personCode}" value="" name="personCode" />
+                                <input type="hidden" th:value="${result.examSession.dateTime}" value="" name="date" />
+                                <input type="hidden" th:value="${result.examSession.course.courseID}" value="" name="course" />
                             </div>
+                            <div class="row mt-3" th:if="${gradeForm != null and gradeForm.isValid()}">
+                            	<div class="col-sm-12">
+									<div class="alert alert-success" role="alert" th:text="${gradeForm.successString}">Success!</div>
+								</div>
+                            </div>
+                            <div class="row mt-3" th:if="${gradeForm != null and gradeForm.isValid() == false}">
+                            	<div class="col-sm-12">
+									<div class="alert alert-danger" role="alert" th:text="${gradeForm.errorString}">Fail!</div>
+								</div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
