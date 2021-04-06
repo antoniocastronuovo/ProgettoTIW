@@ -68,15 +68,14 @@ public class RejectGrade extends HttpServlet {
 		try {
 			
 			boolean rejected = examSessionDAO.rejectExamResult(studentPersonCode, courseId, datetime);
-			if(rejected)
-				System.out.println("CAMBIATO");
 			ExamResult result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
 			
 			
-			String path = "studentgraderejected.html";
+			String path = "studentgradestudent.html";
 			ServletContext context = getServletContext();
 			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 			ctx.setVariable("result", result);
+			ctx.setVariable("rejected", rejected);
 			templateEngine.process(path, ctx, response.getWriter());
 			
 			templateEngine.process(path, ctx, response.getWriter());
