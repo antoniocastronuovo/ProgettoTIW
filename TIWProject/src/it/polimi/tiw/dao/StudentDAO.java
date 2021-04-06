@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.beans.Course;
-import it.polimi.tiw.beans.DegreeCourse;
 import it.polimi.tiw.beans.Student;
-import it.polimi.tiw.beans.Teacher;
 
 public class StudentDAO {
 	private Connection connection;
@@ -61,11 +59,8 @@ public class StudentDAO {
 					student.setMatricola(result.getInt("Matricola"));
 					student.setFirstName(result.getString("FirstName"));
 					student.setLastName(result.getString("LastName"));
-					DegreeCourse degreeCourse = new DegreeCourse();
-					degreeCourse.setDegreeCourseId(result.getInt("DegreeCourseId"));
-					degreeCourse.setName(result.getString("Name"));
-					degreeCourse.setDescription(result.getString("Description"));
-					student.setDegreeCourse(degreeCourse);
+					DegreeCourseDao degreeCourseDao= new DegreeCourseDao(connection); 
+					student.setDegreeCourse(degreeCourseDao.getDegreeCourseById(result.getInt("DegreeCourseId")));
 					return student;
 				}
 			}
@@ -91,16 +86,13 @@ public class StudentDAO {
 					List<Course> courses = new ArrayList<>();
 					while(result.next()) {				 
 						Course tempCourse= new Course();
-						
 						tempCourse.setCourseID(result.getInt("CourseId"));;
-						tempCourse.setTeacher(new Teacher());
-						tempCourse.getTeacher().setDepartment(result.getString("Department"));
-						tempCourse.getTeacher().setEmail(result.getString("Email"));
-						tempCourse.getTeacher().setFirstName(result.getString("FirstName"));
-						tempCourse.getTeacher().setLastName(result.getString("LastName"));
-						tempCourse.getTeacher().setPersonCode(result.getInt("TeacherPersonCode"));
 						tempCourse.setDescription(result.getString("Description"));
 						tempCourse.setName(result.getString("Name"));
+						
+						TeacherDAO teacher=new TeacherDAO(connection);
+						tempCourse.setTeacher(teacher.getTeacherByPersonCode(result.getInt("TeacherPersonCode")));
+						
 						courses.add(tempCourse);
 					}
 					return courses;

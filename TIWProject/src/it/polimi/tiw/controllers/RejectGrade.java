@@ -67,7 +67,7 @@ public class RejectGrade extends HttpServlet {
 		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 		try {
 			
-			boolean rejected = examSessionDAO.rejectExamResult(studentPersonCode, courseId, datetime);
+			boolean rejectOptionsVisible = !examSessionDAO.rejectExamResult(studentPersonCode, courseId, datetime);
 			ExamResult result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
 			
 			
@@ -75,7 +75,7 @@ public class RejectGrade extends HttpServlet {
 			ServletContext context = getServletContext();
 			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 			ctx.setVariable("result", result);
-			ctx.setVariable("rejected", rejected);
+			ctx.setVariable("rejectable", rejectOptionsVisible);
 			templateEngine.process(path, ctx, response.getWriter());
 			
 		} catch (SQLException e) {
