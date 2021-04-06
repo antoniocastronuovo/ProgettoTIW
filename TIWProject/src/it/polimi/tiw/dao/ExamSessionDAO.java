@@ -119,7 +119,7 @@ public class ExamSessionDAO {
 		else {
 			String query = "UPDATE examresult "
 					+ "SET GradeStatus = 'RIFIUTATO' "
-					+ "WHERE StudentPersonCode = ? AND CourseId = ? AND ExamSessionDateTime = ? ;";
+					+ "WHERE StudentPersonCode = ? AND CourseId = ? AND ExamSessionDateTime = ? AND GradeStatus='PUBBLICATO';";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, personCode);
 				pstatement.setInt(2, courseId);

@@ -1,0 +1,69 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/mystyle.css">
+
+    <title>Courses</title>
+
+</head>
+
+<body>
+    <div class="container mb-3 mt-3">
+        <div class="card card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title" th:text="'Corsi dello studente ' + ${session.student.firstName} + ' ' + ${session.student.lastName}">
+                	Corsi dello studente <b>Studente Bravo</b>
+                </h5>
+                <div class="list-group" th:remove="all-but-first">
+                    <div class="list-group-item list-group-item-action flex-column align-items-start" th:each="course:${courses}">
+                    	<div class="d-flex justify-content-between">
+                            <a href="studenthome.html"  th:href="@{/GetCourseExamSessionsStudent(courseId=${course.courseId})}">
+                            	<h5 class="mb-1" th:text="${course.courseId} + ' - ' + ${course.name}" >234 - Fisica tecnica</h5>
+                            </a>
+                            <span class="badge badge-info">7 appelli</span>
+                        </div>
+                        <p class="mb-1" th:text="${course.description}">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
+                    	<ul th:if="${course.courseId == courseId}" class="list-group list-group-flush" th:remove="all-but-first" th:each="exam: ${exams}">
+							<a href="studentgradestudent.html" th:href="@{/GetStudentGrade(personCode=${session.student.personCode}, courseId=${course.courseId}, date=${exam.dateTime})}"><li class="list-group-item" th:text="'Appello del ' + ${exam.datetime}">Appello del 12/01/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/02/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/06/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/07/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item">Appello del 12/09/2021 12:00</li></a>
+						</ul>
+                    </div>
+                    <div class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex justify-content-between">
+                            <a href="studenthome.html">
+                            	<h5 class="mb-1">234 - Fisica tecnica</h5>
+                            </a>
+                            <span class="badge badge-info">7 appelli</span>
+                        </div>
+                        <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
