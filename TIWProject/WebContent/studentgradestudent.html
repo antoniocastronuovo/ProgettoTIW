@@ -57,7 +57,7 @@
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
                                 <a href="studentgradestudent.html" th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
-                                	<button th:if="${rejected==false}" class="btn btn-primary mb-3">RIFIUTA</button>
+                                	<button th:if="${rejectable}" class="btn btn-primary mb-3">RIFIUTA</button>
                                 </a>
                                 
                             </div>
@@ -82,7 +82,7 @@
                                     <p class="font-weight-bold">Stato</p>
                                     <h6 class="text-muted" th:text="${result.gradeStatus}">INSERITO</h6>
                                 </div>
-                                <div class="col-sm-6" th:if="${!rejected}" >
+                                <div class="col-sm-6" th:if="${rejectable}" >
                                     <p class="font-weight-bold">Voto</p>
                                     <h6 class="text-muted" th:text="${result.grade}">30</h6>
                                 </div>
