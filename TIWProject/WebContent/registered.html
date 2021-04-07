@@ -160,7 +160,7 @@
                     </tbody>
                 </table>
                 <!-- Understand when it is necessary to display one or the other one (or no one) -->
-                <a href="#" th:href="@{PublishExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button type="button" class="btn btn-success">PUBBLICA</button></a>
+                <a th:if="${canPublish}" href="#" th:href="@{PublishExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button type="button" class="btn btn-success">PUBBLICA</button></a>
                 <a th:if="${report == null}" href="#" th:href="@{ReportExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button type="button" class="btn btn-success">VERBALIZZA</button></a>
                 <a th:if="${report != null}" href="examreport.html" th:href="@{GetExamReport(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button type="button" class="btn btn-info">VERBALE</button></a>
             </div>

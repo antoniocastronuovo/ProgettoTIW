@@ -93,6 +93,7 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 		ExamSession exam = null;
 		List<ExamResult> grades = null;
 		ExamReport examReport = null;
+		boolean canPublish = false;
 		
 		try {
 			//Check if the course exists and it is taught by the user
@@ -109,6 +110,7 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 			exam = examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime);
 			grades = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
 			examReport = examReportDAO.getExamReport(courseId, datetime);
+			canPublish = examSessionDAO.canPublish(courseId, datetime);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
@@ -121,6 +123,7 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 		ctx.setVariable("exam", exam);
 		ctx.setVariable("grades", grades);
 		ctx.setVariable("report", examReport);
+		ctx.setVariable("canPublish", canPublish);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
