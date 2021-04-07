@@ -60,22 +60,24 @@ public class GetStudentCourses extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Set response content type
 		Student student = (Student) request.getSession(false).getAttribute("student");
 		StudentDAO studentDAO = new StudentDAO(connection);
-		List<Course> courses;
+		
+		List<Course> courses = null;
 		try {
 			courses = studentDAO.getFollowedCoursesDesc(student.getPersonCode());
-			String path = "studenthome.html";
-			ServletContext context = getServletContext();
-			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-			ctx.setVariable("courses", courses);
-			ctx.setVariable("student", student);
-			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+			return;
 		}
+		
+		String path = "studenthome.html";
+		ServletContext context = getServletContext();
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+		ctx.setVariable("courses", courses);
+		ctx.setVariable("student", student);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**

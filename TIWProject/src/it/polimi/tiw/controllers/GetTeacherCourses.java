@@ -64,19 +64,22 @@ public class GetTeacherCourses extends HttpServlet {
 		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
 		
 		TeacherDAO teacherDAO = new TeacherDAO(connection);
-		List<Course> courses;
+		List<Course> courses = null;
+		
 		try {
 			courses = teacherDAO.getTaughtCoursesDesc(teacher.getPersonCode());
-			String path = "teacherhome.html";
-			ServletContext context = getServletContext();
-			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-			ctx.setVariable("courses", courses);
-			ctx.setVariable("teacher", teacher);
-			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+			return;
 		}
+		
+		String path = "teacherhome.html";
+		ServletContext context = getServletContext();
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+		ctx.setVariable("courses", courses);
+		ctx.setVariable("teacher", teacher);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**

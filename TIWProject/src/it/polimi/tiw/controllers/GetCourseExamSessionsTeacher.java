@@ -63,29 +63,57 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int courseId = Integer.parseInt(request.getParameter("courseId"));
-		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
+		//Get and parse all parameters from request
+		boolean isBadRequest = false;
+		Integer courseId = null;
 		
+		try {
+			courseId = Integer.parseInt(request.getParameter("courseId"));
+		}catch (NumberFormatException | NullPointerException e) {
+			isBadRequest = true;
+			e.printStackTrace();
+		}
+		if (isBadRequest) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
+			return;
+		}
+		
+		//Get the user from the session
+		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
+				
 		TeacherDAO teacherDAO = new TeacherDAO(connection);
 		CourseDAO courseDAO = new CourseDAO(connection);
 		
-		List<Course> courses;
-		List<ExamSession> exams;
+		List<Course> courses = null;
+		List<ExamSession> exams = null;
 		
 		try {
+			//Check if the course exists and it is taught by the user
+			Course course = courseDAO.getCourseByCourseId(courseId);
+			if(course == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+				return;
+			}
+			if(course.getTeacher().getPersonCode() != teacher.getPersonCode()) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
+				return;
+			}
+			
 			courses = teacherDAO.getTaughtCoursesDesc(teacher.getPersonCode());
 			exams = courseDAO.getExamSessionsByCourseId(courseId);
-			String path = "teacherhome.html";
-			ServletContext context = getServletContext();
-			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-			ctx.setVariable("courses", courses);
-			ctx.setVariable("courseId", courseId);
-			ctx.setVariable("exams", exams);
-			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
 		}
+		
+		//Redirect to the teacher home page
+		String path = "teacherhome.html";
+		ServletContext context = getServletContext();
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+		ctx.setVariable("courses", courses);
+		ctx.setVariable("courseId", courseId);
+		ctx.setVariable("exams", exams);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**

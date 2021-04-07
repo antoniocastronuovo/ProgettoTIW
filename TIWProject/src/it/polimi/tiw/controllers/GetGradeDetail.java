@@ -19,7 +19,10 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamResult;
+import it.polimi.tiw.beans.Teacher;
+import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.ExamSessionDAO;
 
 /**
@@ -59,32 +62,63 @@ public class GetGradeDetail extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int courseId = Integer.parseInt(request.getParameter("courseId"));
-		Timestamp datetime = Timestamp.valueOf(request.getParameter("date"));
-		int studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
+		//Get and parse all parameters from request
+		boolean isBadRequest = false;
+		Integer courseId = null;
+		Timestamp datetime = null;
+		Integer studentPersonCode = null;
 		
-		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
-		
-		ExamResult result;
 		try {
-			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
-			if(result==null) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The requested grade does not exist.");
-			}else {
-				String path = "studentgrade.html";
-				ServletContext context = getServletContext();
-				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-				ctx.setVariable("result", result);
-				templateEngine.process(path, ctx, response.getWriter());
-			}
-		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+			courseId = Integer.parseInt(request.getParameter("courseId"));
+			datetime = Timestamp.valueOf(request.getParameter("date"));
+			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
+		}catch (NullPointerException | IllegalArgumentException e ) {
+			isBadRequest = true;
 			e.printStackTrace();
 		}
+		if (isBadRequest) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
+			return;
+		}
 		
-		/*System.out.println("Course: " + courseId);
-		System.out.println("Date: " + datetime);
-		System.out.println("Student: "+ studentPersonCode);*/
+		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
+		CourseDAO courseDAO = new CourseDAO(connection);
+		
+		//Get the user from the session
+		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
+		
+		ExamResult result = null;
+		try {
+			//Check if the course exists and it is taught by the user
+			Course course = courseDAO.getCourseByCourseId(courseId);
+			if(course == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+				return;
+			}
+			if(course.getTeacher().getPersonCode() != teacher.getPersonCode()) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
+				return;
+			}
+			
+			//Check if the grade exists (and also if the exam session exists) 
+			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
+			if(result==null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested grade does not exist.");
+				return;
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+			return;
+		}
+		
+		//Redirect to the grade detail page
+		String path = "studentgrade.html";
+		ServletContext context = getServletContext();
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+		ctx.setVariable("result", result);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**

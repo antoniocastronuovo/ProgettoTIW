@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -63,32 +64,61 @@ public class GetCourseExamSessionsStudent extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int courseId = Integer.parseInt(request.getParameter("courseId"));
+		//Get and parse all parameters from request
+		boolean isBadRequest = false;
+		Integer courseId = null;
+		
+		try {
+			courseId = Integer.parseInt(request.getParameter("courseId"));
+		}catch (NumberFormatException | NullPointerException e) {
+			isBadRequest = true;
+			e.printStackTrace();
+		}
+		if (isBadRequest) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
+			return;
+		}
+		
+		//Get the user from the session
 		Student student = (Student) request.getSession(false).getAttribute("student");
 		
 		StudentDAO studentDAO = new StudentDAO(connection);
 		CourseDAO courseDAO = new CourseDAO(connection);
 		
-		List<Course> courses;
-		List<ExamSession> exams;
+		List<Course> courses = null;
+		List<ExamSession> exams = null;
 		
 		try {
+			//Check if the course exists and it is followed by the student
+			Course course = courseDAO.getCourseByCourseId(courseId);
+			if(course == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+				return;
+			}
+
+			//Get student courses
 			courses = studentDAO.getFollowedCoursesDesc(student.getPersonCode());
+			//Check if the course belongs to the student's courses
+			final int cId = courseId.intValue();
+			if(courses.stream().filter(c -> cId == c.getCourseID()).collect(Collectors.toList()).size() != 1) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
+				return;
+			}
+			
 			exams = courseDAO.getExamSessionsByCourseId(courseId);
-			
-			
-			String path = "studenthome.html";
-			ServletContext context = getServletContext();
-			final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-			ctx.setVariable("courses", courses);
-			ctx.setVariable("courseId", courseId);
-			ctx.setVariable("exams", exams);
-			
-			templateEngine.process(path, ctx, response.getWriter());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+			return;
 		}
+		
+		String path = "studenthome.html";
+		ServletContext context = getServletContext();
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+		ctx.setVariable("courses", courses);
+		ctx.setVariable("courseId", courseId);
+		ctx.setVariable("exams", exams);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**
