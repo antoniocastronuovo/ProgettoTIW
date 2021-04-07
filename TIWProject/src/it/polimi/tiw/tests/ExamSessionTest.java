@@ -17,6 +17,7 @@ public class ExamSessionTest {
 		//testUpdateExamResult();
 		//testGetReportedGrades();
 		//testPublishExamSessionGrades();
+		testCanPublish();
 	}
 	
 	public static void testGetRegisteredStudentsResults() {
@@ -198,6 +199,34 @@ public class ExamSessionTest {
 			for(ExamResult result: results) {
 				System.out.println(result.getExamSession().getCourse().getName() + " - " + result.getExamSession().getDateTime() + " - " + result.getStudent().getLastName() + " " + result.getStudent().getFirstName() + " - " + result.getGrade() + " - " + result.getGradeStatus());
 			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void testCanPublish() {
+		System.out.println("Test for ExamSessionDAO canPublish()");
+		try {
+			String driver = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/polionline";
+			String user = "poliadmin";
+			String dbpassword = "Gruppo27";
+			
+			Class.forName(driver);
+			Connection connection = DriverManager.getConnection(url, user, dbpassword);
+
+			ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
+			Timestamp timestamp = Timestamp.valueOf("2020-01-14 12:00:00");
+
+			boolean canPublish = examSessionDAO.canPublish(1, timestamp);
+			
+			System.out.println("Can publish: "+canPublish);
 			
 			if (connection != null) {
 				connection.close();

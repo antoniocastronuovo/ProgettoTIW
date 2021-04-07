@@ -48,7 +48,7 @@
                         </div>
                         <p class="mb-1" th:text="${course.description}">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
                     	<ul th:if="${course.courseId == courseId}" class="list-group list-group-flush" th:remove="all-but-first" th:each="exam: ${exams}">
-							<a href="registered.html" th:href="@{/GetRegisteredStudentsResults(courseId=${course.courseId}, date=${exam.dateTime})}"><li class="list-group-item" th:text="'Appello del ' + ${exam.datetime}">Appello del 12/01/2021 12:00</li></a>
+							<a href="registered.html" th:href="@{/GetRegisteredStudentsResults(courseId=${course.courseId}, date=${exam.dateTime})}"><li class="list-group-item" th:text="'Appello del ' + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello del 12/01/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del 12/02/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del 12/06/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del 12/07/2021 12:00</li></a>

@@ -11,7 +11,7 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="css/mystyle.css">
 
-    <title>Table page</title>
+    <title>PoliOnline - Iscritti</title>
 
 </head>
 
@@ -37,7 +37,7 @@
     <div class="container mb-3 mt-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title" th:text="'Iscritti dell\'apppello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${exam.dateTime}">Analisi Matematica 1 [232] - 27 Gennaio 2028 12:00</h5>
+                <h5 class="card-title" th:text="'Iscritti dell\'apppello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Analisi Matematica 1 [232] - 27 Gennaio 2028 12:00</h5>
                 <table class="table table-striped table-hover table-bordered table-responsive-lg">
                     <thead>
                         <tr>

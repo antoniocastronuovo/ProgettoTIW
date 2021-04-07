@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import it.polimi.tiw.beans.ExamResult;
 import it.polimi.tiw.beans.ExamSession;
@@ -20,7 +21,6 @@ public class ExamSessionDAO {
 	}
 	
 	public ExamSession getExamSessionByCourseIdDateTime(int courseId, Timestamp examSessionDateTime) throws SQLException {
-		
 			String query = "select * from examsession as E where E.CourseId=? and E.DateTime=?;";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, courseId);
@@ -210,6 +210,12 @@ public class ExamSessionDAO {
 				}
 			}
 		}
+	}
+	
+	public boolean canPublish(int courseId, Timestamp dateTime) throws SQLException {
+		List<ExamResult> results = this.getRegisteredStudentsResults(courseId, dateTime);
+		results = results.stream().filter(r -> r.getGradeStatus().equals("INSERITO")).collect(Collectors.toList());
+		return !results.isEmpty();
 	}
 		
 }
