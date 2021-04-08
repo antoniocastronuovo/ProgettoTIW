@@ -84,15 +84,9 @@ public class StudentDAO {
 					return new ArrayList<>();
 				else {
 					List<Course> courses = new ArrayList<>();
-					while(result.next()) {				 
-						Course tempCourse= new Course();
-						tempCourse.setCourseID(result.getInt("CourseId"));;
-						tempCourse.setDescription(result.getString("Description"));
-						tempCourse.setName(result.getString("Name"));
-						
-						TeacherDAO teacher=new TeacherDAO(connection);
-						tempCourse.setTeacher(teacher.getTeacherByPersonCode(result.getInt("TeacherPersonCode")));
-						
+					while(result.next()) {
+						CourseDAO courseDAO = new CourseDAO(connection);
+						Course tempCourse= courseDAO.getCourseByCourseId(result.getInt("CourseId"));
 						courses.add(tempCourse);
 					}
 					return courses;

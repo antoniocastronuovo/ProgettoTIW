@@ -28,7 +28,6 @@ public class TeacherDAO {
 					return null;
 				else {
 					result.next();
-					
 					teacher.setPersonCode(result.getInt("PersonCode"));
 					teacher.setEmail(result.getString("Email"));
 					teacher.setFirstName(result.getString("FirstName"));
@@ -76,15 +75,9 @@ public class TeacherDAO {
 					return new ArrayList<>();
 				else {
 					List<Course> courses = new ArrayList<>();
-					while(result.next()) {				 
-						Course tempCourse= new Course();
-						tempCourse.setCourseID(result.getInt("CourseId"));;
-						
-						TeacherDAO teacherDAO = new TeacherDAO(connection);
-						tempCourse.setTeacher(teacherDAO.getTeacherByPersonCode(personCode));
-		
-						tempCourse.setDescription(result.getString("Description"));
-						tempCourse.setName(result.getString("Name"));
+					while(result.next()) {				
+						CourseDAO courseDAO = new CourseDAO(connection);
+						Course tempCourse= courseDAO.getCourseById(result.getInt("CourseId"));
 						courses.add(tempCourse);
 					}
 					return courses;

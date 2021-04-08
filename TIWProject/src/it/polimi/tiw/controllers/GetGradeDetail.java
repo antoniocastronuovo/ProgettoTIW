@@ -25,7 +25,7 @@ import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
 
 /**
- * Servlet implementation class EditStudentGrade
+ * Servlet implementation class GetGradeDetail
  */
 @WebServlet("/GetGradeDetail")
 public class GetGradeDetail extends HttpServlet {

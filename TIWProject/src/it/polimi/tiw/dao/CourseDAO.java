@@ -69,6 +69,21 @@ public class CourseDAO {
 		}
 	}
 	
+	public int getNumberOfExamSession(int courseId) throws SQLException {
+		String query = "SELECT count(*) AS C FROM examsession WHERE CourseId = ?;";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, courseId);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) // no results, credential check failed
+					return 0;
+				else {
+					result.next();
+					return result.getInt("C");
+				}
+			}
+		}
+	}
+	
 	public Course getCourseById(int courseId) throws SQLException {
 		String query = "SELECT * FROM course WHERE CourseId = ?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
@@ -83,6 +98,7 @@ public class CourseDAO {
 					course.setName(result.getString("Name"));
 					course.setDescription(result.getString("Description"));
 					course.setTeacher(new TeacherDAO(connection).getTeacherByPersonCode(result.getInt("TeacherPersonCode")));
+					course.setNumExamSessions(getNumberOfExamSession(courseId));
 					return course;
 				}
 			}

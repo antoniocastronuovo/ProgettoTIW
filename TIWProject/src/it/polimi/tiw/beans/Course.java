@@ -5,6 +5,7 @@ public class Course {
 	private String name;
 	private String description;
 	private Teacher teacher;
+	private int numExamSessions;
 	
 	public Course() {
 		super();
@@ -50,6 +51,13 @@ public class Course {
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
-	
+
+	public int getNumExamSessions() {
+		return numExamSessions;
+	}
+
+	public void setNumExamSessions(int numExamSessions) {
+		this.numExamSessions = numExamSessions;
+	}
 	
 }

@@ -31,17 +31,37 @@
  </filter> 
  <filter-mapping> 
     <filter-name>LoginChecker</filter-name> 
+    <url-pattern>/EditStudentGrade</url-pattern>
+    <url-pattern>/GetCourseExamSessionsStudent</url-pattern>  
+    <url-pattern>/GetCourseExamSessionsTeacher</url-pattern>
+    <url-pattern>/GetExamReport</url-pattern>
+    <url-pattern>/GetGradeDetail</url-pattern>
+    <url-pattern>/GetOrderedStudentsGrades</url-pattern>
     <url-pattern>/GetStudentCourses</url-pattern>
-    <url-pattern>/GetTeacherCourses</url-pattern>  
+    <url-pattern>/GetStudentGrade</url-pattern>
+    <url-pattern>/GetTeacherCourses</url-pattern>
+    <url-pattern>/PublishExamSessionGrades</url-pattern>
+    <url-pattern>/RejectGrade</url-pattern>
+    <url-pattern>/ReportExamSessionGrades</url-pattern>
     <url-pattern>/Logout</url-pattern> 
  </filter-mapping> 
  <filter-mapping> 
     <filter-name>TeacherChecker</filter-name> 
-    <url-pattern>/GetTeacherCourses</url-pattern>  
+    <url-pattern>/EditStudentGrade</url-pattern>
+    <url-pattern>/GetCourseExamSessionsTeacher</url-pattern>
+    <url-pattern>/GetExamReport</url-pattern>
+    <url-pattern>/GetGradeDetail</url-pattern>
+    <url-pattern>/GetOrderedStudentsGrades</url-pattern>
+    <url-pattern>/GetTeacherCourses</url-pattern>
+    <url-pattern>/PublishExamSessionGrades</url-pattern>
+    <url-pattern>/ReportExamSessionGrades</url-pattern>
  </filter-mapping>
  <filter-mapping> 
     <filter-name>StudentChecker</filter-name> 
-    <url-pattern>/GetStudentCourses</url-pattern> 
+    <url-pattern>/GetCourseExamSessionsStudent</url-pattern>  
+    <url-pattern>/GetStudentCourses</url-pattern>
+    <url-pattern>/GetStudentGrade</url-pattern>
+    <url-pattern>/RejectGrade</url-pattern>
  </filter-mapping>
   <welcome-file-list>
   	<welcome-file></welcome-file>
