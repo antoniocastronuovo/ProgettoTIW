@@ -4,7 +4,6 @@ public abstract class Person {
 	
 	protected int personCode;
 	protected String email;
-	protected String password;
 	protected String firstName;
 	protected String lastName;
 	
@@ -23,12 +22,6 @@ public abstract class Person {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getFirstName() {
 		return firstName;

@@ -64,7 +64,7 @@ public class CheckLogin extends HttpServlet {
 	 */
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Takes login parameters
+		//Get and parse all parameters from request
 		String personCodeString = request.getParameter("personCode");
     	String password = request.getParameter("password");
     	
@@ -74,7 +74,6 @@ public class CheckLogin extends HttpServlet {
     	loginForm.setPassword(password);
     	
 		String path = getServletContext().getContextPath();
-		int personCode = Integer.parseInt(request.getParameter("personCode"));
 		
 		
 		if(!loginForm.areCredetialsOk()) {
@@ -85,12 +84,14 @@ public class CheckLogin extends HttpServlet {
 			return;
 		}
 		
+		
 		if(personCodeString == null || personCodeString.isEmpty() || password == null || password.isEmpty()) {			
 			ErrorsHandler.displayErrorMessage("Error", "Missing parameters");
 			path = path + "index.html";
 			response.sendRedirect(path);
 		}else {
 			try {
+				int personCode = loginForm.getPersonCode();
 				StudentDAO students = new StudentDAO(connection);
 				Student studentToLogIn = students.checkCredentials(personCode, password);
 				if(studentToLogIn == null) {
@@ -98,7 +99,7 @@ public class CheckLogin extends HttpServlet {
 					Teacher teacherToLogIn = teachers.checkCredentials(personCode, password);
 					if(teacherToLogIn == null) { //Wrong credentials
 						loginForm.setLoginOk(false);
-						path = path + "/index.html";
+						path = "index.html";
 						ServletContext context = getServletContext();
 						final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 						ctx.setVariable("loginForm", loginForm);

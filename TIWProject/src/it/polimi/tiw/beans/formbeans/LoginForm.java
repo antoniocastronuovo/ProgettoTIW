@@ -1,7 +1,7 @@
 package it.polimi.tiw.beans.formbeans;
 
 public class LoginForm {
-	private String personCode;
+	private Integer personCode;
 	private String password;
 	private String personCodeError;
 	private String passwordError;
@@ -10,22 +10,23 @@ public class LoginForm {
 	
 	public LoginForm() {
 		super();
-		// TODO Auto-generated constructor stub
+		passwordError = null;
+		personCodeError = null;
+		credentialError = null;
 	}
 
-	public String getPersonCode() {
+	public int getPersonCode() {
 		return personCode;
 	}
 
 	public void setPersonCode(String personCode) {
-		this.personCode = personCode;
 		if(personCode == null || personCode.isEmpty()) {
 			this.personCodeError = "Person code is required";
 		}else {
 			try {
-				Integer.parseInt(personCode);
+				this.personCode = Integer.parseInt(personCode);
 				this.personCodeError = null;
-			} catch (NumberFormatException e) {
+			} catch (NullPointerException | IllegalArgumentException e ) {
 				this.personCodeError = "Person code must contain only numbers.";
 			}
 		}
