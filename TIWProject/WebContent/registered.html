@@ -41,14 +41,13 @@
                 <table class="table table-striped table-hover table-bordered table-responsive-lg">
                     <thead>
                         <tr>
-                            <th scope="col">Matricola</th>
-                            <th scope="col">LastName</th>
-                            <th scope="col">FirstName</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Degree course</th>
-                            <th scope="col">Grade</th>
-                            <th scope="col" class="text-center">Status</th>
-                            <th scope="col" class="text-center">Actions</th>
+                            <th scope="col"><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=${last}, asc=${asc})}">Matricola</a></th>
+                            <th scope="col"><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=2, last=${last}, asc=${asc})}">Cognome</a></th>
+                            <th scope="col"><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=3, last=${last}, asc=${asc})}">Nome</a></th>
+                            <th scope="col"><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=4, last=${last}, asc=${asc})}">Email</a></th>
+                            <th scope="col"><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=5, last=${last}, asc=${asc})}">Corso di laurea</a></th>
+                            <th scope="col"><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=6, last=${last}, asc=${asc})}">Voto</a></th>
+                            <th scope="col" class="text-center" ><a href="#" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=7, last=${last}, asc=${asc})}">Stato</a></th>
                         </tr>
                     </thead>
                     <tbody th:remove="all-but-first">

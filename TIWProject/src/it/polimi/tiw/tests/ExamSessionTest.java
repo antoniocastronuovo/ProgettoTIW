@@ -17,7 +17,7 @@ public class ExamSessionTest {
 		//testUpdateExamResult();
 		//testGetReportedGrades();
 		//testPublishExamSessionGrades();
-		testCanPublish();
+		//testCanPublish();
 	}
 	
 	public static void testGetRegisteredStudentsResults() {
@@ -237,5 +237,6 @@ public class ExamSessionTest {
 			e.printStackTrace();
 		}
 	}
+	
 	
 }

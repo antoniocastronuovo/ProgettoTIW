@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import it.polimi.tiw.beans.Course;
+import it.polimi.tiw.beans.DegreeCourse;
 import it.polimi.tiw.beans.ExamResult;
 import it.polimi.tiw.beans.ExamSession;
+import it.polimi.tiw.beans.Student;
 
 public class ExamSessionDAO {
 	private Connection connection;
@@ -65,7 +68,7 @@ public class ExamSessionDAO {
 						examResult.setGrade(result.getInt("Grade"));
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));
-						
+					
 						ExamSessionDAO examSessionDAO=new ExamSessionDAO(connection);
 						examResult.setExamSession(examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime));
 						
@@ -76,6 +79,84 @@ public class ExamSessionDAO {
 				}
 			}
 		}
+	}
+	
+	public List<ExamResult> getRegisteredStudentsResultsOrderedBy(int courseId, Timestamp datetime, int order, int last, boolean asc) throws SQLException {
+		String query = "SELECT E.StudentPersonCode, P.Email, S.Matricola, P.FirstName, P.LastName, S.DegreeCourseID, D.Name AS DN, D.Description AS DC, E.ExamSessionDateTime, E.Grade, E.Laude, E.GradeStatus, C.CourseId, C.Name AS CN, C.Description AS CD, ES.Room "
+				+ "FROM examresult AS E, course AS C, Student AS S, Person AS P, degreecourse as D, examsession AS ES "
+				+ "WHERE E.CourseId = C.CourseId AND E.StudentPersonCode = S.PersonCode AND S.PersonCode = P.PersonCode AND S.DegreeCourseId = D.DegreeCourseId "
+				+ "AND ES.CourseId = E.CourseId AND ES.DateTime = E.ExamSessionDateTime AND E.CourseId = ? AND E.ExamSessionDateTime=? "
+				+ this.getOrderBy(order, last, asc);
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, courseId);
+			pstatement.setTimestamp(2, datetime);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) 
+					return new ArrayList<>();
+				else {
+					List<ExamResult> examResults = new ArrayList<>();
+					while(result.next()) {				 
+						ExamResult examResult= new ExamResult();
+						Student student = new Student();
+						student.setPersonCode(result.getInt("StudentPersonCode"));
+						student.setEmail(result.getString("Email"));
+						student.setMatricola(result.getInt("Matricola"));
+						student.setFirstName(result.getString("FirstName"));
+						student.setLastName(result.getString("LastName"));
+						DegreeCourse degreeCourse = new DegreeCourse();
+						degreeCourse.setDegreeCourseId(result.getInt("DegreeCourseId"));
+						degreeCourse.setDescription(result.getString("DC"));
+						degreeCourse.setName(result.getString("DN"));
+						student.setDegreeCourse(degreeCourse);
+						examResult.setStudent(student);
+						examResult.setGrade(result.getInt("Grade"));
+						examResult.setLaude(result.getBoolean("Laude"));
+						examResult.setGradeStatus(result.getString("GradeStatus"));
+						Course course = new CourseDAO(connection).getCourseById(courseId);
+						ExamSession examSession = new ExamSession();
+						examSession.setCourse(course);
+						examSession.setDateTime(result.getTimestamp("ExamSessionDateTime"));
+						examSession.setRoom(result.getString("Room"));
+						examResult.setExamSession(examSession);
+						//Add to the list
+						examResults.add(examResult);
+					}
+					return examResults;
+				}
+			}
+		}
+	}
+	
+	private String getOrderBy(int order, int last, boolean asc) {
+		String orderBy = "ORDER BY ";
+		switch(order) {
+			case 1:
+				orderBy += "Matricola ";
+				break;
+			case 2:
+				orderBy += "LastName ";
+				break;
+			case 3:
+				orderBy += "FirstName ";
+				break;
+			case 4:
+				orderBy += "Email ";
+				break;
+			case 5:
+				orderBy += "DN ";
+				break;
+			case 6:
+				orderBy += "Grade ";
+				break;
+			case 7:
+				orderBy += "GradeStatus ";
+				break;
+			default:
+				orderBy += "Matricola ";
+				break;
+		}
+		orderBy += ((last == order && asc) ? "DESC;" : "ASC;");
+		return orderBy;
 	}
 	
 	public ExamResult getStudentExamResult(int personCode, int courseId, Timestamp datetime) throws SQLException {

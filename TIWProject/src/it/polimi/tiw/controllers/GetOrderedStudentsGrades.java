@@ -29,10 +29,10 @@ import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
 
 /**
- * Servlet implementation class GetRegisteredStudentResults
+ * Servlet implementation class GetOrderedStudentsGrades
  */
-@WebServlet("/GetRegisteredStudentsResults")
-public class GetRegisteredStudentsResults extends HttpServlet {
+@WebServlet("/GetOrderedStudentsGrades")
+public class GetOrderedStudentsGrades extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
     private TemplateEngine templateEngine;
@@ -56,11 +56,17 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 		//Get and parse all parameters from request
 		boolean isBadRequest = false;
 		Integer courseId = null;
+		Integer orderCol = null;
+		Integer last = null;
+		Boolean asc = null;
 		Timestamp datetime = null;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
 			datetime = Timestamp.valueOf(request.getParameter("date"));
+			orderCol = Integer.parseInt(request.getParameter("ord"));
+			last = Integer.parseInt(request.getParameter("last"));
+			asc = Boolean.parseBoolean(request.getParameter("asc"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -95,9 +101,11 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 			}
 			
 			exam = examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime);
-			grades = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
+			grades = examSessionDAO.getRegisteredStudentsResultsOrderedBy(courseId, datetime, orderCol, last, asc);
 			examReport = examReportDAO.getExamReport(courseId, datetime);
 			canPublish = examSessionDAO.canPublish(courseId, datetime);
+			
+			asc = ((last == orderCol && asc) ? false : true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
@@ -111,6 +119,8 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 		ctx.setVariable("grades", grades);
 		ctx.setVariable("report", examReport);
 		ctx.setVariable("canPublish", canPublish);
+		ctx.setVariable("last", orderCol);
+		ctx.setVariable("asc", asc);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
@@ -130,4 +140,5 @@ public class GetRegisteredStudentsResults extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
 }
