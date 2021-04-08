@@ -2,7 +2,6 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +25,7 @@ import it.polimi.tiw.beans.Student;
 import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.dao.StudentDAO;
+import it.polimi.tiw.handlers.ConnectionHandler;
 
 /**
  * Servlet implementation class GetStudentGrade
@@ -45,20 +44,7 @@ public class GetStudentGrade extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-    	try {
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new UnavailableException("Couldn't get db connection");
-		}
+		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
 	/**
@@ -148,11 +134,9 @@ public class GetStudentGrade extends HttpServlet {
 	@Override
 	public void destroy() {
 		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

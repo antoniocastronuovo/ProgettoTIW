@@ -2,7 +2,6 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -24,6 +23,7 @@ import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.beans.formbeans.LoginForm;
 import it.polimi.tiw.dao.StudentDAO;
 import it.polimi.tiw.dao.TeacherDAO;
+import it.polimi.tiw.handlers.ConnectionHandler;
 import it.polimi.tiw.handlers.ErrorsHandler;
 
 /**
@@ -43,20 +43,7 @@ public class CheckLogin extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-    	try {
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new UnavailableException("Couldn't get db connection");
-		}
+		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
 	/**
@@ -122,14 +109,12 @@ public class CheckLogin extends HttpServlet {
 		}
 	}
 	
-	@Override
+    @Override
 	public void destroy() {
 		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
