@@ -108,7 +108,7 @@ public class ReportExamSessionGrades extends HttpServlet {
 			return;
 		}
 		
-		String path = "examreport.html";
+		String path = "/WEB-INF/templates/examreport.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("exam", exam);

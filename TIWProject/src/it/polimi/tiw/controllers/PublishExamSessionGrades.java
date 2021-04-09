@@ -109,7 +109,7 @@ public class PublishExamSessionGrades extends HttpServlet {
 					return;
 				}
 				
-				String path = "registered.html";
+				String path = "/WEB-INF/templates/registered.html";
 				ServletContext context = getServletContext();
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("exam", exam);

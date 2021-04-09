@@ -117,7 +117,7 @@ public class EditStudentGrade extends HttpServlet {
 		}
 		
 		//Redirect to the detail page
-		String path = "studentgrade.html";
+		String path = "/WEB-INF/templates/studentgrade.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("result", result);

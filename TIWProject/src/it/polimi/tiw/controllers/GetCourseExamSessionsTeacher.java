@@ -93,7 +93,7 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 		}
 		
 		//Redirect to the teacher home page
-		String path = "teacherhome.html";
+		String path = "/WEB-INF/templates/teacherhome.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);

@@ -100,7 +100,7 @@ public class GetStudentGrade extends HttpServlet {
 			
 			//If the result does not exist then the student is not enrolled
 			if(result==null) {
-				String path = "notenrolledexamsession.html";
+				String path = "/WEB-INF/templates/notenrolledexamsession.html";
 				ServletContext context = getServletContext();
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("result", result);
@@ -109,7 +109,7 @@ public class GetStudentGrade extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 				return;
 			}else{
-				String path = "studentgradestudent.html";
+				String path = "/WEB-INF/templates/studentgradestudent.html";
 				ServletContext context = getServletContext();
 				buttonRejectVisible= (result.getGradeStatus().equals("PUBBLICATO") && result.getGrade() > 18);
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());

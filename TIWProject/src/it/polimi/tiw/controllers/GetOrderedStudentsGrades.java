@@ -112,7 +112,7 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		}
 		
 		//Redirect to the correct view with the grades as parameter
-		String path = "registered.html";
+		String path = "/WEB-INF/templates/registered.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("exam", exam);

@@ -120,7 +120,7 @@ public class RejectGrade extends HttpServlet {
 		}
 		
 		//Redirect
-		String path = "studentgradestudent.html";
+		String path = "/WEB-INF/templates/studentgradestudent.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("result", result);
