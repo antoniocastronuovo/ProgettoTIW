@@ -54,6 +54,7 @@ public class PublishExamSessionGrades extends HttpServlet {
 				boolean isBadRequest = false;
 				Integer courseId = null;
 				Timestamp datetime = null;
+				String pubOk = null;
 				
 				try {
 					courseId = Integer.parseInt(request.getParameter("courseId"));
@@ -100,6 +101,7 @@ public class PublishExamSessionGrades extends HttpServlet {
 					
 					//Publish the grades
 					examSessionDAO.publishExamSessionGrades(courseId, datetime);
+					pubOk = "Voti pubblicati correttamente!";
 					grades = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
 				}catch (SQLException e) {
 					e.printStackTrace();
@@ -113,6 +115,7 @@ public class PublishExamSessionGrades extends HttpServlet {
 				ctx.setVariable("exam", exam);
 				ctx.setVariable("grades", grades);
 				ctx.setVariable("canPublish", false);
+				ctx.setVariable("pubOk", pubOk);
 				templateEngine.process(path, ctx, response.getWriter());
 	}
 

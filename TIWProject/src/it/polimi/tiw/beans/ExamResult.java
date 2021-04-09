@@ -31,6 +31,23 @@ public class ExamResult {
 	public int getGrade() {
 		return grade;
 	}
+	
+	public String getGradeAsString() {
+		switch (grade){
+		case -4:
+			return "<VUOTO>";
+		case -3:
+			return "ASSENTE";
+		case -2:
+			return "RIMANDATO";
+		case -1:
+			return "RIPROVATO";
+		case 31:
+			return "30 e lode";
+		default:
+			return ""+grade;				
+		}
+	}
 
 	public void setGrade(int grade) {
 		this.grade = grade;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="col-sm-6" th:if="${rejectable}" >
                                     <p class="font-weight-bold">Voto</p>
-                                    <h6 class="text-muted" th:text="${result.grade}">30</h6>
+                                    <h6 class="text-muted" th:text="${result.getGradeAsString()}">30</h6>
                                 </div>
                             </div>
                         </div>

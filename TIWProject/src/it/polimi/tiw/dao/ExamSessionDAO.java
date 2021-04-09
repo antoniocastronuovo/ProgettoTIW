@@ -195,7 +195,7 @@ public class ExamSessionDAO {
 		//Get the student exam result
 		ExamResult result = this.getStudentExamResult(personCode, courseId, datetime);
 		//Check if it exists and it is published
-		if(result == null || !result.getGradeStatus().equals("PUBBLICATO"))
+		if(result == null || !result.getGradeStatus().equals("PUBBLICATO") || result.getGrade() < 18)
 			return false;
 		else {
 			String query = "UPDATE examresult "

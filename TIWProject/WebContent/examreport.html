@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -57,7 +57,7 @@
                             <td th:text="${grade.student.firstName}">Ricardo</td>
                             <td th:text="${grade.student.email}">ricky.kaka@mail.com</td>
                             <td th:text="${grade.student.degreeCourse.name}">Centrocampista</td>
-                            <td th:text="${grade.grade} + (${grade.isLaude()} ? 'L' : '')">30L</td>
+                            <td th:text="${grade.getGradeAsString()}">30L</td>
                         </tr>
                         <tr>
                             <td>22</td>

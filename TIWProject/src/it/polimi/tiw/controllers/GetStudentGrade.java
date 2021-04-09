@@ -111,7 +111,7 @@ public class GetStudentGrade extends HttpServlet {
 			}else{
 				String path = "studentgradestudent.html";
 				ServletContext context = getServletContext();
-				buttonRejectVisible=result.getGradeStatus().equals("PUBBLICATO");
+				buttonRejectVisible= (result.getGradeStatus().equals("PUBBLICATO") && result.getGrade() > 18);
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("result", result);
 				ctx.setVariable("rejectable",buttonRejectVisible);

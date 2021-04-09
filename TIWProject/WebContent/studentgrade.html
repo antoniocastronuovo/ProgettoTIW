@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -82,7 +82,7 @@
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Voto</p>
                                     <select class="custom-select" name ="grade" id="grade">
-                                        <option selected th:value="(${result.grade == 30 and result.isLaude()} ? 31 : ${result.grade} )" th:text="(${result.grade == 30 and result.isLaude()} ? '30 e lode' : ${result.grade} )">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
+                                        <option selected th:value="(${result.grade == 30 and result.isLaude()} ? 31 : ${result.grade} )" th:text="${result.getGradeAsString()}">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
                                         <option value="31">30 e lode</option>
                                         <option value="30">30</option>
                                         <option value="29">29</option>

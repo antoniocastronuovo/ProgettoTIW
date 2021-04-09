@@ -3,7 +3,6 @@ package it.polimi.tiw.tests;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import it.polimi.tiw.beans.ExamSession;
@@ -13,7 +12,6 @@ public class CourseTest {
 
 	public static void main(String[] args) {
 		//testGetExamSession();
-		Timestamp timestamp = Timestamp.valueOf("aaa");
 	}
 	
 	public static void testGetExamSession() {
