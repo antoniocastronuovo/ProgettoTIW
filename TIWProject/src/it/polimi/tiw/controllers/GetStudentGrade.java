@@ -112,9 +112,11 @@ public class GetStudentGrade extends HttpServlet {
 				String path = "/WEB-INF/templates/studentgradestudent.html";
 				ServletContext context = getServletContext();
 				buttonRejectVisible= (result.getGradeStatus().equals("PUBBLICATO") && result.getGrade() > 18);
+				boolean visibleGrade = result.getGradeStatus().equals("PUBBLICATO");
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("result", result);
 				ctx.setVariable("rejectable",buttonRejectVisible);
+				ctx.setVariable("visibleGrade", visibleGrade);
 				templateEngine.process(path, ctx, response.getWriter());
 			}
 		} catch (SQLException e) {

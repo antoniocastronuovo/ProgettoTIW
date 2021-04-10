@@ -82,7 +82,7 @@
                                     <p class="font-weight-bold">Stato</p>
                                     <h6 class="text-muted" th:text="${result.gradeStatus}">INSERITO</h6>
                                 </div>
-                                <div class="col-sm-6" th:if="${rejectable}" >
+                                <div class="col-sm-6" th:if="${visibleGrade}" >
                                     <p class="font-weight-bold">Voto</p>
                                     <h6 class="text-muted" th:text="${result.getGradeAsString()}">30</h6>
                                 </div>
