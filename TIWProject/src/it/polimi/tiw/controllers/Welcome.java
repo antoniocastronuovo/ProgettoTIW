@@ -21,7 +21,7 @@ import it.polimi.tiw.handlers.ConnectionHandler;
 /**
  * Servlet implementation class Welcome
  */
-@WebServlet("/")
+@WebServlet("")
 public class Welcome extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
