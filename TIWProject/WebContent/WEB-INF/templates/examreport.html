@@ -34,6 +34,14 @@
 			</span>
 		</div>
 	</nav>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="teacherhome.html" th:href="@{GetTeacherCourses}">Corsi</a></li>
+			<li class="breadcrumb-item"><a th:text="${exam.course.name}" href="teacherhome.html" th:href="@{/GetCourseExamSessionsTeacher(courseId=${exam.course.courseId})}">Corso</a></li>
+			<li class="breadcrumb-item" aria-current="page" ><a href="registered.html" th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=1, asc=true)}" th:text="${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-04-2012 13:00</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Verbale</li>
+		</ol>
+	</nav>
     <div class="container mb-3 mt-3">
         <div class="card">
             <div class="card-body">

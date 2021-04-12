@@ -39,7 +39,7 @@ public class StudentChecker implements Filter {
 		System.out.print("Student filter executing ..\n");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		String loginpath = req.getServletContext().getContextPath() + "/index.html";
+		String loginpath = req.getServletContext().getContextPath() + "";
 		// check if the client is a student
 		HttpSession s = req.getSession();
 		

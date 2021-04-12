@@ -37,7 +37,7 @@ public class ExamSessionDAO {
 						examSession.setDateTime(result.getTimestamp("DateTime"));
 						
 						CourseDAO courseDAO = new CourseDAO(connection);
-						examSession.setCourse(courseDAO.getCourseByCourseId(result.getInt("CourseId")));
+						examSession.setCourse(courseDAO.getCourseById(result.getInt("CourseId")));
 						
 						examSession.setRoom(result.getString("Room"));
 		
@@ -199,7 +199,7 @@ public class ExamSessionDAO {
 			return false;
 		else {
 			String query = "UPDATE examresult "
-					+ "SET GradeStatus = 'RIFIUTATO' "
+					+ "SET GradeStatus = 'RIFIUTATO', Grade = '-2' "
 					+ "WHERE StudentPersonCode = ? AND CourseId = ? AND ExamSessionDateTime = ? AND GradeStatus='PUBBLICATO';";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, personCode);

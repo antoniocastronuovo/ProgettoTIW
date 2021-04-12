@@ -52,6 +52,7 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 		//Get and parse all parameters from request
 		boolean isBadRequest = false;
 		Integer courseId = null;
+		Course course = null;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
@@ -75,7 +76,7 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 		
 		try {
 			//Check if the course exists and it is taught by the user
-			Course course = courseDAO.getCourseByCourseId(courseId);
+			course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
@@ -98,6 +99,7 @@ public class GetCourseExamSessionsTeacher extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);
 		ctx.setVariable("courseId", courseId);
+		ctx.setVariable("name", course.getName());
 		ctx.setVariable("exams", exams);
 		templateEngine.process(path, ctx, response.getWriter());
 	}

@@ -80,7 +80,7 @@ public class EditStudentGrade extends HttpServlet {
 		
 		try {
 			//Check if the course exists and it is taught by the user
-			Course course = courseDAO.getCourseByCourseId(courseId);
+			Course course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;

@@ -82,7 +82,7 @@ public class RejectGrade extends HttpServlet {
 		boolean rejectOptionsVisible = false;
 		try {
 			//Check if the course exists and it is followed by the student
-			Course course = courseDAO.getCourseByCourseId(courseId);
+			Course course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
@@ -106,7 +106,7 @@ public class RejectGrade extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 				return;
 			}
-			if(result.getGradeStatus() != "PUBBLICATO" || result.getGrade() < 18) {
+			if(!result.getGradeStatus().equals("PUBBLICATO") || result.getGrade() < 18) {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User cannot reject the grade.");
 				return;
 			}
@@ -125,6 +125,7 @@ public class RejectGrade extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("result", result);
 		ctx.setVariable("rejectable", rejectOptionsVisible);
+		ctx.setVariable("visibleGrade", true);
 		templateEngine.process(path, ctx, response.getWriter());
 		
 	}

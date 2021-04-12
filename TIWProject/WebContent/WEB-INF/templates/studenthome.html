@@ -40,6 +40,12 @@
 				Studente </span>
 		</div>
 	</nav>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item active" th:classappend="${name == null} ? active" ><a href="studenthome.html" th:href="@{GetstudentCourses}">Corsi</a></li>
+			<li class="breadcrumb-item" th:if="${name != null}" th:classappend="active" th:text="${name}">Corso</li>
+		</ol>
+	</nav>
 	<div class="container mb-3 mt-3">
         <div class="card card text-white bg-info">
             <div class="card-body">

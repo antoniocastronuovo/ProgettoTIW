@@ -46,6 +46,13 @@
 				Studente </span>
 		</div>
 	</nav>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="studenthome.html" th:href="@{GetStudentCourses}">Corsi</a></li>
+			<li class="breadcrumb-item"><a th:text="${result.examSession.course.name}" href="studenthome.html" th:href="@{/GetCourseExamSessionsStudent(courseId=${result.examSession.course.courseId})}">Corso</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Valutazione</li>
+		</ol>
+	</nav>
 	<div class="container">
        
             <div class="row d-flex justify-content-center">
@@ -80,7 +87,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Stato</p>
-                                    <h6 class="text-muted" th:text="${result.gradeStatus}">INSERITO</h6>
+                                    <h6 class="text-muted" th:text="${result.gradeStatus}">PUBBLICATO</h6>
                                 </div>
                                 <div class="col-sm-6" th:if="${visibleGrade}" >
                                     <p class="font-weight-bold">Voto</p>

@@ -20,7 +20,7 @@ public class ExamReportDAO {
 	public ExamReport publishExamReport(int courseId, Timestamp datetime) {
 		String update = "UPDATE examresult "
 				+ "SET GradeStatus = 'VERBALIZZATO' "
-				+ "WHERE GradeStatus = 'PUBBLICATO' AND CourseId = ? AND ExamSessionDateTime = ? ;";
+				+ "WHERE (GradeStatus = 'PUBBLICATO' OR GradeStatus = 'RIFIUTATO') AND CourseId = ? AND ExamSessionDateTime = ? ;";
 		String insert = "INSERT INTO examreport(DateTime, ExamSessionCourseId, ExamSessionDateTime) "
 				+ "VALUES(current_timestamp(), ?, ?);";
 		try(PreparedStatement updateStm = connection.prepareStatement(update);

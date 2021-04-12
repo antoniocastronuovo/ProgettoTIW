@@ -86,7 +86,7 @@ public class StudentDAO {
 					List<Course> courses = new ArrayList<>();
 					while(result.next()) {
 						CourseDAO courseDAO = new CourseDAO(connection);
-						Course tempCourse= courseDAO.getCourseByCourseId(result.getInt("CourseId"));
+						Course tempCourse= courseDAO.getCourseById(result.getInt("CourseId"));
 						courses.add(tempCourse);
 					}
 					return courses;

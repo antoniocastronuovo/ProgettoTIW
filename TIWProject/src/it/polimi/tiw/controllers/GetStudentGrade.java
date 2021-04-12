@@ -81,7 +81,7 @@ public class GetStudentGrade extends HttpServlet {
 		boolean buttonRejectVisible = true;
 		try {
 			//Check if the course exists and it is followed by the student
-			Course course = courseDAO.getCourseByCourseId(courseId);
+			Course course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
@@ -111,8 +111,8 @@ public class GetStudentGrade extends HttpServlet {
 			}else{
 				String path = "/WEB-INF/templates/studentgradestudent.html";
 				ServletContext context = getServletContext();
-				buttonRejectVisible= (result.getGradeStatus().equals("PUBBLICATO") && result.getGrade() > 18);
-				boolean visibleGrade = result.getGradeStatus().equals("PUBBLICATO");
+				buttonRejectVisible= (result.getGradeStatus().equals("PUBBLICATO") && result.getGrade() >= 18);
+				boolean visibleGrade = (result.getGradeStatus().equals("PUBBLICATO") || result.getGradeStatus().equals("VERBALIZZATO") || result.getGradeStatus().equals("RIFIUTATO"));
 				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 				ctx.setVariable("result", result);
 				ctx.setVariable("rejectable",buttonRejectVisible);
