@@ -43,11 +43,11 @@
 		</ol>
 	</nav>
     <div class="container mb-3 mt-3">
-        <div class="card">
+        <div class="card bg-secondary text-white">
             <div class="card-body">
                 <h5 class="card-title" th:text="'Verbale dell\'appello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Verbale Analisi 1 - 27/01/2020 14:00</h5>
                 <p class="card-text" th:text="'Data verbalizzazione: ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Data verbalizzazione: 30/01/2020 9:00</p>
-                <table class="table table-striped table-hover table-bordered table-responsive-lg">
+                <table class="table table-striped table-hover table-bordered table-responsive-lg bg-light">
                     <thead>
                         <tr>
                             <th scope="col">Matricola</th>

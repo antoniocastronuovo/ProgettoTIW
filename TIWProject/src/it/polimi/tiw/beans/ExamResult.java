@@ -69,5 +69,9 @@ public class ExamResult {
 		this.gradeStatus = gradeStatus;
 	}
 	
+	public boolean isEditable() {
+		return gradeStatus.equals("NON INSERITO") || gradeStatus.equals("INSERITO");
+	}
+	
 	
 }

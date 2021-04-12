@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -91,9 +92,11 @@ public class ReportExamSessionGrades extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 				return;
 			}
-			//Check if it exists already an exam report
+			//Check if it there is at least one grade published (and if there exists already a report)
 			examReport = examReportDAO.getExamReport(courseId, datetime);
-			if(examReport != null) {
+			List<ExamResult> results = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
+			results = results.stream().filter(r -> r.getGradeStatus().equals("PUBBLICATO")).collect(Collectors.toList());
+			if(results == null || results.isEmpty() || examReport != null) {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Exam report already exists!");
 				return;
 			}

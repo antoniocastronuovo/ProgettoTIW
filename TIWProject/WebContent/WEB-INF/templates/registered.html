@@ -21,7 +21,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="teacherhome.html"
-			th:href="@{GetTeacherCourses}"> <img src="./images/logo.png" th:src="@{/images/logo.png}"
+			th:href="@{GetTeacherCourses}"> <img src="../../images/logo.png" th:src="@{/images/logo.png}"
 			width="30" height="30" class="d-inline-block align-top" alt="">
 			PoliOnLine
 		</a>
@@ -50,7 +50,7 @@
 		</ol>
 	</nav>
 	<div class="container mb-3 mt-3">
-		<div class="card">
+		<div class="card text-white bg-secondary">
 			<div class="card-body">
 				<h5 class="card-title"
 					th:text="'Iscritti dell\'apppello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Analisi
@@ -59,7 +59,7 @@
 					Messaggio di successo.
 				</div>
 				<table
-					class="table table-striped table-hover table-bordered table-responsive-lg">
+					class="table table-striped table-hover table-bordered table-responsive-lg bg-light">
 					<thead>
 						<tr>
 							<th scope="col"><a href="#"
@@ -103,8 +103,7 @@
 							</div>
 							<td><a href="student.html"
 								th:href="@{GetGradeDetail(personCode=${grade.student.personCode}, courseId=${exam.course.courseId}, date=${exam.dateTime})}">
-									<button type="button" class="btn btn-primary"
-										style="width: 100%;">Edit</button>
+									<button type="button" class="btn btn-primary" style="width: 100%;" th:text="${grade.isEditable()} ? 'Modifica' : 'Dettaglio'">Dettaglio</button>
 							</a></td>
 						</tr>
 						<tr>

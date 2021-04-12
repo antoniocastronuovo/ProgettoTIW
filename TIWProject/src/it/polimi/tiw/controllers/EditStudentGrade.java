@@ -96,8 +96,8 @@ public class EditStudentGrade extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested grade does not exist.");
 				return;
 			}
-			if(result.getGradeStatus().equals("VERBALIZZATO")) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Grade already reported.");
+			if(!result.isEditable()) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Grade already reported or published.");
 				return;
 			}
 			

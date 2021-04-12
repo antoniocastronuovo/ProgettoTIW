@@ -11,3 +11,7 @@ a, a:focus, a:active {
       text-decoration: none;
       color: inherit;
  }
+ 
+ .card-body {
+ 	padding: 0.75rem;
+ }

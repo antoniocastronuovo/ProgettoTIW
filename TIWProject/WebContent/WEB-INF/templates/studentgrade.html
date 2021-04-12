@@ -65,7 +65,7 @@
                                 <i class="fas fa-user-tie fa-7x mt-5"></i>
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
-                                <button type="submit" class="btn btn-light mb-3">CONFERMA</button>
+                                <button type="submit" class="btn btn-light mb-3" th:if="${result.isEditable()}">CONFERMA</button>
                             </div>
                         </div>
                         <div class="col-sm-8 bg-light rounded-right">
@@ -103,7 +103,8 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="font-weight-bold">Voto</p>
-                                    <select class="custom-select" name ="grade" id="grade">
+                                    <h6 class="text-muted" th:if="${!result.isEditable()}" th:text="${result.getGradeAsString()}">25</h6>
+                                    <select class="custom-select" name ="grade" id="grade" th:if="${result.isEditable()}">
                                         <option selected th:value="(${result.grade == 30 and result.isLaude()} ? 31 : ${result.grade} )" th:text="${result.getGradeAsString()}">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
                                         <option value="31">30 e lode</option>
                                         <option value="30">30</option>
