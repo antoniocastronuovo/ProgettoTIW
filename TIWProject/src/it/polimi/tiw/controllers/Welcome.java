@@ -10,12 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.handlers.ConnectionHandler;
 
 /**
@@ -42,6 +44,14 @@ public class Welcome extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession s = request.getSession();
+		if (!s.isNew() && s.getAttribute("teacher") != null) {
+			Teacher teacher = (Teacher) s.getAttribute("teacher");
+			System.out.println("A teacher is present: "+teacher.getFirstName() + " "+teacher.getLastName());
+		}else {
+			System.out.println("No teacher is present.");
+		}
+		
 		//Redirect to the login page
 		String path = "index.html";
 		ServletContext context = getServletContext();

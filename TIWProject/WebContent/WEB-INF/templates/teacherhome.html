@@ -21,7 +21,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="teacherhome.html"
-			th:href="@{GetTeacherCourses}"> <img src="./images/logo.png"
+			th:href="@{GetTeacherCourses}"> <img src="../../images/logo.png"
 			th:src="@{/images/logo.png}" width="30" height="30"
 			class="d-inline-block align-top" alt=""> PoliOnLine
 		</a>
@@ -50,7 +50,7 @@
 		</ol>
 	</nav>
 	<div class="container mb-3 mt-3">
-		<div class="card card text-white bg-info">
+		<div class="card card text-white bg-secondary">
 			<div class="card-body">
 				<h5 class="card-title"
 					th:text="'Corsi insegnati dal Professore ' + ${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
@@ -66,7 +66,7 @@
 								<h5 class="mb-1"
 									th:text="${course.courseId} + ' - ' + ${course.name}">234
 									- Fisica tecnica</h5>
-							</a> <span class="badge badge-info"
+							</a> <span class="badge badge-secondary"
 								th:text="${course.numExamSessions} + ' appelli'">7
 								appelli</span>
 						</div>
@@ -98,7 +98,7 @@
 						<div class="d-flex justify-content-between">
 							<a href="teacherhome.html">
 								<h5 class="mb-1">234 - Fisica tecnica</h5>
-							</a> <span class="badge badge-info">7 appelli</span>
+							</a> <span class="badge badge-secondary">7 appelli</span>
 						</div>
 						<p class="mb-1">Fornire i fondamenti della ingegneria
 							termodinamica e le conoscenze di base della trasmissione del
