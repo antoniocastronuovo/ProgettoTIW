@@ -21,6 +21,7 @@ import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.TeacherDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
+import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
  * Servlet implementation class GetTeacherCourses
@@ -38,6 +39,7 @@ public class GetTeacherCourses extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "teacherhome"));
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 

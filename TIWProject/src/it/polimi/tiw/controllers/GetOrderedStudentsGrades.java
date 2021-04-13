@@ -27,6 +27,7 @@ import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.ExamReportDAO;
 import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
+import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
  * Servlet implementation class GetOrderedStudentsGrades
@@ -44,6 +45,7 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "registered"));
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 

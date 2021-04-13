@@ -31,7 +31,7 @@
 					<form action="CheckLogin" method="POST">
 						<div class="form-row">
 							<div class="col-md-7">
-								<input type="text" name="personCode" placeholder="Person code"
+								<input type="text" name="personCode"  th:placeholder="#{person_code_placeholder}"
 									class="form-control my-3" required>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 						</div>
 						<div class="form-row">
 							<div class="col-md-7">
-								<input type="submit" value="Login" class="btn1 mt-3 mb-5">
+								<input type="submit" th:value="#{sign_in_button}" class="btn1 mt-3 mb-5">
 							</div>
 						</div>
 						

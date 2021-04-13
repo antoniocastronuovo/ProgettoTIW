@@ -44,7 +44,7 @@
 	</nav>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="teacherhome.html" th:href="@{GetTeacherCourses}">Corsi</a></li>
+			<li class="breadcrumb-item"><a href="teacherhome.html" th:href="@{GetTeacherCourses}" th:text="#{courses}">Corsi</a></li>
 			<li class="breadcrumb-item"><a th:text="${exam.course.name}" href="teacherhome.html" th:href="@{/GetCourseExamSessionsTeacher(courseId=${exam.course.courseId})}">Corso</a></li>
 			<li class="breadcrumb-item active" aria-current="page" th:text="${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-04-2012 13:00</li>
 		</ol>
@@ -53,7 +53,7 @@
 		<div class="card text-white bg-secondary">
 			<div class="card-body">
 				<h5 class="card-title"
-					th:text="'Iscritti dell\'apppello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Analisi
+					th:text="#{heading} + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Analisi
 					Matematica 1 [232] - 27 Gennaio 2028 12:00</h5>
 				<div class="alert alert-success" role="alert" th:if="${pubOk!=null}" th:text="${pubOk}">
 					Messaggio di successo.
@@ -65,18 +65,18 @@
 							<th scope="col"><a href="#"
 								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=${last}, asc=${asc})}">Matricola</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=2, last=${last}, asc=${asc})}">Cognome</a></th>
+								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=2, last=${last}, asc=${asc})}" th:text="#{last_name}">Cognome</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=3, last=${last}, asc=${asc})}">Nome</a></th>
+								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=3, last=${last}, asc=${asc})}" th:text="#{first_name}">Nome</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=4, last=${last}, asc=${asc})}">Email</a></th>
+								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=4, last=${last}, asc=${asc})}" >Email</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=5, last=${last}, asc=${asc})}">Corso
+								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=5, last=${last}, asc=${asc})}" th:text="#{course}">Corso
 									di laurea</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=6, last=${last}, asc=${asc})}">Voto</a></th>
+								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=6, last=${last}, asc=${asc})}" th:text="#{grade}">Voto</a></th>
 							<th scope="col" class="text-center"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=7, last=${last}, asc=${asc})}">Stato</a></th>
+								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=7, last=${last}, asc=${asc})}" th:text="#{state}">Stato</a></th>
 						</tr>
 					</thead>
 					<tbody th:remove="all-but-first">
@@ -103,7 +103,7 @@
 							</div>
 							<td><a href="student.html"
 								th:href="@{GetGradeDetail(personCode=${grade.student.personCode}, courseId=${exam.course.courseId}, date=${exam.dateTime})}">
-									<button type="button" class="btn btn-primary" style="width: 100%;" th:text="${grade.isEditable()} ? 'Modifica' : 'Dettaglio'">Dettaglio</button>
+									<button type="button" class="btn btn-primary" style="width: 100%;" th:text="${grade.isEditable()} ? #{modify} : #{detail}">Dettaglio</button>
 							</a></td>
 						</tr>
 						<tr>
@@ -188,13 +188,13 @@
 				<!-- Understand when it is necessary to display one or the other one (or no one) -->
 				<a th:if="${canPublish}" href="#"
 					th:href="@{PublishExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button
-						type="button" class="btn btn-success">PUBBLICA</button></a> <a
+						type="button" class="btn btn-success" th:text="#{publish}" >PUBBLICA</button></a> <a
 					th:if="${report == null}" href="#"
 					th:href="@{ReportExamSessionGrades(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button
-						type="button" class="btn btn-success">VERBALIZZA</button></a> <a
+						type="button" class="btn btn-success" th:text="#{report}">VERBALIZZA</button></a> <a
 					th:if="${report != null}" href="examreport.html"
 					th:href="@{GetExamReport(courseId=${exam.course.courseId}, date=${exam.dateTime})}"><button
-						type="button" class="btn btn-info">VERBALE</button></a>
+						type="button" class="btn btn-info" th:text="#{exam_report}">VERBALE</button></a>
 			</div>
 		</div>
 	</div>

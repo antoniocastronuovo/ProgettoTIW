@@ -37,7 +37,7 @@ public class Welcome extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "messages"));
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "index"));
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}

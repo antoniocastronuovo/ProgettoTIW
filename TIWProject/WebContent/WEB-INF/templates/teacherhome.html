@@ -37,6 +37,12 @@
 						class="sr-only">(current)</span></a></li>
 				<li class="nav-item"><a class="nav-link" href="index.html"
 					th:href="@{Logout}">Logout</a></li>
+				<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="flag-icon flag-icon-us"> </span> Italiano</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown09">
+                        <a class="dropdown-item"><span class="flag-icon flag-icon-en"> </span>  English</a>
+                    </div>
+                </li>
 			</ul>
 			<span class="navbar-text"
 				th:text="${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
@@ -45,7 +51,7 @@
 	</nav>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item active" th:classappend="${name == null} ? active" ><a href="teacherhome.html" th:href="@{GetTeacherCourses}">Corsi</a></li>
+			<li class="breadcrumb-item active" th:classappend="${name == null} ? active" ><a href="teacherhome.html" th:href="@{GetTeacherCourses}" th:text = "#{courses}">Corsi</a></li>
 			<li class="breadcrumb-item" th:if="${name != null}" th:classappend="active" th:text="${name}">Corso</li>
 		</ol>
 	</nav>
@@ -53,7 +59,7 @@
 		<div class="card bg-secondary text-white">
 			<div class="card-body">
 				<h5 class="card-title"
-					th:text="'Corsi insegnati dal Professore ' + ${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
+					th:text="#{title} + ' ' + ${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
 					Corsi insegnati dal Professore <b>Stephen Hawking</b>
 				</h5>
 				<div class="list-group" th:remove="all-but-first">
@@ -67,7 +73,7 @@
 									th:text="${course.courseId} + ' - ' + ${course.name}">234
 									- Fisica tecnica</h5>
 							</a> <span class="badge badge-secondary"
-								th:text="${course.numExamSessions} + ' appelli'">7
+								th:text="${course.numExamSessions} + ' ' + #{exam_sessions}">7
 								appelli</span>
 						</div>
 						<p class="mb-1" th:text="${course.description}">Fornire i
@@ -81,7 +87,7 @@
 							<a href="registered.html"
 								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=1, asc=${asc})}"><li
 								class="list-group-item"
-								th:text="'Appello del ' + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello
+								th:text="#{examsession_of} + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello
 									del 12/01/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del
 									12/02/2021 12:00</li></a>

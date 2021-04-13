@@ -41,6 +41,13 @@
 					href="teacherhome.html" th:href="@{GetTeacherCourses}">Home</a></li>
 				<li class="nav-item"><a class="nav-link" href="index.html"
 					th:href="@{Logout}">Logout</a></li>
+				<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="flag-icon flag-icon-us"> </span> English</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown09">
+                        <a class="dropdown-item" href="#fr"><span class="flag-icon flag-icon-en"> </span>  English</a>
+                        <a class="dropdown-item" href="#it"><span class="flag-icon flag-icon-it"> </span>  Italian</a>
+                    </div>
+                </li>
 			</ul>
 			<span class="navbar-text"
 				th:text="${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
@@ -49,10 +56,10 @@
 	</nav>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="teacherhome.html" th:href="@{GetTeacherCourses}">Corsi</a></li>
+			<li class="breadcrumb-item"><a href="teacherhome.html" th:href="@{GetTeacherCourses}" th:text="#{courses}">Corsi</a></li>
 			<li class="breadcrumb-item"><a th:text="${result.examSession.course.name}" href="teacherhome.html" th:href="@{/GetCourseExamSessionsTeacher(courseId=${result.examSession.course.courseId})}">Corso</a></li>
 			<li class="breadcrumb-item" aria-current="page" ><a href="registered.html" th:href="@{/GetOrderedStudentsGrades(courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime}, ord=1, last=1, asc=true)}" th:text="${#dates.format(new java.util.Date(result.examSession.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-04-2012 13:00</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Valutazione</li>
+			<li class="breadcrumb-item active" aria-current="page" th:text="#{evaluation}">Valutazione</li>
 		</ol>
 	</nav>
 	<div class="container">
@@ -65,15 +72,15 @@
                                 <i class="fas fa-user-tie fa-7x mt-5"></i>
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
-                                <button type="submit" class="btn btn-light mb-3" th:if="${result.isEditable()}">CONFERMA</button>
+                                <button type="submit" class="btn btn-light mb-3" th:if="${result.isEditable()}" th:text="#{confirm}">CONFERMA</button>
                             </div>
                         </div>
                         <div class="col-sm-8 bg-light rounded-right">
-                            <h3 class="mt-3 text-center">Informazioni</h3>
+                            <h3 class="mt-3 text-center" th:text="#{information}">Informazioni</h3>
                             <hr class="badge-primary mt-0 w-25">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Email:</p>
+                                    <p class="font-weight-bold" >Email:</p>
                                     <h6 class="text-muted" th:text="${result.student.email}">name.surname@mail.com</h6>
                                 </div>
                                 <div class="col-sm-6">
@@ -81,28 +88,28 @@
                                     <h6 class="text-muted" th:text="${result.student.matricola}">949494</h6>
                                 </div>
                             </div>
-                            <h4 class="mt-3">Esame</h4>
+                            <h4 class="mt-3" th:text="#{exam}">Esame</h4>
                             <hr class="badge-primary">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Corso</p>
+                                    <p class="font-weight-bold" th:text="#{course}">Corso</p>
                                     <h6 class="text-muted" th:text="${result.examSession.course.name}">Corso</h6>
                                 </div>
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Data</p>
+                                    <p class="font-weight-bold" th:text="#{date}">Data</p>
                                     <h6 class="text-muted" th:text="${#dates.format(new java.util.Date(result.examSession.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-03-2030 14:00</h6>
                                 </div>
                             </div>
                             
-                            <h4 class="mt-3">Valutazione</h4>
+                            <h4 class="mt-3" th:text="#{evaluation}">Valutazione</h4>
                             <hr class="bg-primary">
                             <div class="row mb-3">
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Stato</p>
+                                    <p class="font-weight-bold" th:text="#{state}">Stato</p>
                                     <h6 class="text-muted" th:text="${result.gradeStatus}">INSERITO</h6>
                                 </div>
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Voto</p>
+                                    <p class="font-weight-bold" th:text="#{grade}">Voto</p>
                                     <h6 class="text-muted" th:if="${!result.isEditable()}" th:text="${result.getGradeAsString()}">25</h6>
                                     <select class="custom-select" name ="grade" id="grade" th:if="${result.isEditable()}">
                                         <option selected th:value="(${result.grade == 30 and result.isLaude()} ? 31 : ${result.grade} )" th:text="${result.getGradeAsString()}">Voto attuale</option> <!-- Questo è il voto attuale se esiste -->
