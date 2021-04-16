@@ -1,8 +1,6 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,19 +14,17 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.handlers.ConnectionHandler;
 import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
- * Servlet implementation class Welcome
+ * Servlet implementation class HandleError
  */
-@WebServlet("")
-public class Welcome extends HttpServlet {
+@WebServlet("/HandleError")
+public class HandleError extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private Connection connection = null;
-    private TemplateEngine templateEngine;
-    
-    @Override
+	private TemplateEngine templateEngine;   
+	
+	@Override
     public void init() throws ServletException {
     	ServletContext context = getServletContext();
     	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
@@ -37,18 +33,36 @@ public class Welcome extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "index"));
 		templateResolver.setSuffix(".html");
-		connection = ConnectionHandler.getConnection(getServletContext());
 	}
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Load the login page
-		String path = "/WEB-INF/templates/index.html";
-		ServletContext context = getServletContext();
-		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-		templateEngine.process(path, ctx, response.getWriter());
+		// Analyze the servlet exception
+        Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        String message = (String) request.getAttribute("javax.servlet.error.message");
+                
+        if (servletName == null) {
+            servletName = "Unknown";
+        }
+        
+        String requestUri = (String) request.getAttribute("javax.servlet.error.request_uri");
+        if (requestUri == null) {
+            requestUri = "Unknown";
+        }
+                
+      //Redirect to the error page
+  		String path = "/WEB-INF/templates/error.html";
+  		ServletContext context = getServletContext();
+  		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+  		ctx.setVariable("code", statusCode);
+  		if(throwable != null)
+  			ctx.setVariable("message", throwable.getMessage());
+  		else if(message != null)
+  			ctx.setVariable("message", message);
+  		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**
@@ -57,15 +71,6 @@ public class Welcome extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-	}
-	
-	@Override
-	public void destroy() {
-		try {
-			ConnectionHandler.closeConnection(connection);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

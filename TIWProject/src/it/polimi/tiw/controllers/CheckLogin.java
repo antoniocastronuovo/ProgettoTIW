@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
@@ -24,8 +23,6 @@ import it.polimi.tiw.beans.formbeans.LoginForm;
 import it.polimi.tiw.dao.StudentDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
-import it.polimi.tiw.handlers.ErrorsHandler;
-import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
  * Servlet implementation class CheckLogin
@@ -43,9 +40,9 @@ public class CheckLogin extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "index"));
 		templateResolver.setSuffix(".html");
-		connection = ConnectionHandler.getConnection(getServletContext());
+		
+    	connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
 	/**
@@ -64,21 +61,15 @@ public class CheckLogin extends HttpServlet {
     	
 		String path = getServletContext().getContextPath();
 		
-		
+		//Credential are bad formatted
 		if(!loginForm.areCredetialsOk()) {
-			path = path + "index.html";
-			request.setAttribute("loginForm", loginForm);
-			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-			dispatcher.forward(request, response);
-			return;
-		}
-		
-		
-		if(personCodeString == null || personCodeString.isEmpty() || password == null || password.isEmpty()) {			
-			ErrorsHandler.displayErrorMessage("Error", "Missing parameters");
-			path = path + "index.html";
-			response.sendRedirect(path);
-		}else {
+			final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
+			path = "/WEB-INF/templates/index.html";
+			ctx.setVariable("loginForm", loginForm);
+			templateEngine.process(path, ctx, response.getWriter());
+			/* Redirect is done to avoid to submit again the login form, as in the
+			 * case of forwarding.*/
+		}else { //Credential are well formatted
 			try {
 				int personCode = loginForm.getPersonCode();
 				StudentDAO students = new StudentDAO(connection);
@@ -88,21 +79,19 @@ public class CheckLogin extends HttpServlet {
 					Teacher teacherToLogIn = teachers.checkCredentials(personCode, password);
 					if(teacherToLogIn == null) { //Wrong credentials
 						loginForm.setLoginOk(false);
-						path = "index.html";
-						ServletContext context = getServletContext();
-						final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+						final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
+						path = "/WEB-INF/templates/index.html";
 						ctx.setVariable("loginForm", loginForm);
 						templateEngine.process(path, ctx, response.getWriter());
 						return;
 					}else { //Teacher is logged
 						request.getSession().setAttribute("teacher", teacherToLogIn);
-						path = path + "/GetTeacherCourses";
 					}
-				}else { //Ok
+				}else { //User is logged
 					//Associate the user to the session, if it already exists, it is replaced
 					request.getSession().setAttribute("student", studentToLogIn);
-					path = path + "/GetStudentCourses";
 				}
+				path = path + "/GoToHome";
 				response.sendRedirect(path);
 			}catch(SQLException e){
 				e.printStackTrace();
