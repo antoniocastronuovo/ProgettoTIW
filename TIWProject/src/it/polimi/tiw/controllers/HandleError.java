@@ -44,10 +44,6 @@ public class HandleError extends HttpServlet {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         String message = (String) request.getAttribute("javax.servlet.error.message");
                 
-        if (servletName == null) {
-            servletName = "Unknown";
-        }
-        
         String requestUri = (String) request.getAttribute("javax.servlet.error.request_uri");
         if (requestUri == null) {
             requestUri = "Unknown";
