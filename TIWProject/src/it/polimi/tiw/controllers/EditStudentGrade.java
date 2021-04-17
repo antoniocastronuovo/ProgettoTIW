@@ -5,22 +5,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamResult;
 import it.polimi.tiw.beans.Teacher;
-import it.polimi.tiw.beans.formbeans.GradeForm;
 import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
@@ -32,16 +25,9 @@ import it.polimi.tiw.handlers.ConnectionHandler;
 public class EditStudentGrade extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
-    private TemplateEngine templateEngine;
     
     @Override
     public void init() throws ServletException {
-    	ServletContext context = getServletContext();
-    	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
@@ -70,7 +56,6 @@ public class EditStudentGrade extends HttpServlet {
 			return;
 		}
 		
-		GradeForm gradeForm = new GradeForm(request.getParameter("grade"), request.getParameter("personCode"), request.getParameter("course"), request.getParameter("date"));
 		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 		CourseDAO courseDAO = new CourseDAO(connection);
 		
@@ -117,13 +102,8 @@ public class EditStudentGrade extends HttpServlet {
 		}
 		
 		//Redirect to the detail page
-		String path = "/WEB-INF/templates/studentgrade.html";
-		ServletContext context = getServletContext();
-		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-		ctx.setVariable("result", result);
-		ctx.setVariable("gradeForm", gradeForm);
-		//Add a success message
-		templateEngine.process(path, ctx, response.getWriter());
+		String path = String.format("%s/GetGradeDetail?courseId=%d&date=%s&personCode=%d&mod=true", getServletContext().getContextPath(), result.getExamSession().getCourse().getCourseID(), result.getExamSession().getDateTime().toString(), result.getStudent().getPersonCode());
+		response.sendRedirect(path);
 	}
 
 	/**

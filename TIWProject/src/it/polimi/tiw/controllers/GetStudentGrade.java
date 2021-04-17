@@ -56,11 +56,13 @@ public class GetStudentGrade extends HttpServlet {
 		Integer courseId = null;
 		Timestamp datetime = null;
 		Integer studentPersonCode = null;
+		Boolean hasJustRejected = false;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
 			datetime = Timestamp.valueOf(request.getParameter("date"));
 			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
+			hasJustRejected = Boolean.parseBoolean(request.getParameter("rej"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -117,6 +119,7 @@ public class GetStudentGrade extends HttpServlet {
 				ctx.setVariable("result", result);
 				ctx.setVariable("rejectable",buttonRejectVisible);
 				ctx.setVariable("visibleGrade", visibleGrade);
+				ctx.setVariable("rej", hasJustRejected);
 				templateEngine.process(path, ctx, response.getWriter());
 			}
 		} catch (SQLException e) {

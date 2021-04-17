@@ -7,17 +7,11 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamResult;
@@ -34,16 +28,9 @@ import it.polimi.tiw.handlers.ConnectionHandler;
 public class RejectGrade extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
-    private TemplateEngine templateEngine;
     
     @Override
     public void init() throws ServletException {
-    	ServletContext context = getServletContext();
-    	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
     
@@ -79,7 +66,6 @@ public class RejectGrade extends HttpServlet {
 		StudentDAO studentDAO = new StudentDAO(connection);
 		
 		ExamResult result = null;
-		boolean rejectOptionsVisible = false;
 		try {
 			//Check if the course exists and it is followed by the student
 			Course course = courseDAO.getCourseById(courseId);
@@ -111,23 +97,16 @@ public class RejectGrade extends HttpServlet {
 				return;
 			}
 			
-			//Reject grade
-			rejectOptionsVisible = !examSessionDAO.rejectExamResult(studentPersonCode, courseId, datetime);
-			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
+			//Checks passed, reject grade
+			examSessionDAO.rejectExamResult(studentPersonCode, courseId, datetime);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
 		}
 		
-		//Redirect
-		String path = "/WEB-INF/templates/studentgradestudent.html";
-		ServletContext context = getServletContext();
-		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-		ctx.setVariable("result", result);
-		ctx.setVariable("rejectable", rejectOptionsVisible);
-		ctx.setVariable("visibleGrade", true);
-		templateEngine.process(path, ctx, response.getWriter());
-		
+		//Redirect to the grade page detail
+		String path = String.format("%s/GetStudentGrade?courseId=%d&date=%s&personCode=%d&rej=true", getServletContext().getContextPath(), courseId, datetime.toString(), studentPersonCode);
+		response.sendRedirect(path);
 	}
 
 	/**

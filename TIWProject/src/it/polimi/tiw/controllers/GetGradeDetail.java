@@ -55,11 +55,13 @@ public class GetGradeDetail extends HttpServlet {
 		Integer courseId = null;
 		Timestamp datetime = null;
 		Integer studentPersonCode = null;
+		Boolean mod = false;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
 			datetime = Timestamp.valueOf(request.getParameter("date"));
 			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
+			mod = Boolean.parseBoolean(request.getParameter("mod"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -106,6 +108,7 @@ public class GetGradeDetail extends HttpServlet {
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("result", result);
+		ctx.setVariable("mod", mod);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
