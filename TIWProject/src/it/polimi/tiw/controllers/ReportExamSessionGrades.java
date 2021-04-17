@@ -7,17 +7,11 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamReport;
@@ -36,16 +30,10 @@ import it.polimi.tiw.handlers.ConnectionHandler;
 public class ReportExamSessionGrades extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
-    private TemplateEngine templateEngine;
+
     
     @Override
     public void init() throws ServletException {
-    	ServletContext context = getServletContext();
-    	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
@@ -78,7 +66,6 @@ public class ReportExamSessionGrades extends HttpServlet {
 		ExamReportDAO examReportDAO = new ExamReportDAO(connection);
 		
 		ExamSession exam = null;
-		List<ExamResult> grades = null;
 		ExamReport examReport = null;
 		
 		try {
@@ -103,7 +90,6 @@ public class ReportExamSessionGrades extends HttpServlet {
 			
 			//Create the exam report
 			examReport = examReportDAO.publishExamReport(courseId, datetime);
-			grades = examSessionDAO.getReportedGrades(courseId, datetime);
 			exam = examReport.getExamSession();
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -111,13 +97,10 @@ public class ReportExamSessionGrades extends HttpServlet {
 			return;
 		}
 		
-		String path = "/WEB-INF/templates/examreport.html";
-		ServletContext context = getServletContext();
-		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-		ctx.setVariable("exam", exam);
-		ctx.setVariable("grades", grades);
-		ctx.setVariable("report", examReport);
-		templateEngine.process(path, ctx, response.getWriter());
+		/* Since this controller performs an update, it does NOT forward a request but makes 
+		 * a redirect to the GetOrderedStudentsGrades controller that display the page */
+		String path = String.format("%s/GetExamReport?courseId=%d&date=%s", getServletContext().getContextPath(), exam.getCourse().getCourseID(), exam.getDateTime().toString());
+		response.sendRedirect(path);
 		
 	}
 

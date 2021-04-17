@@ -47,7 +47,7 @@
 		</ol>
 	</nav>
 	<div class="container mb-3 mt-3">
-        <div class="card card text-white bg-info">
+        <div class="card card text-white bg-secondary">
             <div class="card-body">
                 <h5 class="card-title" th:text="'Corsi dello studente ' + ${session.student.firstName} + ' ' + ${session.student.lastName}">
                 	Corsi dello studente <b>Studente Bravo</b>
@@ -58,7 +58,7 @@
                             <a href="studenthome.html"  th:href="@{/GetCourseExamSessionsStudent(courseId=${course.courseId})}">
                             	<h5 class="mb-1" th:text="${course.courseId} + ' - ' + ${course.name}" >234 - Fisica tecnica</h5>
                             </a>
-                            <span class="badge badge-info" th:text="${course.numExamSessions} + ' appelli'">7 appelli</span>
+                            <span class="badge badge-secondary" th:text="${course.numExamSessions} + ' appelli'">7 appelli</span>
                         </div>
                         <p class="mb-1" th:text="${course.description}">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
                     	<ul th:if="${course.courseId == courseId}" class="list-group list-group-flush" th:remove="all-but-first" th:each="exam: ${exams}">
@@ -74,7 +74,7 @@
                             <a href="studenthome.html">
                             	<h5 class="mb-1">234 - Fisica tecnica</h5>
                             </a>
-                            <span class="badge badge-info">7 appelli</span>
+                            <span class="badge badge-secondary">7 appelli</span>
                         </div>
                         <p class="mb-1">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
                     </div>

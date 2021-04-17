@@ -83,6 +83,21 @@
                                     <h6 class="text-muted" th:text="${result.student.matricola}">949494</h6>
                                 </div>
                             </div>
+                            <h4 class="mt-3">Esame</h4>
+							<hr class="badge-primary">
+							<div class="row">
+								<div class="col-sm-6">
+									<p class="font-weight-bold">Corso</p>
+									<h6 class="text-muted"
+										th:text="${result.examSession.course.name}">Corso</h6>
+								</div>
+								<div class="col-sm-6">
+									<p class="font-weight-bold">Data</p>
+									<h6 class="text-muted"
+										th:text="${#dates.format(new java.util.Date(result.examSession.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-03-2030
+										14:00</h6>
+								</div>
+							</div>
                             <h4 class="mt-3">Valutazione</h4>
                             <hr class="bg-primary">
                             <div class="row mb-3">

@@ -113,6 +113,8 @@ public class GetExamReport extends HttpServlet {
 		ctx.setVariable("grades", grades);
 		ctx.setVariable("report", examReport);
 		templateEngine.process(path, ctx, response.getWriter());
+		
+		
 	}
 
 	/**

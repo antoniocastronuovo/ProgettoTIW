@@ -62,6 +62,8 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		Integer last = null;
 		Boolean asc = null;
 		Timestamp datetime = null;
+		Boolean pub = null;
+		String message = null;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
@@ -69,6 +71,7 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 			orderCol = Integer.parseInt(request.getParameter("ord"));
 			last = Integer.parseInt(request.getParameter("last"));
 			asc = Boolean.parseBoolean(request.getParameter("asc"));
+			pub = Boolean.parseBoolean(request.getParameter("pub"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -108,6 +111,9 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 			canPublish = examSessionDAO.canPublish(courseId, datetime);
 			
 			asc = ((last == orderCol && asc) ? false : true);
+			
+			message = ((pub) ? "Voti pubblicati correttamente" : null);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
@@ -123,6 +129,7 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		ctx.setVariable("canPublish", canPublish);
 		ctx.setVariable("last", orderCol);
 		ctx.setVariable("asc", asc);
+		ctx.setVariable("pubOk", message);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

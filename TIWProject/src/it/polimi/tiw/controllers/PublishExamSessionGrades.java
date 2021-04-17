@@ -4,22 +4,14 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import it.polimi.tiw.beans.Course;
-import it.polimi.tiw.beans.ExamResult;
 import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.CourseDAO;
@@ -33,16 +25,9 @@ import it.polimi.tiw.handlers.ConnectionHandler;
 public class PublishExamSessionGrades extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
-    private TemplateEngine templateEngine;
     
     @Override
     public void init() throws ServletException {
-    	ServletContext context = getServletContext();
-    	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
@@ -54,7 +39,6 @@ public class PublishExamSessionGrades extends HttpServlet {
 				boolean isBadRequest = false;
 				Integer courseId = null;
 				Timestamp datetime = null;
-				String pubOk = null;
 				
 				try {
 					courseId = Integer.parseInt(request.getParameter("courseId"));
@@ -75,7 +59,6 @@ public class PublishExamSessionGrades extends HttpServlet {
 				ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 				
 				ExamSession exam = null;
-				List<ExamResult> grades = null;
 				
 				try {
 					//Check if the course exists and it is taught by the user
@@ -101,22 +84,16 @@ public class PublishExamSessionGrades extends HttpServlet {
 					
 					//Publish the grades
 					examSessionDAO.publishExamSessionGrades(courseId, datetime);
-					pubOk = "Voti pubblicati correttamente!";
-					grades = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
 				}catch (SQLException e) {
 					e.printStackTrace();
 					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
 					return;
 				}
 				
-				String path = "/WEB-INF/templates/registered.html";
-				ServletContext context = getServletContext();
-				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-				ctx.setVariable("exam", exam);
-				ctx.setVariable("grades", grades);
-				ctx.setVariable("canPublish", false);
-				ctx.setVariable("pubOk", pubOk);
-				templateEngine.process(path, ctx, response.getWriter());
+				/* Since this controller performs an update, it does NOT forward a request but makes 
+				 * a redirect to the GetOrderedStudentsGrades controller that display the page */
+				String path = String.format("%s/GetOrderedStudentsGrades?courseId=%d&date=%s&ord=1&last=1&asc=true&pub=true", getServletContext().getContextPath(), exam.getCourse().getCourseID(), exam.getDateTime().toString());
+				response.sendRedirect(path);
 	}
 
 	/**
