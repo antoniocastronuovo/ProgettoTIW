@@ -6,6 +6,7 @@ public class ExamSession {
 	private Course course;
 	private Timestamp dateTime;
 	private String room;
+	private int numOfRegisteredStudents;
 	
 	public ExamSession() {
 		super();
@@ -35,6 +36,16 @@ public class ExamSession {
 	public void setRoom(String room) {
 		this.room = room;
 	}
+
+	public int getNumOfRegisteredStudents() {
+		return numOfRegisteredStudents;
+	}
+
+	public void setNumOfRegisteredStudents(int numOfRegisteredStudents) {
+		this.numOfRegisteredStudents = numOfRegisteredStudents;
+	}
+	
+	
 	
 	
 }

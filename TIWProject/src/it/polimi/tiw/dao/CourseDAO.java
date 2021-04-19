@@ -35,9 +35,11 @@ public class CourseDAO {
 					return null;
 				else {
 					while(result.next()) {
+						ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 						ExamSession examSession = new ExamSession();
 						examSession.setDateTime(result.getTimestamp("DateTime"));
 						examSession.setRoom(result.getString("Room"));
+						examSession.setNumOfRegisteredStudents(examSessionDAO.getNumberOfRegisteredStudent(courseId, examSession.getDateTime()));
 						Course course = new CourseDAO(connection).getCourseById(courseId);
 						examSession.setCourse(course);
 						examSessions.add(examSession);

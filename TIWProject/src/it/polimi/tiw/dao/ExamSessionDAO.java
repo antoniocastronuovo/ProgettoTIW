@@ -35,12 +35,10 @@ public class ExamSessionDAO {
 					else {
 						result.next();
 						examSession.setDateTime(result.getTimestamp("DateTime"));
-						
 						CourseDAO courseDAO = new CourseDAO(connection);
 						examSession.setCourse(courseDAO.getCourseById(result.getInt("CourseId")));
-						
 						examSession.setRoom(result.getString("Room"));
-		
+						examSession.setNumOfRegisteredStudents(this.getNumberOfRegisteredStudent(courseId, examSessionDateTime));
 					}
 				}
 				return examSession;
@@ -69,13 +67,28 @@ public class ExamSessionDAO {
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));
 					
-						ExamSessionDAO examSessionDAO=new ExamSessionDAO(connection);
-						examResult.setExamSession(examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime));
+						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(courseId, datetime));
 						
 						//Add to the list
 						examResults.add(examResult);
 					}
 					return examResults;
+				}
+			}
+		}
+	}
+	
+	public int getNumberOfRegisteredStudent(int courseId, Timestamp datetime) throws SQLException {
+		String query = "SELECT COUNT(*) AS C FROM examresult AS E WHERE E.CourseId = ? AND E.ExamSessionDateTime=?;";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, courseId);
+			pstatement.setTimestamp(2, datetime);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (!result.isBeforeFirst()) // no results, credential check failed
+					return 0;
+				else {
+					result.next();
+					return result.getInt("C");
 				}
 			}
 		}
@@ -117,6 +130,7 @@ public class ExamSessionDAO {
 						examSession.setCourse(course);
 						examSession.setDateTime(result.getTimestamp("ExamSessionDateTime"));
 						examSession.setRoom(result.getString("Room"));
+						examSession.setNumOfRegisteredStudents(this.getNumberOfRegisteredStudent(courseId, datetime));
 						examResult.setExamSession(examSession);
 						//Add to the list
 						examResults.add(examResult);
@@ -182,8 +196,7 @@ public class ExamSessionDAO {
 					examResult.setLaude(result.getBoolean("Laude"));
 					examResult.setGradeStatus(result.getString("GradeStatus"));
 					
-					ExamSessionDAO examSessionDAO=new ExamSessionDAO(connection);
-					examResult.setExamSession(examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime));
+					examResult.setExamSession(this.getExamSessionByCourseIdDateTime(courseId, datetime));
 					
 					return examResult;
 				}
@@ -281,9 +294,7 @@ public class ExamSessionDAO {
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));						
 
-						ExamSessionDAO examSessionDAO=new ExamSessionDAO(connection);
-						examResult.setExamSession(examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime));
-				
+						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(courseId, datetime));
 						//Add to the list
 						examResults.add(examResult);
 					}

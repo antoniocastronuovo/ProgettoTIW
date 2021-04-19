@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -66,12 +65,7 @@ public class GetTeacherCourses extends HttpServlet {
 		
 		String path = "/WEB-INF/templates/teacherhome.html";
 		ServletContext context = getServletContext();
-		Locale locale = (Locale) request.getSession(false).getAttribute("locale");
-		System.out.println("Locale 2: "+ locale);
-		if(locale == null) {
-			locale = request.getLocale();
-		}
-		final WebContext ctx = new WebContext(request, response, context, locale);
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);
 		ctx.setVariable("teacher", teacher);
 		templateEngine.process(path, ctx, response.getWriter());

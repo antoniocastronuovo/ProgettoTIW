@@ -36,13 +36,13 @@ public class MultiPathMessageResolver extends StandardMessageResolver {
 	@Override
 	protected Map<String, String> resolveMessagesForTemplate(String template, ITemplateResource templateResource,
 			Locale locale) {
-		System.out.println(template);
+		//System.out.println(template);
 		String regex = "(.*)(/[^/]*$)";
 		String file = template.replaceFirst(regex, "$2");
-		System.out.println(file);
+		//System.out.println(file);
 		String finalpath = "/WEB-INF/" + directory + file;
 		//String finalpath = "/WEB-INF/" + directory + "/messages.html";
-		System.out.println(finalpath);
+		//System.out.println(finalpath);
 		templateResource = new ServletContextTemplateResource(context, finalpath, null);
 		return super.resolveMessagesForTemplate(finalpath, templateResource, locale);
 	}
