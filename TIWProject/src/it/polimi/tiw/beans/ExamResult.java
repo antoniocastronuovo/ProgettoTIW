@@ -9,7 +9,6 @@ public class ExamResult {
 	
 	public ExamResult() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Student getStudent() {
@@ -72,6 +71,5 @@ public class ExamResult {
 	public boolean isEditable() {
 		return gradeStatus.equals("NON INSERITO") || gradeStatus.equals("INSERITO");
 	}
-	
-	
+
 }

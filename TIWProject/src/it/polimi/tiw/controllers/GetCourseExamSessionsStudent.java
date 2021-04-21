@@ -54,9 +54,11 @@ public class GetCourseExamSessionsStudent extends HttpServlet {
 		boolean isBadRequest = false;
 		Integer courseId = null;
 		Course course = null;
+		Boolean isNotEnrolled = false; //Error case in which student selects an exam in which he's not enrolled
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
+			isNotEnrolled = Boolean.parseBoolean(request.getParameter("ne"));
 		}catch (NumberFormatException | NullPointerException e) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -106,6 +108,7 @@ public class GetCourseExamSessionsStudent extends HttpServlet {
 		ctx.setVariable("courseId", courseId);
 		ctx.setVariable("name", course.getName());
 		ctx.setVariable("exams", exams);
+		ctx.setVariable("isNotEnrolled", isNotEnrolled);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

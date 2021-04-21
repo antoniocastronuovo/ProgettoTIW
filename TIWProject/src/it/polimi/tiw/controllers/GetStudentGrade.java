@@ -100,13 +100,10 @@ public class GetStudentGrade extends HttpServlet {
 			
 			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
 			
-			//If the result does not exist then the student is not enrolled
-			if(result==null) {
-				String path = "/WEB-INF/templates/notenrolledexamsession.html";
-				ServletContext context = getServletContext();
-				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-				ctx.setVariable("result", result);
-				templateEngine.process(path, ctx, response.getWriter());
+			if(result==null) { //If the result does not exist then the student is not enrolled
+				//Redirect on the student home page and display an error message
+				String path = String.format("%s/GetCourseExamSessionsStudent?courseId=%d&ne=true", getServletContext().getContextPath(), courseId);
+				response.sendRedirect(path);
 			}else if(result.getStudent().getPersonCode() != student.getPersonCode()){
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 				return;

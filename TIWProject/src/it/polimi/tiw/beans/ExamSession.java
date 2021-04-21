@@ -10,7 +10,6 @@ public class ExamSession {
 	
 	public ExamSession() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Course getCourse() {
