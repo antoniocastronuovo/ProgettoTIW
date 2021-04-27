@@ -80,7 +80,7 @@ public class ReportExamSessionGrades extends HttpServlet {
 				return;
 			}
 			//Check if it there is at least one grade published (and if there exists already a report)
-			examReport = examReportDAO.getExamReport(courseId, datetime);
+			/*examReport = examReportDAO.getExamReport(courseId, datetime);*/
 			List<ExamResult> results = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
 			results = results.stream().filter(r -> r.getGradeStatus().equals("PUBBLICATO")).collect(Collectors.toList());
 			if(results == null || results.isEmpty() || examReport != null) {

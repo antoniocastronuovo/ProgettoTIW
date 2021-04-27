@@ -6,6 +6,7 @@ public class ExamResult {
 	private int grade;
 	private boolean laude;
 	private String gradeStatus;
+	private ExamReport examReport;
 	
 	public ExamResult() {
 		super();
@@ -70,6 +71,14 @@ public class ExamResult {
 	
 	public boolean isEditable() {
 		return gradeStatus.equals("NON INSERITO") || gradeStatus.equals("INSERITO");
+	}
+
+	public ExamReport getExamReport() {
+		return examReport;
+	}
+
+	public void setExamReport(ExamReport examReport) {
+		this.examReport = examReport;
 	}
 
 }

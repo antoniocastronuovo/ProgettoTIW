@@ -38,6 +38,9 @@ public class ExamResultDAO {
 		                
 						ExamSessionDAO examSessionDAO= new ExamSessionDAO(connection);
 						examResult.setExamSession(examSessionDAO.getExamSessionByCourseIdDateTime(courseId, dateTime));
+						
+						ExamReportDAO examReportDAO = new ExamReportDAO(connection);
+						examResult.setExamReport(examReportDAO.getExamReport(courseId, dateTime));
 					}
 				}
 			return examResult;

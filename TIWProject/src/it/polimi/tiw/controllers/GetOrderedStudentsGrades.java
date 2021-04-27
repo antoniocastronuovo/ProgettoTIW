@@ -107,7 +107,7 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 			
 			exam = examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime);
 			grades = examSessionDAO.getRegisteredStudentsResultsOrderedBy(courseId, datetime, orderCol, last, asc);
-			examReport = examReportDAO.getExamReport(courseId, datetime);
+			//examReport = examReportDAO.getExamReport(courseId, datetime);
 			canPublish = examSessionDAO.canPublish(courseId, datetime);
 			
 			asc = ((last == orderCol && asc) ? false : true);
