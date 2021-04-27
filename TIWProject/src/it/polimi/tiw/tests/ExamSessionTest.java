@@ -149,7 +149,7 @@ public class ExamSessionTest {
 		}
 	}
 	
-	public static void testGetReportedGrades() {
+	/*public static void testGetReportedGrades() {
 		System.out.println("Test for ExamSessionDAO getReportedGrades()");
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
@@ -177,7 +177,7 @@ public class ExamSessionTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public static void testPublishExamSessionGrades() {
 		System.out.println("Test for ExamSessionDAO getReportedGrades()");

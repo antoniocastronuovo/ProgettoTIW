@@ -15,7 +15,7 @@ public class ExamReportTest {
 		testPublishExamReport();
 	}
 
-	public static void testGetExamReport() {
+	/*public static void testGetExamReport() {
 		System.out.println("Test for ExamReportDAO getExamReport()");
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
@@ -42,7 +42,7 @@ public class ExamReportTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public static void testPublishExamReport() {
 		System.out.println("Test for ExamReportDAO publishExamReport()");

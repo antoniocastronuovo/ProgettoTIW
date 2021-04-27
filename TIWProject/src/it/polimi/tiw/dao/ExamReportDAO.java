@@ -101,7 +101,7 @@ public class ExamReportDAO {
 					ExamReport examReport = new ExamReport();
 					examReport.setExamReportId(result.getInt("ExamReportId"));
 					examReport.setDateTime(result.getTimestamp("Datetime"));
-					ExamSession examSession = new ExamSessionDAO(connection).getExamSessionByCourseIdDateTime(result.getInt("ExamReportCourseId"), result.getTimestamp("ExamReportDatetime"));
+					ExamSession examSession = new ExamSessionDAO(connection).getExamSessionByCourseIdDateTime(result.getInt("ExamSessionCourseId"), result.getTimestamp("ExamSessionDateTime"));
 					examReport.setExamSession(examSession);
 					return examReport;
 				}

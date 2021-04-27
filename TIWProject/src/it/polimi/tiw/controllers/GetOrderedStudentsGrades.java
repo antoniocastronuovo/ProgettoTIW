@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -90,8 +91,9 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		
 		ExamSession exam = null;
 		List<ExamResult> grades = null;
-		ExamReport examReport = null;
+		List<ExamReport> examReports = null;
 		boolean canPublish = false;
+		boolean canReport = false;
 		
 		try {
 			//Check if the course exists and it is taught by the user
@@ -107,8 +109,9 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 			
 			exam = examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime);
 			grades = examSessionDAO.getRegisteredStudentsResultsOrderedBy(courseId, datetime, orderCol, last, asc);
-			//examReport = examReportDAO.getExamReport(courseId, datetime);
+			examReports = examReportDAO.getExamReports(courseId, datetime);
 			canPublish = examSessionDAO.canPublish(courseId, datetime);
+			canReport = !grades.stream().filter(r -> r.getGradeStatus().equals("PUBBLICATO")).collect(Collectors.toList()).isEmpty();
 			
 			asc = ((last == orderCol && asc) ? false : true);
 			
@@ -125,8 +128,9 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("exam", exam);
 		ctx.setVariable("grades", grades);
-		ctx.setVariable("report", examReport);
+		ctx.setVariable("reports", examReports);
 		ctx.setVariable("canPublish", canPublish);
+		ctx.setVariable("canReport", canReport);
 		ctx.setVariable("last", orderCol);
 		ctx.setVariable("asc", asc);
 		ctx.setVariable("pubOk", message);

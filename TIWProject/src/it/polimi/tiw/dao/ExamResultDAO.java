@@ -40,7 +40,7 @@ public class ExamResultDAO {
 						examResult.setExamSession(examSessionDAO.getExamSessionByCourseIdDateTime(courseId, dateTime));
 						
 						ExamReportDAO examReportDAO = new ExamReportDAO(connection);
-						examResult.setExamReport(examReportDAO.getExamReport(courseId, dateTime));
+						examResult.setExamReport(examReportDAO.getExamReportById(result.getInt("ExamReportId")));
 					}
 				}
 			return examResult;

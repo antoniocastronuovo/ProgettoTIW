@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamReport;
 import it.polimi.tiw.beans.ExamResult;
-import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.ExamReportDAO;
@@ -65,7 +64,6 @@ public class ReportExamSessionGrades extends HttpServlet {
 		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 		ExamReportDAO examReportDAO = new ExamReportDAO(connection);
 		
-		ExamSession exam = null;
 		ExamReport examReport = null;
 		
 		try {
@@ -79,18 +77,16 @@ public class ReportExamSessionGrades extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 				return;
 			}
-			//Check if it there is at least one grade published (and if there exists already a report)
-			/*examReport = examReportDAO.getExamReport(courseId, datetime);*/
+			//Check if it there is at least one grade published
 			List<ExamResult> results = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
 			results = results.stream().filter(r -> r.getGradeStatus().equals("PUBBLICATO")).collect(Collectors.toList());
-			if(results == null || results.isEmpty() || examReport != null) {
+			if(results == null || results.isEmpty()) {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Exam report already exists!");
 				return;
 			}
 			
 			//Create the exam report
 			examReport = examReportDAO.publishExamReport(courseId, datetime);
-			exam = examReport.getExamSession();
 		}catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
@@ -99,7 +95,7 @@ public class ReportExamSessionGrades extends HttpServlet {
 		
 		/* Since this controller performs an update, it does NOT forward a request but makes 
 		 * a redirect to the GetOrderedStudentsGrades controller that display the page */
-		String path = String.format("%s/GetExamReport?courseId=%d&date=%s", getServletContext().getContextPath(), exam.getCourse().getCourseID(), exam.getDateTime().toString());
+		String path = String.format("%s/GetExamReport?reportId=%d", getServletContext().getContextPath(), examReport.getExamReportId());
 		response.sendRedirect(path);
 		
 	}

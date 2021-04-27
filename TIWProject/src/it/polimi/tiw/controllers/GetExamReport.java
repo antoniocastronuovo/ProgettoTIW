@@ -3,7 +3,6 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -18,12 +17,10 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.beans.Course;
 import it.polimi.tiw.beans.ExamReport;
 import it.polimi.tiw.beans.ExamResult;
 import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Teacher;
-import it.polimi.tiw.dao.CourseDAO;
 import it.polimi.tiw.dao.ExamReportDAO;
 import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
@@ -54,12 +51,10 @@ public class GetExamReport extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Get and parse all parameters from request
 		boolean isBadRequest = false;
-		Integer courseId = null;
-		Timestamp datetime = null;
+		Integer reportId = null;
 		
 		try {
-			courseId = Integer.parseInt(request.getParameter("courseId"));
-			datetime = Timestamp.valueOf(request.getParameter("date"));
+			reportId = Integer.parseInt(request.getParameter("reportId"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -72,7 +67,6 @@ public class GetExamReport extends HttpServlet {
 		//Get the user from the session
 		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
 		
-		CourseDAO courseDAO = new CourseDAO(connection);
 		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
 		ExamReportDAO examReportDAO = new ExamReportDAO(connection);
 		
@@ -81,26 +75,26 @@ public class GetExamReport extends HttpServlet {
 		ExamReport examReport = null;
 		
 		try {
-			//Check if the course exists and it is taught by the user
-			Course course = courseDAO.getCourseById(courseId);
-			if(course == null) {
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
-				return;
-			}
-			if(course.getTeacher().getPersonCode() != teacher.getPersonCode()) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
-				return;
-			}
+			examReport = examReportDAO.getExamReportById(reportId);
+			
 			//Check if the exam report exists
-			examReport = examReportDAO.getExamReport(courseId, datetime);
 			if(examReport == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Exam report not found");
 				return;
 			}
+			//Check if the course exists and it is taught by the teacher
+			if(examReport.getExamSession().getCourse() == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+				return;
+			}
+			if(examReport.getExamSession().getCourse().getTeacher().getPersonCode() != teacher.getPersonCode()) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
+				return;
+			}
 			
-			exam = examSessionDAO.getExamSessionByCourseIdDateTime(courseId, datetime);
-			grades = examSessionDAO.getReportedGrades(courseId, datetime);
-			examReport = examReportDAO.getExamReport(courseId, datetime);	
+			
+			exam = examReport.getExamSession();
+			grades = examSessionDAO.getReportedGrades(examReport.getExamReportId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
@@ -113,7 +107,6 @@ public class GetExamReport extends HttpServlet {
 		ctx.setVariable("grades", grades);
 		ctx.setVariable("report", examReport);
 		templateEngine.process(path, ctx, response.getWriter());
-		
 		
 	}
 

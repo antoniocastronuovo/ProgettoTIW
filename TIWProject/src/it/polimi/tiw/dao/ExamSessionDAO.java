@@ -272,14 +272,13 @@ public class ExamSessionDAO {
 		}
 	}
 	
-	public List<ExamResult> getReportedGrades(int courseId, Timestamp datetime) throws SQLException {
+	public List<ExamResult> getReportedGrades(int reportId) throws SQLException {
 		String query = "SELECT * "
 				+ "FROM examresult AS E "
 				+ "WHERE E.GradeStatus = 'VERBALIZZATO' "
-				+ "AND E.CourseId = ? AND E.ExamSessionDateTime=?;";
+				+ "AND ExamReportId = ?;";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, courseId);
-			pstatement.setTimestamp(2, datetime);
+			pstatement.setInt(1, reportId);
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (!result.isBeforeFirst()) // no results, credential check failed
 					return new ArrayList<>();
@@ -294,7 +293,7 @@ public class ExamSessionDAO {
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));						
 
-						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(courseId, datetime));
+						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(result.getInt("ExamSessionCourseId"), result.getTimestamp("ExamSessionDateTime")));
 						//Add to the list
 						examResults.add(examResult);
 					}
