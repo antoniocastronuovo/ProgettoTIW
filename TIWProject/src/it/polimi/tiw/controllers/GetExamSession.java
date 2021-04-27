@@ -31,10 +31,10 @@ import it.polimi.tiw.handlers.ConnectionHandler;
 import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
- * Servlet implementation class GetOrderedStudentsGrades
+ * Servlet implementation class GetExamSession
  */
-@WebServlet("/GetOrderedStudentsGrades")
-public class GetOrderedStudentsGrades extends HttpServlet {
+@WebServlet("/GetExamSession")
+public class GetExamSession extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
     private TemplateEngine templateEngine;
@@ -123,7 +123,7 @@ public class GetOrderedStudentsGrades extends HttpServlet {
 		}
 		
 		//Redirect to the correct view with the grades as parameter
-		String path = "/WEB-INF/templates/registered.html";
+		String path = "/WEB-INF/templates/ExamSessionDetails.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("exam", exam);

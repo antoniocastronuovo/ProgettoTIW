@@ -105,7 +105,7 @@ public class RejectGrade extends HttpServlet {
 		}
 		
 		//Redirect to the grade page detail
-		String path = String.format("%s/GetStudentGrade?courseId=%d&date=%s&personCode=%d&rej=true", getServletContext().getContextPath(), courseId, datetime.toString(), studentPersonCode);
+		String path = String.format("%s/GetStudentGradeDetails?courseId=%d&date=%s&personCode=%d&rej=true", getServletContext().getContextPath(), courseId, datetime.toString(), studentPersonCode);
 		response.sendRedirect(path);
 	}
 

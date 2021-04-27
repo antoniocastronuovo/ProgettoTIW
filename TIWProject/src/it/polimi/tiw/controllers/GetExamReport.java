@@ -100,7 +100,7 @@ public class GetExamReport extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
 		}
 		
-		String path = "/WEB-INF/templates/examreport.html";
+		String path = "/WEB-INF/templates/ReportDetails.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("exam", exam);

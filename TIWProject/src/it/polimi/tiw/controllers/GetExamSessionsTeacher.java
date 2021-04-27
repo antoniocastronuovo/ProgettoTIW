@@ -3,7 +3,7 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,18 +18,18 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
-import it.polimi.tiw.beans.ExamResult;
+import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Teacher;
 import it.polimi.tiw.dao.CourseDAO;
-import it.polimi.tiw.dao.ExamSessionDAO;
+import it.polimi.tiw.dao.TeacherDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
 import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
- * Servlet implementation class GetGradeDetail
+ * Servlet implementation class GetExamSessionsTeacher
  */
-@WebServlet("/GetGradeDetail")
-public class GetGradeDetail extends HttpServlet {
+@WebServlet("/GetExamSessionsTeacher")
+public class GetExamSessionsTeacher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
     private TemplateEngine templateEngine;
@@ -41,10 +41,11 @@ public class GetGradeDetail extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "studentgrade"));
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "teacherhome"));
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
+    
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,18 +54,11 @@ public class GetGradeDetail extends HttpServlet {
 		//Get and parse all parameters from request
 		boolean isBadRequest = false;
 		Integer courseId = null;
-		Timestamp datetime = null;
-		Integer studentPersonCode = null;
-		Boolean mod = false;
-		Boolean err = false;
+		Course course = null;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
-			datetime = Timestamp.valueOf(request.getParameter("date"));
-			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
-			mod = Boolean.parseBoolean(request.getParameter("mod"));
-			err = Boolean.parseBoolean(request.getParameter("err"));
-		}catch (NullPointerException | IllegalArgumentException e ) {
+		}catch (NumberFormatException | NullPointerException e) {
 			isBadRequest = true;
 			e.printStackTrace();
 		}
@@ -73,16 +67,18 @@ public class GetGradeDetail extends HttpServlet {
 			return;
 		}
 		
-		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
-		CourseDAO courseDAO = new CourseDAO(connection);
-		
 		//Get the user from the session
 		Teacher teacher = (Teacher) request.getSession(false).getAttribute("teacher");
+				
+		TeacherDAO teacherDAO = new TeacherDAO(connection);
+		CourseDAO courseDAO = new CourseDAO(connection);
 		
-		ExamResult result = null;
+		List<Course> courses = null;
+		List<ExamSession> exams = null;
+		
 		try {
 			//Check if the course exists and it is taught by the user
-			Course course = courseDAO.getCourseById(courseId);
+			course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
@@ -92,26 +88,22 @@ public class GetGradeDetail extends HttpServlet {
 				return;
 			}
 			
-			//Check if the grade exists (and also if the exam session exists) 
-			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
-			if(result==null) {
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested grade does not exist.");
-				return;
-			}
-				
+			courses = teacherDAO.getTaughtCoursesDesc(teacher.getPersonCode());
+			exams = courseDAO.getExamSessionsByCourseId(courseId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
-			return;
 		}
 		
-		//Redirect to the grade detail page
-		String path = "/WEB-INF/templates/studentgrade.html";
+		//Redirect to the teacher home page
+		String path = "/WEB-INF/templates/TeacherHome.html";
 		ServletContext context = getServletContext();
+		
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-		ctx.setVariable("result", result);
-		ctx.setVariable("mod", mod);
-		ctx.setVariable("err", err);
+		ctx.setVariable("courses", courses);
+		ctx.setVariable("courseId", courseId);
+		ctx.setVariable("name", course.getName());
+		ctx.setVariable("exams", exams);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

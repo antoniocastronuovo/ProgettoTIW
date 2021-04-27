@@ -3,7 +3,6 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,18 +19,17 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Course;
-import it.polimi.tiw.beans.ExamResult;
+import it.polimi.tiw.beans.ExamSession;
 import it.polimi.tiw.beans.Student;
 import it.polimi.tiw.dao.CourseDAO;
-import it.polimi.tiw.dao.ExamSessionDAO;
 import it.polimi.tiw.dao.StudentDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
 
 /**
- * Servlet implementation class GetStudentGrade
+ * Servlet implementation class GetCourseExamSessionStudent
  */
-@WebServlet("/GetStudentGrade")
-public class GetStudentGrade extends HttpServlet {
+@WebServlet("/GetExamSessionsStudent")
+public class GetExamSessionsStudent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Connection connection = null;
     private TemplateEngine templateEngine;
@@ -46,6 +44,7 @@ public class GetStudentGrade extends HttpServlet {
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
+    
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,16 +53,13 @@ public class GetStudentGrade extends HttpServlet {
 		//Get and parse all parameters from request
 		boolean isBadRequest = false;
 		Integer courseId = null;
-		Timestamp datetime = null;
-		Integer studentPersonCode = null;
-		Boolean hasJustRejected = false;
+		Course course = null;
+		Boolean isNotEnrolled = false; //Error case in which student selects an exam in which he's not enrolled
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
-			datetime = Timestamp.valueOf(request.getParameter("date"));
-			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
-			hasJustRejected = Boolean.parseBoolean(request.getParameter("rej"));
-		}catch (NullPointerException | IllegalArgumentException e ) {
+			isNotEnrolled = Boolean.parseBoolean(request.getParameter("ne"));
+		}catch (NumberFormatException | NullPointerException e) {
 			isBadRequest = true;
 			e.printStackTrace();
 		}
@@ -75,22 +71,22 @@ public class GetStudentGrade extends HttpServlet {
 		//Get the user from the session
 		Student student = (Student) request.getSession(false).getAttribute("student");
 		
-		ExamSessionDAO examSessionDAO = new ExamSessionDAO(connection);
-		CourseDAO courseDAO = new CourseDAO(connection);
 		StudentDAO studentDAO = new StudentDAO(connection);
+		CourseDAO courseDAO = new CourseDAO(connection);
 		
-		ExamResult result = null;
-		boolean buttonRejectVisible = true;
+		List<Course> courses = null;
+		List<ExamSession> exams = null;
+		
 		try {
 			//Check if the course exists and it is followed by the student
-			Course course = courseDAO.getCourseById(courseId);
+			course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
 			}
 
 			//Get student courses
-			List<Course> courses = studentDAO.getFollowedCoursesDesc(student.getPersonCode());
+			courses = studentDAO.getFollowedCoursesDesc(student.getPersonCode());
 			//Check if the course belongs to the student's courses
 			final int cId = courseId.intValue();
 			if(courses.stream().filter(c -> cId == c.getCourseID()).collect(Collectors.toList()).size() != 1) {
@@ -98,31 +94,22 @@ public class GetStudentGrade extends HttpServlet {
 				return;
 			}
 			
-			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
-			
-			if(result==null) { //If the result does not exist then the student is not enrolled
-				//Redirect on the student home page and display an error message
-				String path = String.format("%s/GetCourseExamSessionsStudent?courseId=%d&ne=true", getServletContext().getContextPath(), courseId);
-				response.sendRedirect(path);
-			}else if(result.getStudent().getPersonCode() != student.getPersonCode()){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
-				return;
-			}else{
-				String path = "/WEB-INF/templates/studentgradestudent.html";
-				ServletContext context = getServletContext();
-				buttonRejectVisible= (result.getGradeStatus().equals("PUBBLICATO") && result.getGrade() >= 18);
-				boolean visibleGrade = (result.getGradeStatus().equals("PUBBLICATO") || result.getGradeStatus().equals("VERBALIZZATO") || result.getGradeStatus().equals("RIFIUTATO"));
-				final WebContext ctx = new WebContext(request, response, context, request.getLocale());
-				ctx.setVariable("result", result);
-				ctx.setVariable("rejectable",buttonRejectVisible);
-				ctx.setVariable("visibleGrade", visibleGrade);
-				ctx.setVariable("rej", hasJustRejected);
-				templateEngine.process(path, ctx, response.getWriter());
-			}
+			exams = courseDAO.getExamSessionsByCourseId(courseId);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
 			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
+			return;
 		}
+		
+		String path = "/WEB-INF/templates/StudentHome.html";
+		ServletContext context = getServletContext();
+		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
+		ctx.setVariable("courses", courses);
+		ctx.setVariable("courseId", courseId);
+		ctx.setVariable("name", course.getName());
+		ctx.setVariable("exams", exams);
+		ctx.setVariable("isNotEnrolled", isNotEnrolled);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**
@@ -141,5 +128,4 @@ public class GetStudentGrade extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

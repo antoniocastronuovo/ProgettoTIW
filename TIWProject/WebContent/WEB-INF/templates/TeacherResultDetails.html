@@ -49,17 +49,6 @@
 					href="teacherhome.html" th:href="@{GetTeacherCourses}">Home</a></li>
 				<li class="nav-item"><a class="nav-link" href="index.html"
 					th:href="@{Logout}">Logout</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="http://example.com"
-					id="dropdown09" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false"><span class="flag-icon flag-icon-us">
-					</span> English</a>
-					<div class="dropdown-menu" aria-labelledby="dropdown09">
-						<a class="dropdown-item" href="#fr"><span
-							class="flag-icon flag-icon-en"> </span> English</a> <a
-							class="dropdown-item" href="#it"><span
-							class="flag-icon flag-icon-it"> </span> Italian</a>
-					</div></li>
 			</ul>
 			<span class="navbar-text"
 				th:text="${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
@@ -72,10 +61,10 @@
 				th:href="@{GetTeacherCourses}" th:text="#{courses}">Corsi</a></li>
 			<li class="breadcrumb-item"><a
 				th:text="${result.examSession.course.name}" href="teacherhome.html"
-				th:href="@{/GetCourseExamSessionsTeacher(courseId=${result.examSession.course.courseId})}">Corso</a></li>
+				th:href="@{/GetExamSessionsTeacher(courseId=${result.examSession.course.courseId})}">Corso</a></li>
 			<li class="breadcrumb-item" aria-current="page"><a
 				href="registered.html"
-				th:href="@{/GetOrderedStudentsGrades(courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime}, ord=1, last=1, asc=true)}"
+				th:href="@{/GetExamSession(courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime}, ord=1, last=1, asc=true)}"
 				th:text="${#dates.format(new java.util.Date(result.examSession.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-04-2012
 					13:00</a></li>
 			<li class="breadcrumb-item active" aria-current="page"
@@ -193,7 +182,7 @@
 <!-- Footer -->
 <footer class="bg-light text-center text-lg-start fixed-bottom">
 	<!-- Copyright -->
-	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 23</div>
+	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 27</div>
 	<!-- Copyright -->
 </footer>
 <!-- Footer -->

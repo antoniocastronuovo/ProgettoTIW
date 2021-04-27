@@ -42,7 +42,7 @@
 	</nav>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item active" th:classappend="${name == null} ? active" ><a href="studenthome.html" th:href="@{GetstudentCourses}">Corsi</a></li>
+			<li class="breadcrumb-item active" th:classappend="${name == null} ? active" ><a href="#" th:href="@{GetStudentCourses}">Corsi</a></li>
 			<li class="breadcrumb-item" th:if="${name != null}" th:classappend="active" th:text="${name}">Corso</li>
 		</ol>
 	</nav>
@@ -55,14 +55,14 @@
                 <div class="list-group" th:remove="all-but-first">
                     <div class="list-group-item list-group-item-action flex-column align-items-start" th:each="course:${courses}">
                     	<div class="d-flex justify-content-between">
-                            <a href="studenthome.html"  th:href="@{/GetCourseExamSessionsStudent(courseId=${course.courseId})}">
+                            <a href="#"  th:href="@{/GetExamSessionsStudent(courseId=${course.courseId})}">
                             	<h5 class="mb-1" th:text="${course.courseId} + ' - ' + ${course.name}" >234 - Fisica tecnica</h5>
                             </a>
                             <span class="badge badge-secondary" th:text="${course.numExamSessions} + ' appelli'">7 appelli</span>
                         </div>
                         <p class="mb-1" th:text="${course.description}">Fornire i fondamenti della ingegneria termodinamica e le conoscenze di base della trasmissione del calore finalizzati alla risoluzione di problemi non complessi, connessi all'analisi di processi termo-fluidodinamici e di sistemi energetici.</p>
                     	<ul th:if="${course.courseId == courseId}" class="list-group list-group-flush" th:remove="all-but-first" th:each="exam: ${exams}">
-							<a href="studentgradestudent.html" th:href="@{/GetStudentGrade(personCode=${session.student.personCode}, courseId=${course.courseId}, date=${exam.dateTime})}"><li class="list-group-item" th:text="'Appello del ' + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello del 12/01/2021 12:00</li></a>
+							<a href="#" th:href="@{/GetStudentGradeDetails(personCode=${session.student.personCode}, courseId=${course.courseId}, date=${exam.dateTime})}"><li class="list-group-item" th:text="'Appello del ' + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello del 12/01/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del 12/02/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del 12/06/2021 12:00</li></a>
 							<a href="#"><li class="list-group-item">Appello del 12/07/2021 12:00</li></a>
@@ -90,7 +90,7 @@
 <!-- Footer -->
 <footer class="bg-light text-center text-lg-start fixed-bottom">
 	<!-- Copyright -->
-	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 23</div>
+	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 27</div>
 	<!-- Copyright -->
 </footer>
 <!-- Footer -->

@@ -87,7 +87,7 @@ public class EditStudentGrade extends HttpServlet {
 					}
 					//Check if the grade is admissible
 					if(grade <= -4 || grade > 31) {
-						String path = String.format("%s/GetGradeDetail?courseId=%d&date=%s&personCode=%d&err=true", getServletContext().getContextPath(), result.getExamSession().getCourse().getCourseID(), result.getExamSession().getDateTime().toString(), result.getStudent().getPersonCode());
+						String path = String.format("%s/GetTeacherGradeDetails?courseId=%d&date=%s&personCode=%d&err=true", getServletContext().getContextPath(), result.getExamSession().getCourse().getCourseID(), result.getExamSession().getDateTime().toString(), result.getStudent().getPersonCode());
 						response.sendRedirect(path);
 						return;
 					}
@@ -108,7 +108,7 @@ public class EditStudentGrade extends HttpServlet {
 				}
 				
 				//Redirect to the detail page
-				String path = String.format("%s/GetGradeDetail?courseId=%d&date=%s&personCode=%d&mod=true", getServletContext().getContextPath(), result.getExamSession().getCourse().getCourseID(), result.getExamSession().getDateTime().toString(), result.getStudent().getPersonCode());
+				String path = String.format("%s/GetTeacherGradeDetails?courseId=%d&date=%s&personCode=%d&mod=true", getServletContext().getContextPath(), result.getExamSession().getCourse().getCourseID(), result.getExamSession().getDateTime().toString(), result.getStudent().getPersonCode());
 				response.sendRedirect(path);
 	}
 	

@@ -293,7 +293,7 @@ public class ExamSessionDAO {
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));						
 
-						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(result.getInt("ExamSessionCourseId"), result.getTimestamp("ExamSessionDateTime")));
+						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(result.getInt("CourseId"), result.getTimestamp("ExamSessionDateTime")));
 						//Add to the list
 						examResults.add(examResult);
 					}

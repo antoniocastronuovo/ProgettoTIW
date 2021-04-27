@@ -94,7 +94,7 @@ public class ReportExamSessionGrades extends HttpServlet {
 		}
 		
 		/* Since this controller performs an update, it does NOT forward a request but makes 
-		 * a redirect to the GetOrderedStudentsGrades controller that display the page */
+		 * a redirect to the GetExamSession controller that display the page */
 		String path = String.format("%s/GetExamReport?reportId=%d", getServletContext().getContextPath(), examReport.getExamReportId());
 		response.sendRedirect(path);
 		

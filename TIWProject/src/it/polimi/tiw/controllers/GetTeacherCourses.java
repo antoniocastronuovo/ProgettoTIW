@@ -63,7 +63,7 @@ public class GetTeacherCourses extends HttpServlet {
 			return;
 		}
 		
-		String path = "/WEB-INF/templates/teacherhome.html";
+		String path = "/WEB-INF/templates/TeacherHome.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);

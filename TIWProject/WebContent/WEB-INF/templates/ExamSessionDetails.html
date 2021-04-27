@@ -45,7 +45,7 @@
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="teacherhome.html" th:href="@{GetTeacherCourses}" th:text="#{courses}">Corsi</a></li>
-			<li class="breadcrumb-item"><a th:text="${exam.course.name}" href="teacherhome.html" th:href="@{/GetCourseExamSessionsTeacher(courseId=${exam.course.courseId})}">Corso</a></li>
+			<li class="breadcrumb-item"><a th:text="${exam.course.name}" href="teacherhome.html" th:href="@{/GetExamSessionsTeacher(courseId=${exam.course.courseId})}">Corso</a></li>
 			<li class="breadcrumb-item active" aria-current="page" th:text="${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-04-2012 13:00</li>
 		</ol>
 	</nav>
@@ -63,20 +63,20 @@
 					<thead>
 						<tr>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=${last}, asc=${asc})}">Matricola</a></th>
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=${last}, asc=${asc})}">Matricola</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=2, last=${last}, asc=${asc})}" th:text="#{last_name}">Cognome</a></th>
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=2, last=${last}, asc=${asc})}" th:text="#{last_name}">Cognome</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=3, last=${last}, asc=${asc})}" th:text="#{first_name}">Nome</a></th>
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=3, last=${last}, asc=${asc})}" th:text="#{first_name}">Nome</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=4, last=${last}, asc=${asc})}" >Email</a></th>
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=4, last=${last}, asc=${asc})}" >Email</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=5, last=${last}, asc=${asc})}" th:text="#{course}">Corso
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=5, last=${last}, asc=${asc})}" th:text="#{course}">Corso
 									di laurea</a></th>
 							<th scope="col"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=6, last=${last}, asc=${asc})}" th:text="#{grade}">Voto</a></th>
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=6, last=${last}, asc=${asc})}" th:text="#{grade}">Voto</a></th>
 							<th scope="col" class="text-center"><a href="#"
-								th:href="@{/GetOrderedStudentsGrades(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=7, last=${last}, asc=${asc})}" th:text="#{state}">Stato</a></th>
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=7, last=${last}, asc=${asc})}" th:text="#{state}">Stato</a></th>
 							<th scope="col" class="text-center">Azioni</th>
 						</tr>
 					</thead>
@@ -103,7 +103,7 @@
 									th:text="${grade.gradeStatus}">NON INSERITO</td>
 							</div>
 							<td><a href="student.html"
-								th:href="@{GetGradeDetail(personCode=${grade.student.personCode}, courseId=${exam.course.courseId}, date=${exam.dateTime})}">
+								th:href="@{GetTeacherGradeDetails(personCode=${grade.student.personCode}, courseId=${exam.course.courseId}, date=${exam.dateTime})}">
 									<button type="button" class="btn btn-primary" style="width: 100%;" th:text="${grade.isEditable()} ? #{modify} : #{detail}">Dettaglio</button>
 							</a></td>
 						</tr>
@@ -168,24 +168,17 @@
 								<th scope="col">Azioni</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>14/03/202 12:00:00</td>
-								<td><a href="#">
+						<tbody th:remove="all-but-first">
+							<tr th:each="report : ${reports}">
+								<td th:text="${report.examReportId}">1</td>
+								<td th:text="${#dates.format(new java.util.Date(report.dateTime.getTime()), 'dd/MM/yyyy - HH:mm:ss')}">14/03/202 12:00:00</td>
+								<td><a href="#" th:href="@{GetExamReport(reportId=${report.examReportId})}">
 										<button type="button" class="btn btn-primary" style="width: 100%;">Dettaglio</button>
 								</a></td>
 							</tr>
 							<tr>
 								<td>2</td>
 								<td>14/03/202 13:00:00</td>
-								<td><a href="#">
-										<button type="button" class="btn btn-primary" style="width: 100%;">Dettaglio</button>
-								</a></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>14/03/202 14:00:00</td>
 								<td><a href="#">
 										<button type="button" class="btn btn-primary" style="width: 100%;">Dettaglio</button>
 								</a></td>

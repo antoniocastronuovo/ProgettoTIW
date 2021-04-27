@@ -58,7 +58,7 @@ public class GetStudentCourses extends HttpServlet {
 			return;
 		}
 		
-		String path = "/WEB-INF/templates/studenthome.html";
+		String path = "/WEB-INF/templates/StudentHome.html";
 		ServletContext context = getServletContext();
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);

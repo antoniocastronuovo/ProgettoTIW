@@ -110,7 +110,7 @@ public class ExamReportDAO {
 	}
 	
 	public ExamReport getLastExamReport(int courseId, Timestamp datetime) throws SQLException {
-	    String query = "SELECT * FROM examreport WHERE ExamSessionCourseId = ? AND ExamSessionDatetime = ? order by Datetime LIMIT 1;";
+	    String query = "SELECT * FROM examreport WHERE ExamSessionCourseId = ? AND ExamSessionDatetime = ? order by Datetime DESC LIMIT 1;";
 	    try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 	      pstatement.setInt(1, courseId);
 	      pstatement.setTimestamp(2, datetime);

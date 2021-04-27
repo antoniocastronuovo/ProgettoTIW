@@ -50,7 +50,7 @@ public class HandleError extends HttpServlet {
         }
                 
       //Redirect to the error page
-  		String path = "/WEB-INF/templates/error.html";
+  		String path = "/WEB-INF/templates/Error.html";
   		ServletContext context = getServletContext();
   		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
   		ctx.setVariable("code", statusCode);

@@ -49,8 +49,8 @@
 	</nav>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="studenthome.html" th:href="@{GetStudentCourses}">Corsi</a></li>
-			<li class="breadcrumb-item"><a th:text="${result.examSession.course.name}" href="studenthome.html" th:href="@{/GetCourseExamSessionsStudent(courseId=${result.examSession.course.courseId})}">Corso</a></li>
+			<li class="breadcrumb-item"><a href="#" th:href="@{GetStudentCourses}">Corsi</a></li>
+			<li class="breadcrumb-item"><a th:text="${result.examSession.course.name}" href="#" th:href="@{/GetExamSessionsStudent(courseId=${result.examSession.course.courseId})}">Corso</a></li>
 			<li class="breadcrumb-item active" aria-current="page">Valutazione</li>
 		</ol>
 	</nav>
@@ -64,7 +64,7 @@
                                 <i class="fas fa-user-tie fa-7x mt-5"></i>
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
-                                <a href="studentgradestudent.html" th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
+                                <a href="#" th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
                                 	<button th:if="${rejectable}" class="btn btn-light mb-3">RIFIUTA</button>
                                 </a>
                                 
@@ -128,7 +128,7 @@
 <!-- Footer -->
 <footer class="bg-light text-center text-lg-start  fixed-bottom">
 	<!-- Copyright -->
-	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 23</div>
+	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 27</div>
 	<!-- Copyright -->
 </footer>
 <!-- Footer -->
