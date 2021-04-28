@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -11,7 +11,10 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" media="all" href="css/login.css" th:href="@{/css/login.css}"  >
+<link rel="stylesheet" type="text/css" media="all" href="../../css/login.css" th:href="@{/css/login.css}"  >
+
+<link rel="icon" href="../../images/favicon.ico" th:href="@{/images/favicon.ico}" type="image/x-icon">
+<link rel="shortcut icon" href="../../images/favicon.ico" th:href="@{/images/favicon.ico}" type="image/x-icon"> 
 
 <title>PoliOnline</title>
 
@@ -22,7 +25,7 @@
 		<div class="container">
 			<div class="row no-gutters">
 				<div class="col-md-5">
-					<img alt="Login image" src="images/background_image_login.jpg" th:src="@{/images/background_image_login.jpg}" class="img-fluid">
+					<img alt="Login image" src="../../images/background_image_login.jpg" th:src="@{/images/background_image_login.jpg}" class="img-fluid">
 				</div>
 				<div class="col-md-7 px-5 pt-5">
 					<h1 class="font-weight-bold py-3">Poli OnLine</h1>
