@@ -33,19 +33,20 @@ public class ExamResult {
 	}
 	
 	public String getGradeAsString() {
-		switch (grade){
-		case -4:
-			return "<VUOTO>";
-		case -3:
-			return "ASSENTE";
-		case -2:
-			return "RIMANDATO";
-		case -1:
-			return "RIPROVATO";
-		case 31:
+		if(grade == 30 && laude)
 			return "30 e lode";
-		default:
-			return ""+grade;				
+	
+		switch (grade){
+			case -4:
+				return "<VUOTO>";
+			case -3:
+				return "ASSENTE";
+			case -2:
+				return "RIMANDATO";
+			case -1:
+				return "RIPROVATO";
+			default:
+				return ""+grade;				
 		}
 	}
 

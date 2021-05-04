@@ -86,7 +86,7 @@ public class EditStudentGrade extends HttpServlet {
 						return;
 					}
 					//Check if the grade is admissible
-					if(grade <= -4 || grade > 31) {
+					if(grade <= -4 || grade > 31 || (grade >= 0 && grade < 18)) {
 						String path = String.format("%s/GetTeacherGradeDetails?courseId=%d&date=%s&personCode=%d&err=true", getServletContext().getContextPath(), result.getExamSession().getCourse().getCourseID(), result.getExamSession().getDateTime().toString(), result.getStudent().getPersonCode());
 						response.sendRedirect(path);
 						return;
