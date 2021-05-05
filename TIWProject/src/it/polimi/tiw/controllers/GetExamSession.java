@@ -46,7 +46,7 @@ public class GetExamSession extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "registered"));
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "examsessiondetails"));
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 

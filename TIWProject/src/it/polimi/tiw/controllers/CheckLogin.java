@@ -23,6 +23,7 @@ import it.polimi.tiw.beans.formbeans.LoginForm;
 import it.polimi.tiw.dao.StudentDAO;
 import it.polimi.tiw.dao.TeacherDAO;
 import it.polimi.tiw.handlers.ConnectionHandler;
+import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
  * Servlet implementation class CheckLogin
@@ -40,6 +41,7 @@ public class CheckLogin extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "index"));
 		templateResolver.setSuffix(".html");
 		
     	connection = ConnectionHandler.getConnection(getServletContext());

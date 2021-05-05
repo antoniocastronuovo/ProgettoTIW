@@ -41,7 +41,7 @@ public class GetTeacherGradeDetails extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "studentgrade"));
+		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "studentresultdetails"));
 		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}

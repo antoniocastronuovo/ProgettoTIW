@@ -52,9 +52,9 @@
 	</nav>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="#" th:href="@{GetStudentCourses}">Corsi</a></li>
+			<li class="breadcrumb-item"><a href="#" th:href="@{GetStudentCourses}" th:text="#{courses}">Corsi</a></li>
 			<li class="breadcrumb-item"><a th:text="${result.examSession.course.name}" href="#" th:href="@{/GetExamSessionsStudent(courseId=${result.examSession.course.courseId})}">Corso</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Valutazione</li>
+			<li class="breadcrumb-item active" aria-current="page" th:text="#{evaluation}">Valutazione</li>
 		</ol>
 	</nav>
 	<div class="container">
@@ -68,13 +68,13 @@
                                 <h2 th:text="${result.student.lastName} + ' ' + ${result.student.firstName}" class="font-weight-bold mt-4">Alberto Angela</h2>
                                 <p th:text="${result.student.personCode}">10999999</p>
                                 <a href="#" th:href="@{/RejectGrade(personCode=${result.student.personCode}, courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime})}">
-                                	<button th:if="${rejectable}" class="btn btn-light mb-3">RIFIUTA</button>
+                                	<button th:if="${rejectable}" class="btn btn-light mb-3" th:text="#{reject}">RIFIUTA</button>
                                 </a>
                                 
                             </div>
                         </div>
                         <div class="col-sm-8 bg-light rounded-right">
-                            <h3 class="mt-3 text-center">Informazioni</h3>
+                            <h3 class="mt-3 text-center" th:text="#{information}">Informazioni</h3>
                             <hr class="badge-primary mt-0 w-25">
                             <div class="row">
                                 <div class="col-sm-6">
@@ -86,30 +86,30 @@
                                     <h6 class="text-muted" th:text="${result.student.matricola}">949494</h6>
                                 </div>
                             </div>
-                            <h4 class="mt-3">Esame</h4>
+                            <h4 class="mt-3" th:text="#{exam}">Esame</h4>
 							<hr class="badge-primary">
 							<div class="row">
 								<div class="col-sm-6">
-									<p class="font-weight-bold">Corso</p>
+									<p class="font-weight-bold" th:text="#{course}">Corso</p>
 									<h6 class="text-muted"
-										th:text="${result.examSession.course.name}">Corso</h6>
+										th:text="${result.examSession.course.name}" >Corso</h6>
 								</div>
 								<div class="col-sm-6">
-									<p class="font-weight-bold">Data</p>
+									<p class="font-weight-bold" th:text="#{date}">Data</p>
 									<h6 class="text-muted"
 										th:text="${#dates.format(new java.util.Date(result.examSession.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-03-2030
 										14:00</h6>
 								</div>
 							</div>
-                            <h4 class="mt-3">Valutazione</h4>
+                            <h4 class="mt-3" th:text="#{evaluation}">Valutazione</h4>
                             <hr class="bg-primary">
                             <div class="row mb-3">
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Stato</p>
-                                    <h6 class="text-muted" th:text="${result.gradeStatus}">PUBBLICATO</h6>
+                                    <p class="font-weight-bold" th:text="#{state}">Stato</p>
+                                    <h6 class="text-muted" th:text="${result.gradeStatus}" >PUBBLICATO</h6>
                                 </div>
                                 <div class="col-sm-6" th:if="${visibleGrade}" >
-                                    <p class="font-weight-bold">Voto</p>
+                                    <p class="font-weight-bold" th:text="#{grade}">Voto</p>
                                     <h6 class="text-muted" th:text="${result.getGradeAsString()}">30</h6>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
 
 </body>
 <!-- Footer -->
-<footer class="bg-light text-center text-lg-start  fixed-bottom">
+<footer class="bg-light text-center text-lg-start">
 	<!-- Copyright -->
 	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">Progetto TIW 2021 - Gruppo 27</div>
 	<!-- Copyright -->
