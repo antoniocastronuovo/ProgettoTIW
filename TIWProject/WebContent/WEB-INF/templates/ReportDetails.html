@@ -45,7 +45,7 @@
 			<li class="breadcrumb-item active" aria-current="page">Verbale</li>
 		</ol>
 	</nav>
-    <div class="container mb-3 mt-3">
+    <div class="container align-middle">
         <div class="card bg-secondary text-white">
             <div class="card-body">
                 <h5 class="card-title" th:text="'Verbale dell\'appello di ' + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Verbale Analisi 1 - 27/01/2020 14:00</h5>

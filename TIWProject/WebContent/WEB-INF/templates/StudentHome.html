@@ -49,7 +49,7 @@
 			<li class="breadcrumb-item" th:if="${name != null}" th:classappend="active" th:text="${name}">Corso</li>
 		</ol>
 	</nav>
-	<div class="container mb-3 mt-3">
+	<div class="container align-middle">
         <div class="card card text-white bg-secondary">
             <div class="card-body">
                 <h5 class="card-title" th:text="'Corsi dello studente ' + ${session.student.firstName} + ' ' + ${session.student.lastName}">
