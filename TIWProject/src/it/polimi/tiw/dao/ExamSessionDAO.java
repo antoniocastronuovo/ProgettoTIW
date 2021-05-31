@@ -59,16 +59,12 @@ public class ExamSessionDAO {
 					List<ExamResult> examResults = new ArrayList<>();
 					while(result.next()) {				 
 						ExamResult examResult= new ExamResult();
-						
 						StudentDAO student=new StudentDAO(connection);
 						examResult.setStudent(student.getStudentByPersonCode(result.getInt("StudentPersonCode")));
-
 						examResult.setGrade(result.getInt("Grade"));
 						examResult.setLaude(result.getBoolean("Laude"));
 						examResult.setGradeStatus(result.getString("GradeStatus"));
-					
 						examResult.setExamSession(this.getExamSessionByCourseIdDateTime(courseId, datetime));
-						
 						//Add to the list
 						examResults.add(examResult);
 					}

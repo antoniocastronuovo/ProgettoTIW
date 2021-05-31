@@ -63,60 +63,61 @@
 					th:text="#{title} + ' ' + ${session.teacher.firstName} + ' ' + ${session.teacher.lastName}">
 					Corsi insegnati dal Professore <b>Stephen Hawking</b>
 				</h5>
-			</div>
-		</div>
-		<div class="list-group" th:remove="all-but-first">
-			<div
-				class="list-group-item list-group-item-action flex-column align-items-start"
-				th:each="course:${courses}">
-				<div class="d-flex justify-content-between">
-					<a href="teacherhome.html"
-						th:href="@{/GetExamSessionsTeacher(courseId=${course.courseId})}">
-						<h5 class="mb-1"
-							th:text="${course.courseId} + ' - ' + ${course.name}">234 -
-							Fisica tecnica</h5>
-					</a> <span class="badge badge-secondary"
-						th:text="${course.numExamSessions} + ' ' + #{exam_sessions}">7
-						appelli</span>
-				</div>
-				<p class="mb-1" th:text="${course.description}">Fornire i
-					fondamenti della ingegneria termodinamica e le conoscenze di base
-					della trasmissione del calore finalizzati alla risoluzione di
-					problemi non complessi, connessi all'analisi di processi
-					termo-fluidodinamici e di sistemi energetici.</p>
-				<ul th:if="${course.courseId == courseId}"
-					class="list-group list-group-flush" th:remove="all-but-first"
-					th:each="exam: ${exams}">
-					<a href="registered.html"
-						th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=1, asc=${asc})}"><li
-						class="list-group-item d-flex justify-content-between align-items-center"
-						><p th:text="#{examsession_of} + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello
-							del 12/01/2021 12:00<p><span class="badge badge-secondary" th:text="${exam.numOfRegisteredStudents} + ' iscritti'">14</span></li></a>
-					<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
-							12/02/2021 12:00</li></a>
-					<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
-							12/06/2021 12:00</li></a>
-					<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
-							12/07/2021 12:00</li></a>
-					<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
-							12/09/2021 12:00</li></a>
-				</ul>
-			</div>
-			<div
-				class="list-group-item list-group-item-action flex-column align-items-start">
-				<div class="d-flex justify-content-between">
-					<a href="teacherhome.html">
-						<h5 class="mb-1">234 - Fisica tecnica</h5>
-					</a> <span class="badge badge-secondary">7 appelli</span>
-				</div>
-				<p class="mb-1">Fornire i fondamenti della ingegneria
-					termodinamica e le conoscenze di base della trasmissione del calore
-					finalizzati alla risoluzione di problemi non complessi, connessi
-					all'analisi di processi termo-fluidodinamici e di sistemi
-					energetici.</p>
-			</div>
+				<div class="list-group" th:remove="all-but-first">
+					<div
+					class="list-group-item list-group-item-action flex-column align-items-start"
+					th:each="course:${courses}">
+						<div class="d-flex justify-content-between">
+							<a href="teacherhome.html"
+								th:href="@{/GetExamSessionsTeacher(courseId=${course.courseId})}">
+								<h5 class="mb-1"
+									th:text="${course.courseId} + ' - ' + ${course.name}">234 -
+									Fisica tecnica</h5>
+							</a> <span class="badge badge-secondary"
+								th:text="${course.numExamSessions} + ' ' + #{exam_sessions}">7
+								appelli</span>
+						</div>
+						<p class="mb-1" th:text="${course.description}">Fornire i
+							fondamenti della ingegneria termodinamica e le conoscenze di base
+							della trasmissione del calore finalizzati alla risoluzione di
+							problemi non complessi, connessi all'analisi di processi
+							termo-fluidodinamici e di sistemi energetici.</p>
+						<ul th:if="${course.courseId == courseId}"
+							class="list-group list-group-flush" th:remove="all-but-first"
+							th:each="exam: ${exams}">
+							<a href="registered.html"
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=1, asc=${asc})}"><li
+								class="list-group-item d-flex justify-content-between align-items-center"
+								><p th:text="#{examsession_of} + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello
+									del 12/01/2021 12:00<p><span class="badge badge-secondary" th:text="${exam.numOfRegisteredStudents} + ' iscritti'">14</span></li></a>
+							<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
+									12/02/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
+									12/06/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
+									12/07/2021 12:00</li></a>
+							<a href="#"><li class="list-group-item d-flex justify-content-between align-items-center">Appello del
+									12/09/2021 12:00</li></a>
+						</ul>
+					</div>
+					<div
+						class="list-group-item list-group-item-action flex-column align-items-start">
+						<div class="d-flex justify-content-between">
+							<a href="teacherhome.html">
+								<h5 class="mb-1">234 - Fisica tecnica</h5>
+							</a> <span class="badge badge-secondary">7 appelli</span>
+						</div>
+						<p class="mb-1">Fornire i fondamenti della ingegneria
+							termodinamica e le conoscenze di base della trasmissione del calore
+							finalizzati alla risoluzione di problemi non complessi, connessi
+							all'analisi di processi termo-fluidodinamici e di sistemi
+							energetici.</p>
+					</div>
 
+				</div>
+			</div>
 		</div>
+		
 	</div>
 
 	
