@@ -66,7 +66,6 @@
 				<div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(grades)}">Nessun studente è iscritto all'appello.</div>
 
 				<div th:unless="${#lists.isEmpty(grades)}">
-					<h6 class="card-subtitle mb-2 text-white" th:text="#{list}">Lista degli iscritti</h6>
 					<table class="table table-striped table-hover table-bordered table-responsive-lg bg-light">
 						<thead>
 							<tr>
@@ -170,9 +169,7 @@
 					<button type="button" class="btn btn-success" th:text="#{report}">VERBALIZZA</button></a>
 				
 				<!-- Exam reports -->
-				<div class="col-md-8 offset-md-2" th:unless="${#lists.isEmpty(reports)}">
-					<h6 class="card-subtitle mt-2 mb-2 text-white" th:text="#{list}">Lista dei verbali associati</h6>
-				
+				<div class="col-md-8 offset-md-2" th:unless="${#lists.isEmpty(reports)}">				
 					<table class="table table-striped table-hover table-bordered table-responsive-lg bg-light">
 						<thead>
 							<tr>

@@ -65,6 +65,7 @@ public class GetStudentCourses extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);
 		ctx.setVariable("student", student);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

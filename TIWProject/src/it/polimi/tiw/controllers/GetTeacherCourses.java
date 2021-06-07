@@ -36,7 +36,7 @@ public class GetTeacherCourses extends HttpServlet {
     public void init() throws ServletException {
     	ServletContext context = getServletContext();
     	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
+    	templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "teacherhome"));
@@ -68,6 +68,7 @@ public class GetTeacherCourses extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, context, request.getLocale());
 		ctx.setVariable("courses", courses);
 		ctx.setVariable("teacher", teacher);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

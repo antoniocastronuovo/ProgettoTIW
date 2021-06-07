@@ -52,7 +52,7 @@
 	<div class="container align-middle">
         <div class="card card text-white bg-secondary">
             <div class="card-body">
-                <h5 class="card-title" th:text="#{title} + ${session.student.firstName} + ' ' + ${session.student.lastName}">
+                <h5 class="card-title font-weight-bold" th:text="#{title} + ${session.student.firstName} + ' ' + ${session.student.lastName}">
                 	Corsi dello studente <b>Studente Bravo</b>
                 </h5>
                 <div class="list-group" th:remove="all-but-first">

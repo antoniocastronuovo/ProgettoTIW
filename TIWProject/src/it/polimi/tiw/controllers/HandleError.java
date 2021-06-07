@@ -58,6 +58,7 @@ public class HandleError extends HttpServlet {
   			ctx.setVariable("message", throwable.getMessage());
   		else if(message != null)
   			ctx.setVariable("message", message);
+		response.setCharacterEncoding("UTF-8");
   		templateEngine.process(path, ctx, response.getWriter());
 	}
 

@@ -111,6 +111,7 @@ public class GetExamSessionsStudent extends HttpServlet {
 		ctx.setVariable("name", course.getName());
 		ctx.setVariable("exams", exams);
 		ctx.setVariable("isNotEnrolled", isNotEnrolled);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

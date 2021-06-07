@@ -134,6 +134,7 @@ public class GetExamSession extends HttpServlet {
 		ctx.setVariable("last", orderCol);
 		ctx.setVariable("asc", asc);
 		ctx.setVariable("pubOk", message);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

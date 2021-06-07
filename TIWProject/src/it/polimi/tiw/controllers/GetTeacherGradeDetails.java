@@ -112,6 +112,7 @@ public class GetTeacherGradeDetails extends HttpServlet {
 		ctx.setVariable("result", result);
 		ctx.setVariable("mod", mod);
 		ctx.setVariable("err", err);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

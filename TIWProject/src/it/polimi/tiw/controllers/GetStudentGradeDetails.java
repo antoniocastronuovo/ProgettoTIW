@@ -119,6 +119,7 @@ public class GetStudentGradeDetails extends HttpServlet {
 				ctx.setVariable("rejectable",buttonRejectVisible);
 				ctx.setVariable("visibleGrade", visibleGrade);
 				ctx.setVariable("rej", hasJustRejected);
+				response.setCharacterEncoding("UTF-8");
 				templateEngine.process(path, ctx, response.getWriter());
 			}
 		} catch (SQLException e) {

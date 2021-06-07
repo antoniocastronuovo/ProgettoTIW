@@ -104,6 +104,7 @@ public class GetExamSessionsTeacher extends HttpServlet {
 		ctx.setVariable("courseId", courseId);
 		ctx.setVariable("name", course.getName());
 		ctx.setVariable("exams", exams);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

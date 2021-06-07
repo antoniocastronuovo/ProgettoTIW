@@ -108,6 +108,7 @@ public class GetExamReport extends HttpServlet {
 		ctx.setVariable("exam", exam);
 		ctx.setVariable("grades", grades);
 		ctx.setVariable("report", examReport);
+		response.setCharacterEncoding("UTF-8");
 		templateEngine.process(path, ctx, response.getWriter());
 		
 	}
