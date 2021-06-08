@@ -43,12 +43,10 @@ public class RejectGrade extends HttpServlet {
 		boolean isBadRequest = false;
 		Integer courseId = null;
 		Timestamp datetime = null;
-		Integer studentPersonCode = null;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
 			datetime = Timestamp.valueOf(request.getParameter("date"));
-			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -83,13 +81,9 @@ public class RejectGrade extends HttpServlet {
 				return;
 			}
 			//Check if the grade exists and it is a student's grade
-			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
+			result = examSessionDAO.getStudentExamResult(student.getPersonCode(), courseId, datetime);
 			if(result == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
-				return;
-			}
-			if(result.getStudent().getPersonCode() != student.getPersonCode()) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 				return;
 			}
 			if(!result.getGradeStatus().equals("PUBBLICATO") || result.getGrade() < 18) {
@@ -98,14 +92,14 @@ public class RejectGrade extends HttpServlet {
 			}
 			
 			//Checks passed, reject grade
-			examSessionDAO.rejectExamResult(studentPersonCode, courseId, datetime);
+			examSessionDAO.rejectExamResult(student.getPersonCode(), courseId, datetime);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access failed");
 		}
 		
 		//Redirect to the grade page detail
-		String path = String.format("%s/GetStudentGradeDetails?courseId=%d&date=%s&personCode=%d&rej=true", getServletContext().getContextPath(), courseId, datetime.toString(), studentPersonCode);
+		String path = String.format("%s/GetStudentGradeDetails?courseId=%d&date=%s&rej=true", getServletContext().getContextPath(), courseId, datetime.toString());
 		response.sendRedirect(path);
 	}
 

@@ -62,7 +62,7 @@
 				</div>
 				
 				<!-- If there are not registered students -->
-				<div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(grades)}">Nessun studente è iscritto all'appello.</div>
+				<div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(grades)}">Nessuno studente iscritto all'appello.</div>
 
 				<div th:unless="${#lists.isEmpty(grades)}">
 					<table class="table table-striped table-hover table-bordered table-responsive-lg bg-light">
