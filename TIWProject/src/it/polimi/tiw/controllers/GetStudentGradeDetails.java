@@ -57,13 +57,11 @@ public class GetStudentGradeDetails extends HttpServlet {
 		boolean isBadRequest = false;
 		Integer courseId = null;
 		Timestamp datetime = null;
-		Integer studentPersonCode = null;
 		Boolean hasJustRejected = false;
 		
 		try {
 			courseId = Integer.parseInt(request.getParameter("courseId"));
 			datetime = Timestamp.valueOf(request.getParameter("date"));
-			studentPersonCode = Integer.parseInt(request.getParameter("personCode"));
 			hasJustRejected = Boolean.parseBoolean(request.getParameter("rej"));
 		}catch (NullPointerException | IllegalArgumentException e ) {
 			isBadRequest = true;
@@ -100,15 +98,12 @@ public class GetStudentGradeDetails extends HttpServlet {
 				return;
 			}
 			
-			result = examSessionDAO.getStudentExamResult(studentPersonCode, courseId, datetime);
+			result = examSessionDAO.getStudentExamResult(student.getPersonCode(), courseId, datetime);
 			
 			if(result==null) { //If the result does not exist then the student is not enrolled
 				//Redirect on the student home page and display an error message
 				String path = String.format("%s/GetExamSessionsStudent?courseId=%d&ne=true", getServletContext().getContextPath(), courseId);
 				response.sendRedirect(path);
-			}else if(result.getStudent().getPersonCode() != student.getPersonCode()){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
-				return;
 			}else{
 				String path = "/WEB-INF/templates/StudentResultDetails.html";
 				ServletContext context = getServletContext();
