@@ -8,8 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="../../css/mystyle.css" th:href="@{/css/mystyle.css}">
@@ -55,7 +54,7 @@
 	<div class="container align-middle">
 		<div class="card text-white bg-secondary">
 			<div class="card-body">
-				<h5 class="card-title"
+				<h5 class="card-title font-weight-bold"
 					th:text="#{heading} + ${exam.course.name} + ' [' +${exam.course.courseID} +'] ' +' - ' + ${#dates.format(new java.util.Date(exam.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">Analisi
 					Matematica 1 [232] - 27 Gennaio 2028 12:00</h5>
 				<div class="alert alert-success" role="alert" th:if="${pubOk!=null}" th:text="${pubOk}">
