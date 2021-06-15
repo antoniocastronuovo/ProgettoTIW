@@ -65,7 +65,7 @@ public class RejectGrade extends HttpServlet {
 		
 		ExamResult result = null;
 		try {
-			//Check if the course exists and it is followed by the student
+			//Check if the course exists
 			Course course = courseDAO.getCourseById(courseId);
 			if(course == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
