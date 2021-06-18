@@ -83,6 +83,8 @@ public class CheckLogin extends HttpServlet {
 						loginForm.setLoginOk(false);
 						final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
 						path = "/WEB-INF/templates/index.html";
+						
+						// Here we pass the login form bean to the context (for setting the alerts)
 						ctx.setVariable("loginForm", loginForm);
 						templateEngine.process(path, ctx, response.getWriter());
 						return;

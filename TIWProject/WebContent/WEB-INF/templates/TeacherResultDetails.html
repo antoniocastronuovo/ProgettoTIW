@@ -67,7 +67,7 @@
 				th:href="@{/GetExamSessionsTeacher(courseId=${result.examSession.course.courseId})}">Corso</a></li>
 			<li class="breadcrumb-item" aria-current="page"><a
 				href="registered.html"
-				th:href="@{/GetExamSession(courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime}, ord=1, last=1, asc=true)}"
+				th:href="@{/GetExamSession(courseId=${result.examSession.course.courseId}, date=${result.examSession.dateTime}, ord=1, last=1, asc=false)}"
 				th:text="${#dates.format(new java.util.Date(result.examSession.dateTime.getTime()), 'dd/MM/yyyy - HH:mm')}">12-04-2012
 					13:00</a></li>
 			<li class="breadcrumb-item active" aria-current="page"
@@ -171,7 +171,7 @@
 							<div class="row mt-3"
 								th:if="${err}">
 								<div class="col-sm-12">
-									<div class="alert alert-danger" role="alert"><strong>Attenzione!</strong> Il voto inserito non è valido.</div>
+									<div class="alert alert-danger" role="alert"><strong>Attenzione!</strong> Voto inserito non valido.</div>
 								</div>
 							</div>
 						</div>

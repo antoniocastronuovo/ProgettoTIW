@@ -1,8 +1,7 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
+
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,7 +15,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.handlers.ConnectionHandler;
 import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 
 /**
@@ -25,7 +23,6 @@ import it.polimi.tiw.handlers.SharedPropertyMessageResolver;
 @WebServlet("")
 public class Welcome extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private Connection connection = null;
     private TemplateEngine templateEngine;
     
     @Override
@@ -37,7 +34,6 @@ public class Welcome extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		this.templateEngine.setMessageResolver(new SharedPropertyMessageResolver(context, "i18n", "index"));
 		templateResolver.setSuffix(".html");
-		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
 	/**
@@ -58,14 +54,4 @@ public class Welcome extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
-	@Override
-	public void destroy() {
-		try {
-			ConnectionHandler.closeConnection(connection);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

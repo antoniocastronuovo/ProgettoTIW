@@ -86,7 +86,7 @@
 							class="list-group list-group-flush" th:remove="all-but-first"
 							th:each="exam: ${exams}">
 							<a href="registered.html"
-								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=1, asc=${asc})}"><li
+								th:href="@{/GetExamSession(courseId=${exam.course.courseId}, date=${exam.dateTime}, ord=1, last=1, asc=false )}"><li
 								class="list-group-item d-flex justify-content-between align-items-center"
 								><p th:text="#{examsession_of} + ${#dates.format(new java.util.Date(exam.datetime.getTime()), 'dd/MM/yyyy - HH:mm')}">Appello
 									del 12/01/2021 12:00<p><span class="badge badge-secondary" th:text="${exam.numOfRegisteredStudents} + ' iscritti'">14</span></li></a>

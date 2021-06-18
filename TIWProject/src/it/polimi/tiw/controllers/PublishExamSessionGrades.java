@@ -92,7 +92,7 @@ public class PublishExamSessionGrades extends HttpServlet {
 				
 				/* Since this controller performs an update, it does NOT forward a request but makes 
 				 * a redirect to the GetExamSession controller that display the page */
-				String path = String.format("%s/GetExamSession?courseId=%d&date=%s&ord=1&last=1&asc=true&pub=true", getServletContext().getContextPath(), exam.getCourse().getCourseID(), exam.getDateTime().toString());
+				String path = String.format("%s/GetExamSession?courseId=%d&date=%s&ord=1&last=1&asc=false&pub=true", getServletContext().getContextPath(), exam.getCourse().getCourseID(), exam.getDateTime().toString());
 				response.sendRedirect(path);
 	}
 

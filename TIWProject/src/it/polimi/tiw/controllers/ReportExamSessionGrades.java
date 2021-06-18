@@ -81,7 +81,7 @@ public class ReportExamSessionGrades extends HttpServlet {
 			List<ExamResult> results = examSessionDAO.getRegisteredStudentsResults(courseId, datetime);
 			results = results.stream().filter(r -> r.getGradeStatus().equals("PUBBLICATO")).collect(Collectors.toList());
 			if(results == null || results.isEmpty()) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Exam report already exists!");
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "There are no results to report");
 				return;
 			}
 			

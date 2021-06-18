@@ -21,8 +21,7 @@ public class ExamReportDAO {
 	
 	public ExamReport publishExamReport(int courseId, Timestamp datetime) {
 		String update = "UPDATE examresult "
-				+ "SET GradeStatus = 'VERBALIZZATO' , ExamReportId = (select ExamReportId from examreport where ExamSessionCourseId = ? "
-				+ "AND ExamSessionDateTime = ? Order by Datetime DESC LIMIT 1)"
+				+ "SET GradeStatus = 'VERBALIZZATO' , ExamReportId = (select ExamReportId from examreport where ExamSessionCourseId = ? AND ExamSessionDateTime = ? Order by Datetime DESC LIMIT 1)"
 				+ "WHERE (GradeStatus = 'PUBBLICATO' OR GradeStatus = 'RIFIUTATO') AND CourseId = ? AND ExamSessionDateTime = ? ;";
 		String insert = "INSERT INTO examreport(DateTime, ExamSessionCourseId, ExamSessionDateTime) "
 				+ "VALUES(current_timestamp(), ?, ?);";
